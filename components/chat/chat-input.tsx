@@ -70,8 +70,8 @@ export function ChatInput({ config, onSend, disabled, className }: ChatInputProp
         {/* Inner container */}
         <div className={cn(
           "relative flex items-end gap-2 p-3 rounded-2xl",
-          "bg-white/5 backdrop-blur-sm",
-          "border border-white/10",
+          "bg-zinc-800/80",
+          "border border-zinc-700/50",
           isFocused && "border-transparent"
         )}>
           {/* Attachment button */}

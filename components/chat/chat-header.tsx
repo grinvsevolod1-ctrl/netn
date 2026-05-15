@@ -137,7 +137,7 @@ export function ChatHeader({
           </DropdownMenuTrigger>
           <DropdownMenuContent 
             align="end" 
-            className="w-52 bg-background/95 backdrop-blur-xl border-white/10"
+            className="w-52 bg-zinc-900 border-zinc-700/50"
           >
             {onResetSession && (
               <DropdownMenuItem 

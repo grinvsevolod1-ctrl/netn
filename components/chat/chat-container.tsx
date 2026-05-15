@@ -77,11 +77,11 @@ export function ChatContainer({
   if (mode === 'modal') {
     return (
       <>
-        {/* Backdrop with blur */}
+        {/* Backdrop */}
         <div 
           className={cn(
             "fixed inset-0 z-[100]",
-            "bg-black/60 backdrop-blur-md",
+            "bg-black/70",
             "animate-in fade-in duration-200"
           )}
           onClick={onClose}
@@ -99,12 +99,12 @@ export function ChatContainer({
             className={cn(
               "pointer-events-auto",
               "flex flex-col overflow-hidden",
-              // Glassmorphism effect
-              "bg-background/95 backdrop-blur-xl",
-              "border border-white/10",
+              // Solid dark background with subtle transparency
+              "bg-zinc-900/98",
+              "border border-zinc-700/50",
               "rounded-3xl",
-              // Shadow
-              "shadow-[0_0_80px_-20px_rgba(79,209,197,0.3)]",
+              // Glow shadow
+              "shadow-[0_0_100px_-20px_rgba(79,209,197,0.4)]",
               // Animation
               "animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-300",
               // Sizing
@@ -131,12 +131,12 @@ export function ChatContainer({
           "fixed z-[100]",
           "w-[380px] h-[560px]",
           "flex flex-col overflow-hidden",
-          // Glassmorphism
-          "bg-background/95 backdrop-blur-xl",
-          "border border-white/10",
+          // Solid dark background
+          "bg-zinc-900/98",
+          "border border-zinc-700/50",
           "rounded-2xl",
           // Shadow
-          "shadow-[0_0_60px_-15px_rgba(79,209,197,0.25)]",
+          "shadow-[0_0_60px_-15px_rgba(79,209,197,0.3)]",
           // Animation
           "animate-in fade-in slide-in-from-bottom-6 duration-300",
           // Position
@@ -157,8 +157,8 @@ export function ChatContainer({
       ref={containerRef}
       className={cn(
         "flex flex-col overflow-hidden",
-        "bg-background/95 backdrop-blur-xl",
-        "border border-white/10 rounded-2xl",
+        "bg-zinc-900/98",
+        "border border-zinc-700/50 rounded-2xl",
         className
       )}
     >
