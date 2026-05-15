@@ -88,9 +88,11 @@ export async function POST(request: NextRequest) {
       }))
 
     const chatContext: ChatContext = {
+      clientId: 'netnext', // ID для RAG базы знаний
       companyName: context?.companyName || 'NetNext',
       companyDescription: context?.companyDescription || 'Веб-студия разработки в Минске',
       knowledgeBase: context?.knowledgeBase,
+      useRAG: true, // Явно включаем RAG поиск по базе знаний
       previousMessages,
       language: 'ru',
     }

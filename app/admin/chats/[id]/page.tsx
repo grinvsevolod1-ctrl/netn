@@ -73,12 +73,9 @@ export default function ChatDetailPage() {
   }
 
   const fetchChat = useCallback(async () => {
-    const token = localStorage.getItem("admin_token")
-    if (!token) return
-
     try {
       const response = await fetch(`/api/admin/chats/${sessionId}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       })
 
       if (response.ok) {
@@ -112,17 +109,12 @@ export default function ChatDetailPage() {
     const messageText = text || message.trim()
     if (!messageText || sending) return
 
-    const token = localStorage.getItem("admin_token")
-    if (!token) return
-
     setSending(true)
     try {
       const response = await fetch(`/api/admin/chats/${sessionId}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ message: messageText }),
       })
 
@@ -140,16 +132,11 @@ export default function ChatDetailPage() {
   }
 
   const handleAction = async (action: string) => {
-    const token = localStorage.getItem("admin_token")
-    if (!token) return
-
     try {
       await fetch(`/api/admin/chats/${sessionId}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ action }),
       })
       await fetchChat()

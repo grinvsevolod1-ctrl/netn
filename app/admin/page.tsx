@@ -62,13 +62,12 @@ export default function AdminDashboard() {
 
   const fetchData = useCallback(async () => {
     setLoading(true)
-    const token = localStorage.getItem("admin_token")
 
     try {
       const [mailingsRes, chatsRes, leadsRes] = await Promise.all([
-        fetch("/api/admin/mailings", { headers: { Authorization: `Bearer ${token}` } }),
-        fetch("/api/admin/chats?stats=true", { headers: { Authorization: `Bearer ${token}` } }),
-        fetch("/api/admin/leads?stats=true", { headers: { Authorization: `Bearer ${token}` } }),
+        fetch("/api/admin/mailings", { credentials: 'include' }),
+        fetch("/api/admin/chats?stats=true", { credentials: 'include' }),
+        fetch("/api/admin/leads?stats=true", { credentials: 'include' }),
       ])
 
       const [mailings, chats, leads] = await Promise.all([

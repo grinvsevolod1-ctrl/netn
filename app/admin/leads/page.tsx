@@ -100,9 +100,6 @@ export default function LeadsPage() {
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table')
 
   const fetchLeads = useCallback(async () => {
-    const token = localStorage.getItem("admin_token")
-    if (!token) return
-
     setLoading(true)
     try {
       const params = new URLSearchParams({
@@ -121,7 +118,7 @@ export default function LeadsPage() {
       }
 
       const response = await fetch(`/api/admin/leads?${params}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       })
 
       if (response.ok) {
@@ -137,12 +134,9 @@ export default function LeadsPage() {
   }, [page, filters])
 
   const fetchStats = useCallback(async () => {
-    const token = localStorage.getItem("admin_token")
-    if (!token) return
-
     try {
       const response = await fetch('/api/admin/leads?stats=true', {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       })
 
       if (response.ok) {
@@ -160,17 +154,12 @@ export default function LeadsPage() {
   }, [fetchLeads, fetchStats])
 
   const updateStatus = async (leadId: string, status: string) => {
-    const token = localStorage.getItem("admin_token")
-    if (!token) return
-
     setUpdatingStatus(leadId)
     try {
       const response = await fetch(`/api/admin/leads/${leadId}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ status }),
       })
 

@@ -106,33 +106,19 @@ export default function AdminLayout({
   }, [])
 
   useEffect(() => {
-    const verifyStoredToken = async () => {
-      const storedToken = localStorage.getItem("admin_token")
-      if (!storedToken) {
-        setIsAuthenticated(false)
-        return
-      }
-
+    const checkSession = async () => {
       try {
-        const res = await fetch("/api/admin/verify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token: storedToken }),
+        const res = await fetch("/api/admin/auth/session", {
+          credentials: 'include',
         })
         const data = await res.json()
-
-        if (data.valid) {
-          setIsAuthenticated(true)
-        } else {
-          localStorage.removeItem("admin_token")
-          setIsAuthenticated(false)
-        }
+        setIsAuthenticated(data.authenticated === true)
       } catch {
         setIsAuthenticated(false)
       }
     }
 
-    verifyStoredToken()
+    checkSession()
   }, [])
 
   const handleLogin = async () => {
@@ -142,15 +128,15 @@ export default function AdminLayout({
     setLoginError("")
 
     try {
-      const res = await fetch("/api/admin/verify", {
+      const res = await fetch("/api/admin/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: token.trim() }),
+        credentials: 'include',
       })
       const data = await res.json()
 
-      if (data.valid) {
-        localStorage.setItem("admin_token", token.trim())
+      if (data.success) {
         setIsAuthenticated(true)
       } else {
         setLoginError(data.error || "Неверный токен")
@@ -162,8 +148,15 @@ export default function AdminLayout({
     }
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem("admin_token")
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/auth/logout", {
+        method: "POST",
+        credentials: 'include',
+      })
+    } catch {
+      // Logout anyway on error
+    }
     setIsAuthenticated(false)
     setToken("")
   }

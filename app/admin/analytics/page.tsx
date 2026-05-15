@@ -46,13 +46,10 @@ export default function AnalyticsPage() {
   const [period, setPeriod] = useState(30)
 
   const fetchData = useCallback(async () => {
-    const token = localStorage.getItem("admin_token")
-    if (!token) return
-
     setLoading(true)
     try {
       const response = await fetch(`/api/admin/analytics?days=${period}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       })
 
       if (response.ok) {

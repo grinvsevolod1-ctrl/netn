@@ -49,15 +49,11 @@ export default function SettingsPage() {
     const startTime = Date.now()
 
     try {
-      const token = localStorage.getItem("admin_token")
-      
       if (service === "SMTP") {
         const res = await fetch("/api/admin/mailings", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { "Content-Type": "application/json" },
+          credentials: 'include',
           body: JSON.stringify({ action: "test_connection" }),
         })
         const data = await res.json()
@@ -73,7 +69,7 @@ export default function SettingsPage() {
       } else {
         // For Redis and PostgreSQL, we'll simulate with a general health check
         const res = await fetch("/api/health", { 
-          headers: { Authorization: `Bearer ${token}` }
+          credentials: 'include',
         })
         const latency = Date.now() - startTime
         

@@ -59,9 +59,8 @@ export default function MailingsPage() {
   const fetchCampaigns = useCallback(async () => {
     setLoading(true)
     try {
-      const token = localStorage.getItem("admin_token")
       const res = await fetch("/api/admin/mailings", {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       })
       const data = await res.json()
       setCampaigns(data.campaigns || [])
@@ -79,13 +78,10 @@ export default function MailingsPage() {
   const performAction = async (action: string, campaignId?: string, extraData?: Record<string, unknown>) => {
     setActionLoading(action + (campaignId || ""))
     try {
-      const token = localStorage.getItem("admin_token")
       const res = await fetch("/api/admin/mailings", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify({ action, campaignId, ...extraData }),
       })
 
@@ -108,13 +104,10 @@ export default function MailingsPage() {
   }
 
   const loadCampaignDetails = async (campaignId: string) => {
-    const token = localStorage.getItem("admin_token")
     const res = await fetch("/api/admin/mailings", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { "Content-Type": "application/json" },
+      credentials: 'include',
       body: JSON.stringify({ action: "get_details", campaignId }),
     })
     
@@ -731,13 +724,10 @@ function CreateCampaignModal({
 
     setLoading(true)
     try {
-      const token = localStorage.getItem("admin_token")
       const res = await fetch("/api/admin/mailings", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify({
           action: "create",
           name,
@@ -892,13 +882,10 @@ function RecipientsModal({
 
     setLoading(true)
     try {
-      const token = localStorage.getItem("admin_token")
       const res = await fetch("/api/admin/mailings", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify({
           action: "add_recipients",
           campaignId,

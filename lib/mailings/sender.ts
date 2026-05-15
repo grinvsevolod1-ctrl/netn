@@ -32,12 +32,25 @@ function loadDkimKey(): string | null {
   return dkimPrivateKey || null
 }
 
+// Transport options type for nodemailer with DKIM and pool support
+interface PoolTransportOptions extends nodemailer.TransportOptions {
+  pool?: boolean
+  maxConnections?: number
+  maxMessages?: number
+  rateDelta?: number
+  rateLimit?: number
+  dkim?: {
+    domainName: string
+    keySelector: string
+    privateKey: string
+  }
+}
+
 // Create transporter
 function createTransporter(): Transporter {
   const dkimKey = loadDkimKey()
   
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const transportOptions: any = {
+  const transportOptions: PoolTransportOptions = {
     ...mailingConfig.smtp,
     pool: true, // Use connection pooling for bulk sending
     maxConnections: 1, // Single connection to avoid rate limits
@@ -55,7 +68,7 @@ function createTransporter(): Transporter {
     }
   }
 
-  return nodemailer.createTransport(transportOptions as nodemailer.TransportOptions)
+  return nodemailer.createTransport(transportOptions)
 }
 
 let transporter: Transporter | null = null

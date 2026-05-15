@@ -70,17 +70,14 @@ export default function AutoResponsesPage() {
   const [expandedRules, setExpandedRules] = useState<Set<string>>(new Set())
 
   const fetchData = useCallback(async () => {
-    const token = localStorage.getItem("admin_token")
-    if (!token) return
-
     setLoading(true)
     try {
       const [rulesResponse, templatesResponse] = await Promise.all([
         fetch('/api/admin/auto-responses?type=rules', {
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: 'include',
         }),
         fetch('/api/admin/auto-responses?type=quick-replies', {
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: 'include',
         }),
       ])
 
@@ -106,16 +103,11 @@ export default function AutoResponsesPage() {
   }, [fetchData])
 
   const toggleRule = async (rule: AutoResponseRule) => {
-    const token = localStorage.getItem("admin_token")
-    if (!token) return
-
     try {
       await fetch(`/api/admin/auto-responses/${rule.id}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ enabled: !rule.enabled }),
       })
       setRules(rules.map(r => r.id === rule.id ? { ...r, enabled: !r.enabled } : r))
@@ -125,13 +117,12 @@ export default function AutoResponsesPage() {
   }
 
   const deleteRule = async (id: string) => {
-    const token = localStorage.getItem("admin_token")
-    if (!token || !confirm('Удалить правило?')) return
+    if (!confirm('Удалить правило?')) return
 
     try {
       await fetch(`/api/admin/auto-responses/${id}`, {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       })
       setRules(rules.filter(r => r.id !== id))
     } catch (error) {
@@ -140,13 +131,12 @@ export default function AutoResponsesPage() {
   }
 
   const deleteTemplate = async (id: string) => {
-    const token = localStorage.getItem("admin_token")
-    if (!token || !confirm('Удалить шаблон?')) return
+    if (!confirm('Удалить шаблон?')) return
 
     try {
       await fetch(`/api/admin/auto-responses/${id}?type=quick-reply`, {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       })
       setTemplates(templates.filter(t => t.id !== id))
     } catch (error) {
@@ -155,26 +145,19 @@ export default function AutoResponsesPage() {
   }
 
   const saveRule = async (rule: Partial<AutoResponseRule>) => {
-    const token = localStorage.getItem("admin_token")
-    if (!token) return
-
     try {
       if (editingRule) {
         await fetch(`/api/admin/auto-responses/${editingRule.id}`, {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
           body: JSON.stringify(rule),
         })
       } else {
         await fetch('/api/admin/auto-responses', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
           body: JSON.stringify(rule),
         })
       }
@@ -187,26 +170,19 @@ export default function AutoResponsesPage() {
   }
 
   const saveTemplate = async (template: Partial<QuickReplyTemplate>) => {
-    const token = localStorage.getItem("admin_token")
-    if (!token) return
-
     try {
       if (editingTemplate) {
         await fetch(`/api/admin/auto-responses/${editingTemplate.id}`, {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
           body: JSON.stringify({ ...template, type: 'quick-reply' }),
         })
       } else {
         await fetch('/api/admin/auto-responses', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
           body: JSON.stringify({ ...template, type: 'quick-reply' }),
         })
       }
@@ -589,7 +565,7 @@ function RuleForm({
           onChange={e => setForm(f => ({ ...f, response_text: e.target.value }))}
           required
           rows={4}
-          placeholder="Текст ответа, который увидит пользователь..."
+          placeholder="Текст ответа, к��торый увидит пользователь..."
           className="bg-[#111] border-[#222]"
         />
       </div>

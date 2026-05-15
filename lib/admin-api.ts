@@ -1,19 +1,12 @@
 /**
  * Helper for making authenticated admin API requests
+ * Uses HTTP-only cookies for authentication (credentials: 'include')
  */
 export async function adminFetch(
   url: string,
   options: RequestInit = {}
 ): Promise<Response> {
-  const token = typeof window !== 'undefined' 
-    ? localStorage.getItem('admin_token') 
-    : null
-
   const headers = new Headers(options.headers)
-  
-  if (token) {
-    headers.set('Authorization', `Bearer ${token}`)
-  }
   
   if (!headers.has('Content-Type') && options.body) {
     headers.set('Content-Type', 'application/json')
@@ -22,6 +15,7 @@ export async function adminFetch(
   return fetch(url, {
     ...options,
     headers,
+    credentials: 'include', // Include HTTP-only cookies
   })
 }
 

@@ -56,9 +56,6 @@ export default function ChatsPage() {
   const [showFilters, setShowFilters] = useState(false)
 
   const fetchSessions = useCallback(async () => {
-    const token = localStorage.getItem("admin_token")
-    if (!token) return
-
     setLoading(true)
     try {
       const params = new URLSearchParams({
@@ -77,7 +74,7 @@ export default function ChatsPage() {
       }
 
       const response = await fetch(`/api/admin/chats?${params}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       })
 
       if (response.ok) {
@@ -93,12 +90,9 @@ export default function ChatsPage() {
   }, [page, filters])
 
   const fetchStats = useCallback(async () => {
-    const token = localStorage.getItem("admin_token")
-    if (!token) return
-
     try {
       const response = await fetch('/api/admin/chats?stats=true', {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       })
 
       if (response.ok) {
