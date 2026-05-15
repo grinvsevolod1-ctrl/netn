@@ -1,5 +1,6 @@
 "use client"
 
+// Chat component v2
 import { useState, useEffect, useRef, useCallback } from "react"
 import { SidebarNav } from "@/components/sidebar-nav"
 import { CookieConsent } from "@/components/cookie-consent"
