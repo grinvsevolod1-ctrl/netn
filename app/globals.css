@@ -148,140 +148,76 @@
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
-/* ── Siri-style Orb CSS animations ── */
+/* ── Organic liquid orb - subtle bubbling effect ── */
 .orb-base {
   background: radial-gradient(
-    ellipse at 30% 30%,
-    #00d4ff 0%, #0099cc 15%, #006688 35%, #003344 60%, #001a22 100%
+    ellipse at 35% 35%,
+    #4fd1c5 0%, #319795 20%, #1a6b6b 45%, #0d3d3d 70%, #051a1a 100%
   );
-  animation: orb-base-shift 8s ease-in-out infinite;
 }
 
 .orb-layer-1 {
   background: conic-gradient(
     from 0deg at 50% 50%,
-    rgba(255, 45, 85, 0.5) 0deg,
-    rgba(255, 149, 0, 0.4) 60deg,
-    rgba(52, 199, 89, 0.4) 120deg,
-    rgba(0, 122, 255, 0.5) 180deg,
-    rgba(175, 82, 222, 0.5) 240deg,
-    rgba(255, 55, 95, 0.4) 300deg,
-    rgba(255, 45, 85, 0.5) 360deg
+    rgba(79, 209, 197, 0.5) 0deg,
+    rgba(56, 178, 172, 0.4) 90deg,
+    rgba(49, 151, 149, 0.5) 180deg,
+    rgba(79, 209, 197, 0.4) 270deg,
+    rgba(79, 209, 197, 0.5) 360deg
   );
   mix-blend-mode: screen;
-  filter: blur(8px);
+  filter: blur(4px);
 }
 
 .orb-layer-2 {
   background: conic-gradient(
-    from 180deg at 50% 50%,
-    rgba(94, 92, 230, 0.6) 0deg,
-    rgba(0, 199, 190, 0.5) 72deg,
-    rgba(255, 159, 10, 0.4) 144deg,
-    rgba(255, 45, 85, 0.5) 216deg,
-    rgba(50, 215, 75, 0.4) 288deg,
-    rgba(94, 92, 230, 0.6) 360deg
+    from 120deg at 50% 50%,
+    rgba(99, 179, 237, 0.4) 0deg,
+    rgba(79, 209, 197, 0.5) 120deg,
+    rgba(129, 230, 217, 0.4) 240deg,
+    rgba(99, 179, 237, 0.4) 360deg
   );
   mix-blend-mode: screen;
-  filter: blur(6px);
-}
-
-.orb-layer-3 {
-  background: radial-gradient(
-    ellipse at 65% 35%,
-    rgba(0, 255, 255, 0.3) 0%,
-    rgba(255, 0, 128, 0.2) 30%,
-    transparent 60%
-  );
-  mix-blend-mode: overlay;
+  filter: blur(3px);
 }
 
 .orb-core {
   background: radial-gradient(
     circle,
-    rgba(255, 255, 255, 0.95) 0%,
-    rgba(200, 240, 255, 0.7) 25%,
-    rgba(100, 200, 255, 0.4) 50%,
-    transparent 70%
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(200, 255, 250, 0.6) 30%,
+    rgba(79, 209, 197, 0.3) 60%,
+    transparent 80%
   );
-  animation: orb-core-glow 2s ease-in-out infinite;
 }
 
 .orb-edge {
   background: radial-gradient(
     circle,
-    transparent 50%,
-    rgba(0, 212, 255, 0.1) 65%,
-    rgba(94, 92, 230, 0.2) 80%,
-    rgba(255, 45, 85, 0.15) 100%
+    transparent 55%,
+    rgba(79, 209, 197, 0.15) 70%,
+    rgba(56, 178, 172, 0.25) 85%,
+    rgba(49, 151, 149, 0.2) 100%
   );
-  animation: orb-edge-pulse 3s ease-in-out infinite;
 }
 
-/* Siri-style wave layer */
-.orb-wave {
-  background: linear-gradient(
-    45deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.1) 50%,
-    transparent 70%
-  );
-  animation: orb-wave-move 2s linear infinite;
-}
-
-/* will-change only on animating elements, use transform for GPU compositing */
-.orb-rotate       { animation: orb-spin 6s linear infinite; will-change: transform; }
-.orb-rotate-reverse { animation: orb-spin 8s linear infinite reverse; will-change: transform; }
-.orb-rotate-slow  { animation: orb-spin 12s linear infinite; will-change: transform; }
-.orb-pulse        { animation: orb-pulse 2s ease-in-out infinite; will-change: transform, opacity; }
+/* Orb animation classes */
+.orb-rotate       { animation: orb-spin 8s linear infinite; will-change: transform; }
+.orb-rotate-reverse { animation: orb-spin 12s linear infinite reverse; will-change: transform; }
+.orb-pulse        { animation: orb-pulse 2.5s ease-in-out infinite; will-change: transform, opacity; }
 .orb-breathe      { animation: orb-breathe 3s ease-in-out infinite; will-change: transform, opacity; }
-.orb-spin         { animation: orb-spin 8s linear infinite; will-change: transform; }
-
-.orb-ring-1 { animation: orb-ring 20s linear infinite; transform-origin: center; will-change: transform; }
-.orb-ring-2 { animation: orb-ring 28s linear infinite reverse; transform-origin: center; will-change: transform; }
-.orb-ring-3 { animation: orb-ring 35s linear infinite; transform-origin: center; will-change: transform; }
-
-.orb-particle {
-  animation: orb-particle-float 5s ease-in-out infinite alternate;
-  will-change: transform, opacity;
-}
 
 @keyframes orb-spin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
 @keyframes orb-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50%      { transform: scale(1.15); opacity: 1; }
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50%      { transform: scale(1.1); opacity: 1; }
 }
 @keyframes orb-breathe {
-  0%, 100% { transform: scale(1); opacity: 0.4; }
-  50%      { transform: scale(1.08); opacity: 0.7; }
-}
-@keyframes orb-ring {
-  0%   { transform: rotate(0deg) rotateX(60deg); }
-  100% { transform: rotate(360deg) rotateX(60deg); }
-}
-@keyframes orb-particle-float {
-  0%   { opacity: 0.3; transform: rotate(var(--tw-rotate, 0deg)) translateX(var(--tw-translate-x, 140px)) translateY(-8px); }
-  100% { opacity: 0.7; transform: rotate(var(--tw-rotate, 0deg)) translateX(var(--tw-translate-x, 140px)) translateY(8px); }
-}
-@keyframes orb-base-shift {
-  0%, 100% { filter: hue-rotate(0deg) brightness(1); }
-  33%      { filter: hue-rotate(15deg) brightness(1.1); }
-  66%      { filter: hue-rotate(-15deg) brightness(1.05); }
-}
-@keyframes orb-core-glow {
-  0%, 100% { opacity: 0.8; transform: scale(1); }
-  50%      { opacity: 1; transform: scale(1.1); }
-}
-@keyframes orb-edge-pulse {
-  0%, 100% { opacity: 0.6; }
-  50%      { opacity: 1; }
-}
-@keyframes orb-wave-move {
-  0%   { transform: rotate(0deg) translateX(-100%); }
-  100% { transform: rotate(360deg) translateX(100%); }
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50%      { transform: scale(1.06); opacity: 0.8; }
 }
 
 /* ── iOS / Safari perf: lighter blur + solid fallback ── */

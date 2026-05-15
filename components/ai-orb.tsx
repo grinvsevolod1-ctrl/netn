@@ -1,12 +1,12 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useId } from "react"
 import { cn } from "@/lib/utils"
 
 /* ───────────────────────────────────────────────
-   Pure-CSS animated orb.
+   Organic "liquid" orb with SVG turbulence filter.
+   - Subtle bubbling/morphing effect
    - Loading state: compact card in center of screen
-     (NOT full-screen overlay) with small orb + progress
    - Minimized state: corner button for AI chat
    ─────────────────────────────────────────────── */
 
@@ -29,7 +29,26 @@ export function AIOrbCanvas({
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const [showHint, setShowHint] = useState(false)
+  const [turbulenceSeed, setTurbulenceSeed] = useState(1)
   const timerRef = useRef<ReturnType<typeof setInterval>>(null)
+  const turbulenceRef = useRef<SVGFETurbulenceElement>(null)
+  const filterId = useId()
+  
+  // Animate turbulence for organic movement
+  useEffect(() => {
+    let animationFrame: number
+    let seed = 1
+    
+    const animate = () => {
+      seed += 0.015
+      if (seed > 100) seed = 1
+      setTurbulenceSeed(seed)
+      animationFrame = requestAnimationFrame(animate)
+    }
+    
+    animationFrame = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(animationFrame)
+  }, [])
 
   // Loading progress
   useEffect(() => {
@@ -65,6 +84,29 @@ export function AIOrbCanvas({
 
   return (
     <>
+      {/* SVG Filter for organic turbulence effect */}
+      <svg className="absolute w-0 h-0" aria-hidden="true">
+        <defs>
+          <filter id={filterId} x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence
+              ref={turbulenceRef}
+              type="fractalNoise"
+              baseFrequency="0.015"
+              numOctaves="2"
+              seed={turbulenceSeed}
+              result="noise"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale={isHovered ? 6 : 3}
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </defs>
+      </svg>
+
       {/* ══════════════════════════════════════════
           LOADING STATE: compact card, not full screen
           ══════════════════════════════════════════ */}
@@ -112,14 +154,15 @@ export function AIOrbCanvas({
                 />
               </svg>
 
-              {/* The orb sphere (small) - Siri-style */}
-              <div className="absolute inset-[6px] rounded-full overflow-hidden">
+              {/* The orb sphere (small) - organic bubbling */}
+              <div 
+                className="absolute inset-[6px] rounded-full overflow-hidden"
+                style={{ filter: `url(#${filterId})` }}
+              >
                 <div className="absolute inset-0 rounded-full orb-base" />
                 <div className="absolute inset-0 rounded-full orb-layer-1 orb-rotate" />
                 <div className="absolute inset-0 rounded-full orb-layer-2 orb-rotate-reverse" />
-                <div className="absolute inset-0 rounded-full orb-layer-3 orb-rotate-slow" />
-                <div className="absolute inset-0 rounded-full orb-wave" />
-                <div className="absolute inset-[20%] rounded-full orb-core" />
+                <div className="absolute inset-[20%] rounded-full orb-core orb-pulse" />
                 <div className="absolute inset-0 rounded-full orb-edge" />
               </div>
             </div>
@@ -168,20 +211,17 @@ export function AIOrbCanvas({
           onMouseLeave={() => setIsHovered(false)}
           onClick={onOrbClick}
         >
-          {/* Outer glow - Siri-style rainbow */}
+          {/* Outer glow */}
           <div
             className={cn(
-              "absolute inset-[-12px] rounded-full transition-all duration-500",
+              "absolute inset-[-10px] rounded-full transition-all duration-500",
               isHovered || isChatOpen
-                ? "opacity-100 scale-[1.4]"
-                : "opacity-50 scale-100"
+                ? "opacity-100 scale-[1.3]"
+                : "opacity-40 scale-100"
             )}
             style={{
-              background: isHovered || isChatOpen
-                ? "conic-gradient(from 0deg, rgba(255,45,85,0.3), rgba(255,149,0,0.3), rgba(52,199,89,0.3), rgba(0,122,255,0.3), rgba(175,82,222,0.3), rgba(255,45,85,0.3))"
-                : "radial-gradient(circle, rgba(0,212,255,0.25) 0%, rgba(94,92,230,0.15) 40%, transparent 70%)",
-              filter: "blur(8px)",
-              animation: isHovered ? "orb-spin 4s linear infinite" : "none",
+              background: "radial-gradient(circle, rgba(79,209,197,0.35) 0%, rgba(56,178,172,0.15) 50%, transparent 70%)",
+              filter: "blur(6px)",
             }}
           />
 
@@ -193,20 +233,19 @@ export function AIOrbCanvas({
             <div className="absolute inset-[-7px] rounded-full border border-primary/15 orb-spin" />
           )}
 
-          {/* Mini orb - Siri-style */}
+          {/* Mini orb - organic bubbling */}
           <div
             className={cn(
               "relative w-full h-full rounded-full overflow-hidden transition-all duration-300",
               isHovered && "scale-110",
               isChatOpen && "scale-95"
             )}
+            style={{ filter: `url(#${filterId})` }}
           >
             <div className="absolute inset-0 rounded-full orb-base" />
             <div className="absolute inset-0 rounded-full orb-layer-1 orb-rotate" />
             <div className="absolute inset-0 rounded-full orb-layer-2 orb-rotate-reverse" />
-            <div className="absolute inset-0 rounded-full orb-layer-3 orb-rotate-slow" />
-            <div className="absolute inset-0 rounded-full orb-wave" />
-            <div className="absolute inset-[18%] rounded-full orb-core" />
+            <div className="absolute inset-[18%] rounded-full orb-core orb-pulse" />
             <div className="absolute inset-0 rounded-full orb-edge" />
           </div>
 
