@@ -148,38 +148,92 @@
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
-/* ── Orb CSS-only animations ── */
+/* ── Siri-style Orb CSS animations ── */
 .orb-base {
   background: radial-gradient(
-    ellipse at 35% 35%,
-    #5ab8c8 0%, #3a8a9a 25%, #1a4a5a 55%, #0a2a3a 80%, #02141e 100%
+    ellipse at 30% 30%,
+    #00d4ff 0%, #0099cc 15%, #006688 35%, #003344 60%, #001a22 100%
   );
+  animation: orb-base-shift 8s ease-in-out infinite;
 }
+
 .orb-layer-1 {
-  background: radial-gradient(
-    ellipse at 60% 40%,
-    rgba(90, 184, 200, 0.35) 0%, rgba(58, 138, 154, 0.2) 35%, transparent 65%
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(255, 45, 85, 0.5) 0deg,
+    rgba(255, 149, 0, 0.4) 60deg,
+    rgba(52, 199, 89, 0.4) 120deg,
+    rgba(0, 122, 255, 0.5) 180deg,
+    rgba(175, 82, 222, 0.5) 240deg,
+    rgba(255, 55, 95, 0.4) 300deg,
+    rgba(255, 45, 85, 0.5) 360deg
   );
   mix-blend-mode: screen;
+  filter: blur(8px);
 }
+
 .orb-layer-2 {
-  background: radial-gradient(
-    ellipse at 40% 65%,
-    rgba(122, 90, 154, 0.25) 0%, rgba(74, 168, 184, 0.1) 40%, transparent 70%
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    rgba(94, 92, 230, 0.6) 0deg,
+    rgba(0, 199, 190, 0.5) 72deg,
+    rgba(255, 159, 10, 0.4) 144deg,
+    rgba(255, 45, 85, 0.5) 216deg,
+    rgba(50, 215, 75, 0.4) 288deg,
+    rgba(94, 92, 230, 0.6) 360deg
   );
   mix-blend-mode: screen;
+  filter: blur(6px);
 }
+
+.orb-layer-3 {
+  background: radial-gradient(
+    ellipse at 65% 35%,
+    rgba(0, 255, 255, 0.3) 0%,
+    rgba(255, 0, 128, 0.2) 30%,
+    transparent 60%
+  );
+  mix-blend-mode: overlay;
+}
+
 .orb-core {
-  background: radial-gradient(circle, rgba(90, 220, 240, 0.7) 0%, rgba(58, 138, 154, 0.3) 50%, transparent 80%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(200, 240, 255, 0.7) 25%,
+    rgba(100, 200, 255, 0.4) 50%,
+    transparent 70%
+  );
+  animation: orb-core-glow 2s ease-in-out infinite;
 }
+
 .orb-edge {
-  background: radial-gradient(circle, transparent 55%, rgba(74, 168, 184, 0.15) 75%, rgba(74, 168, 184, 0.35) 100%);
+  background: radial-gradient(
+    circle,
+    transparent 50%,
+    rgba(0, 212, 255, 0.1) 65%,
+    rgba(94, 92, 230, 0.2) 80%,
+    rgba(255, 45, 85, 0.15) 100%
+  );
+  animation: orb-edge-pulse 3s ease-in-out infinite;
+}
+
+/* Siri-style wave layer */
+.orb-wave {
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  animation: orb-wave-move 2s linear infinite;
 }
 
 /* will-change only on animating elements, use transform for GPU compositing */
-.orb-rotate       { animation: orb-spin 12s linear infinite; will-change: transform; }
-.orb-rotate-reverse { animation: orb-spin 18s linear infinite reverse; will-change: transform; }
-.orb-pulse        { animation: orb-pulse 3s ease-in-out infinite; will-change: transform, opacity; }
+.orb-rotate       { animation: orb-spin 6s linear infinite; will-change: transform; }
+.orb-rotate-reverse { animation: orb-spin 8s linear infinite reverse; will-change: transform; }
+.orb-rotate-slow  { animation: orb-spin 12s linear infinite; will-change: transform; }
+.orb-pulse        { animation: orb-pulse 2s ease-in-out infinite; will-change: transform, opacity; }
 .orb-breathe      { animation: orb-breathe 3s ease-in-out infinite; will-change: transform, opacity; }
 .orb-spin         { animation: orb-spin 8s linear infinite; will-change: transform; }
 
@@ -197,12 +251,12 @@
   to   { transform: rotate(360deg); }
 }
 @keyframes orb-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.7; }
-  50%      { transform: scale(1.08); opacity: 1; }
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50%      { transform: scale(1.15); opacity: 1; }
 }
 @keyframes orb-breathe {
-  0%, 100% { transform: scale(1); opacity: 0.3; }
-  50%      { transform: scale(1.05); opacity: 0.5; }
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50%      { transform: scale(1.08); opacity: 0.7; }
 }
 @keyframes orb-ring {
   0%   { transform: rotate(0deg) rotateX(60deg); }
@@ -211,6 +265,23 @@
 @keyframes orb-particle-float {
   0%   { opacity: 0.3; transform: rotate(var(--tw-rotate, 0deg)) translateX(var(--tw-translate-x, 140px)) translateY(-8px); }
   100% { opacity: 0.7; transform: rotate(var(--tw-rotate, 0deg)) translateX(var(--tw-translate-x, 140px)) translateY(8px); }
+}
+@keyframes orb-base-shift {
+  0%, 100% { filter: hue-rotate(0deg) brightness(1); }
+  33%      { filter: hue-rotate(15deg) brightness(1.1); }
+  66%      { filter: hue-rotate(-15deg) brightness(1.05); }
+}
+@keyframes orb-core-glow {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.1); }
+}
+@keyframes orb-edge-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+@keyframes orb-wave-move {
+  0%   { transform: rotate(0deg) translateX(-100%); }
+  100% { transform: rotate(360deg) translateX(100%); }
 }
 
 /* ── iOS / Safari perf: lighter blur + solid fallback ── */

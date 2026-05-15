@@ -112,12 +112,14 @@ export function AIOrbCanvas({
                 />
               </svg>
 
-              {/* The orb sphere (small) */}
+              {/* The orb sphere (small) - Siri-style */}
               <div className="absolute inset-[6px] rounded-full overflow-hidden">
                 <div className="absolute inset-0 rounded-full orb-base" />
                 <div className="absolute inset-0 rounded-full orb-layer-1 orb-rotate" />
                 <div className="absolute inset-0 rounded-full orb-layer-2 orb-rotate-reverse" />
-                <div className="absolute inset-[25%] rounded-full orb-core orb-pulse" />
+                <div className="absolute inset-0 rounded-full orb-layer-3 orb-rotate-slow" />
+                <div className="absolute inset-0 rounded-full orb-wave" />
+                <div className="absolute inset-[20%] rounded-full orb-core" />
                 <div className="absolute inset-0 rounded-full orb-edge" />
               </div>
             </div>
@@ -166,17 +168,20 @@ export function AIOrbCanvas({
           onMouseLeave={() => setIsHovered(false)}
           onClick={onOrbClick}
         >
-          {/* Outer glow */}
+          {/* Outer glow - Siri-style rainbow */}
           <div
             className={cn(
-              "absolute inset-[-10px] rounded-full transition-all duration-700",
+              "absolute inset-[-12px] rounded-full transition-all duration-500",
               isHovered || isChatOpen
-                ? "opacity-100 scale-[1.3]"
-                : "opacity-40 scale-100"
+                ? "opacity-100 scale-[1.4]"
+                : "opacity-50 scale-100"
             )}
             style={{
-              background:
-                "radial-gradient(circle, rgba(74,168,184,0.2) 0%, rgba(74,168,184,0.08) 40%, transparent 70%)",
+              background: isHovered || isChatOpen
+                ? "conic-gradient(from 0deg, rgba(255,45,85,0.3), rgba(255,149,0,0.3), rgba(52,199,89,0.3), rgba(0,122,255,0.3), rgba(175,82,222,0.3), rgba(255,45,85,0.3))"
+                : "radial-gradient(circle, rgba(0,212,255,0.25) 0%, rgba(94,92,230,0.15) 40%, transparent 70%)",
+              filter: "blur(8px)",
+              animation: isHovered ? "orb-spin 4s linear infinite" : "none",
             }}
           />
 
@@ -188,17 +193,20 @@ export function AIOrbCanvas({
             <div className="absolute inset-[-7px] rounded-full border border-primary/15 orb-spin" />
           )}
 
-          {/* Mini orb */}
+          {/* Mini orb - Siri-style */}
           <div
             className={cn(
-              "relative w-full h-full rounded-full overflow-hidden transition-transform duration-300",
-              isHovered && "scale-110"
+              "relative w-full h-full rounded-full overflow-hidden transition-all duration-300",
+              isHovered && "scale-110",
+              isChatOpen && "scale-95"
             )}
           >
             <div className="absolute inset-0 rounded-full orb-base" />
             <div className="absolute inset-0 rounded-full orb-layer-1 orb-rotate" />
             <div className="absolute inset-0 rounded-full orb-layer-2 orb-rotate-reverse" />
-            <div className="absolute inset-[25%] rounded-full orb-core orb-pulse" />
+            <div className="absolute inset-0 rounded-full orb-layer-3 orb-rotate-slow" />
+            <div className="absolute inset-0 rounded-full orb-wave" />
+            <div className="absolute inset-[18%] rounded-full orb-core" />
             <div className="absolute inset-0 rounded-full orb-edge" />
           </div>
 
