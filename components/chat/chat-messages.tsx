@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from 'react'
 import { cn } from '@/lib/utils'
-import { ChatMessage as ChatMessageType, ChatConfig } from './types'
+import { ChatMessage as ChatMessageType, ChatConfig, ChatAction } from './types'
 import { ChatMessage } from './chat-message'
 import { ChatTyping } from './chat-typing'
 import { ChatWelcome } from './chat-welcome'
@@ -11,7 +11,7 @@ interface ChatMessagesProps {
   messages: ChatMessageType[]
   config: ChatConfig
   isTyping: boolean
-  onQuickAction?: (action: { id: string; label: string; action: string }) => void
+  onQuickAction?: (action: ChatAction) => void
   onSendMessage?: (message: string) => void
   className?: string
 }
