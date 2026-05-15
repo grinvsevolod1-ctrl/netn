@@ -28,15 +28,15 @@ export function ChatTyping({ className }: ChatTypingProps) {
       {/* Typing indicator bubble */}
       <div className={cn(
         "flex items-center gap-2 px-4 py-3 rounded-2xl rounded-bl-md",
-        "bg-white/5 border border-white/10"
+        "bg-zinc-800 border border-zinc-700"
       )}>
-        <span className="text-sm text-muted-foreground">Печатает</span>
+        <span className="text-sm text-zinc-400">Печатает</span>
         <div className="flex gap-1">
           {[0, 1, 2].map((i) => (
             <span 
               key={i}
               className={cn(
-                "w-1.5 h-1.5 rounded-full bg-primary",
+                "w-1.5 h-1.5 rounded-full bg-teal-400",
                 "animate-bounce"
               )}
               style={{ 

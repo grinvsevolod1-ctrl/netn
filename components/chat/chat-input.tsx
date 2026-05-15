@@ -45,42 +45,39 @@ export function ChatInput({ config, onSend, disabled, className }: ChatInputProp
   const hasContent = value.trim().length > 0
 
   return (
-    <div className={cn("relative px-4 pb-4 pt-2", className)}>
-      {/* Gradient border effect container */}
+    <div className={cn("relative px-4 pb-4 pt-2 bg-zinc-900", className)}>
+      {/* Input container */}
       <div 
         className={cn(
           "relative rounded-2xl transition-all duration-300",
           isFocused && "shadow-[0_0_30px_-10px_rgba(79,209,197,0.3)]"
         )}
       >
-        {/* Animated gradient border */}
-        <div 
-          className={cn(
-            "absolute -inset-px rounded-2xl transition-opacity duration-300",
-            "bg-gradient-to-r from-primary/50 via-primary to-primary/50",
-            "opacity-0",
-            isFocused && "opacity-100"
-          )}
-          style={{
-            backgroundSize: '200% 100%',
-            animation: isFocused ? 'gradient-shift 3s ease infinite' : 'none',
-          }}
-        />
+        {/* Animated gradient border when focused */}
+        {isFocused && (
+          <div 
+            className="absolute -inset-px rounded-2xl bg-gradient-to-r from-teal-500/50 via-teal-400 to-teal-500/50"
+            style={{
+              backgroundSize: '200% 100%',
+              animation: 'gradient-shift 3s ease infinite',
+            }}
+          />
+        )}
         
         {/* Inner container */}
         <div className={cn(
           "relative flex items-end gap-2 p-3 rounded-2xl",
-          "bg-zinc-800/80",
-          "border border-zinc-700/50",
-          isFocused && "border-transparent"
+          "bg-zinc-800",
+          "border",
+          isFocused ? "border-transparent" : "border-zinc-700"
         )}>
           {/* Attachment button */}
           <button
             type="button"
             className={cn(
               "flex-shrink-0 p-2 rounded-xl",
-              "text-muted-foreground hover:text-foreground",
-              "hover:bg-white/10 active:bg-white/15",
+              "text-zinc-400 hover:text-white",
+              "hover:bg-zinc-700 active:bg-zinc-600",
               "transition-all duration-200",
               "disabled:opacity-40 disabled:pointer-events-none"
             )}
@@ -105,7 +102,7 @@ export function ChatInput({ config, onSend, disabled, className }: ChatInputProp
               rows={1}
               className={cn(
                 "w-full bg-transparent resize-none outline-none",
-                "text-sm text-foreground placeholder:text-muted-foreground/50",
+                "text-sm text-white placeholder:text-zinc-500",
                 "max-h-[120px] py-2 pr-2",
                 "disabled:opacity-50 disabled:cursor-not-allowed"
               )}
@@ -117,8 +114,8 @@ export function ChatInput({ config, onSend, disabled, className }: ChatInputProp
             type="button"
             className={cn(
               "flex-shrink-0 p-2 rounded-xl",
-              "text-muted-foreground hover:text-foreground",
-              "hover:bg-white/10 active:bg-white/15",
+              "text-zinc-400 hover:text-white",
+              "hover:bg-zinc-700 active:bg-zinc-600",
               "transition-all duration-200",
               "disabled:opacity-40 disabled:pointer-events-none"
             )}
@@ -138,14 +135,14 @@ export function ChatInput({ config, onSend, disabled, className }: ChatInputProp
               "transition-all duration-300",
               "disabled:opacity-30 disabled:cursor-not-allowed disabled:scale-95",
               hasContent ? [
-                "bg-gradient-to-r from-primary to-primary/80",
-                "text-primary-foreground",
-                "shadow-lg shadow-primary/25",
-                "hover:shadow-xl hover:shadow-primary/30",
+                "bg-gradient-to-r from-teal-500 to-teal-600",
+                "text-white",
+                "shadow-lg shadow-teal-500/25",
+                "hover:shadow-xl hover:shadow-teal-500/30",
                 "hover:scale-105 active:scale-95",
               ] : [
-                "bg-white/5",
-                "text-muted-foreground/50",
+                "bg-zinc-700",
+                "text-zinc-500",
               ]
             )}
             title="Отправить"
@@ -160,8 +157,8 @@ export function ChatInput({ config, onSend, disabled, className }: ChatInputProp
 
       {/* AI hint */}
       <div className="flex items-center justify-center gap-2 mt-3">
-        <Sparkles className="w-3 h-3 text-primary/40" />
-        <p className="text-[10px] text-muted-foreground/40">
+        <Sparkles className="w-3 h-3 text-teal-500/40" />
+        <p className="text-[10px] text-zinc-500">
           AI-ассистент от {config.companyName}
         </p>
       </div>

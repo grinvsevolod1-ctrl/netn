@@ -79,11 +79,7 @@ export function ChatContainer({
       <>
         {/* Backdrop */}
         <div 
-          className={cn(
-            "fixed inset-0 z-[100]",
-            "bg-black/70",
-            "animate-in fade-in duration-200"
-          )}
+          className="fixed inset-0 z-[100] bg-black/70"
           onClick={onClose}
           aria-hidden="true"
         />
@@ -96,17 +92,14 @@ export function ChatContainer({
             ref={containerRef}
             role="dialog"
             aria-modal="true"
+            style={{ backgroundColor: 'rgb(24, 24, 27)' }}
             className={cn(
               "pointer-events-auto",
               "flex flex-col overflow-hidden",
-              // Solid dark background with subtle transparency
-              "bg-zinc-900/98",
-              "border border-zinc-700/50",
+              "border border-zinc-700",
               "rounded-3xl",
               // Glow shadow
               "shadow-[0_0_100px_-20px_rgba(79,209,197,0.4)]",
-              // Animation
-              "animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-300",
               // Sizing
               getSizeClasses(),
               // Mobile fullscreen
@@ -127,21 +120,15 @@ export function ChatContainer({
       <div
         ref={containerRef}
         role="dialog"
+        style={{ backgroundColor: 'rgb(24, 24, 27)' }}
         className={cn(
           "fixed z-[100]",
           "w-[380px] h-[560px]",
           "flex flex-col overflow-hidden",
-          // Solid dark background
-          "bg-zinc-900/98",
-          "border border-zinc-700/50",
+          "border border-zinc-700",
           "rounded-2xl",
-          // Shadow
           "shadow-[0_0_60px_-15px_rgba(79,209,197,0.3)]",
-          // Animation
-          "animate-in fade-in slide-in-from-bottom-6 duration-300",
-          // Position
           getPositionClasses(),
-          // Mobile
           "max-md:w-[calc(100%-2rem)] max-md:h-[70vh] max-md:left-4 max-md:right-4 max-md:bottom-4",
           className
         )}
@@ -155,10 +142,10 @@ export function ChatContainer({
   return (
     <div 
       ref={containerRef}
+      style={{ backgroundColor: 'rgb(24, 24, 27)' }}
       className={cn(
         "flex flex-col overflow-hidden",
-        "bg-zinc-900/98",
-        "border border-zinc-700/50 rounded-2xl",
+        "border border-zinc-700 rounded-2xl",
         className
       )}
     >

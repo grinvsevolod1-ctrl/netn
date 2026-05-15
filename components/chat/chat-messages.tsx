@@ -53,9 +53,6 @@ export function ChatMessages({
       ref={containerRef}
       className={cn(
         "flex-1 overflow-y-auto overflow-x-hidden",
-        // Custom scrollbar
-        "scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10",
-        "hover:scrollbar-thumb-white/20",
         className
       )}
     >

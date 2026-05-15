@@ -42,14 +42,13 @@ export function ChatHeader({
     <div
       className={cn(
         "relative flex items-center justify-between px-5 py-4",
-        "border-b border-white/5",
-        // Gradient background
-        "bg-gradient-to-r from-primary/5 via-transparent to-primary/5",
+        "border-b border-zinc-700/50",
+        "bg-zinc-800/50",
         className
       )}
     >
       {/* Decorative line */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-500/30 to-transparent" />
 
       {/* Left: Orb + Info */}
       <div className="flex items-center gap-4">
@@ -79,19 +78,19 @@ export function ChatHeader({
         
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-foreground">
+            <span className="font-semibold text-white">
               {isConnectedToOperator ? 'Оператор' : config.assistantName}
             </span>
             {!isConnectedToOperator && (
-              <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-primary/10">
-                <Sparkles className="w-3 h-3 text-primary" />
-                <span className="text-[10px] font-medium text-primary">AI</span>
+              <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-teal-500/10">
+                <Sparkles className="w-3 h-3 text-teal-400" />
+                <span className="text-[10px] font-medium text-teal-400">AI</span>
               </div>
             )}
           </div>
           <span className={cn(
             "text-xs transition-colors duration-300",
-            isTyping ? "text-primary" : "text-muted-foreground"
+            isTyping ? "text-teal-400" : "text-zinc-400"
           )}>
             {isTyping 
               ? 'печатает...' 
@@ -111,8 +110,8 @@ export function ChatHeader({
             onClick={() => onSwitchMode(isModal ? 'mini' : 'modal')}
             className={cn(
               "p-2.5 rounded-xl",
-              "text-muted-foreground hover:text-foreground",
-              "hover:bg-white/5 active:bg-white/10",
+              "text-zinc-400 hover:text-white",
+              "hover:bg-zinc-700/50 active:bg-zinc-700",
               "transition-all duration-200"
             )}
             title={isModal ? "Свернуть" : "Развернуть"}
@@ -127,8 +126,8 @@ export function ChatHeader({
             <button
               className={cn(
                 "p-2.5 rounded-xl",
-                "text-muted-foreground hover:text-foreground",
-                "hover:bg-white/5 active:bg-white/10",
+                "text-zinc-400 hover:text-white",
+                "hover:bg-zinc-700/50 active:bg-zinc-700",
                 "transition-all duration-200"
               )}
             >
@@ -137,12 +136,12 @@ export function ChatHeader({
           </DropdownMenuTrigger>
           <DropdownMenuContent 
             align="end" 
-            className="w-52 bg-zinc-900 border-zinc-700/50"
+            className="w-52 bg-zinc-900 border-zinc-700"
           >
             {onResetSession && (
               <DropdownMenuItem 
                 onClick={onResetSession}
-                className="gap-2 cursor-pointer"
+                className="gap-2 cursor-pointer text-zinc-300 hover:text-white"
               >
                 <RotateCcw className="w-4 h-4" />
                 Новый диалог
@@ -157,9 +156,9 @@ export function ChatHeader({
                 Очистить историю
               </DropdownMenuItem>
             )}
-            <DropdownMenuSeparator className="bg-white/5" />
-            <div className="px-2 py-2 text-xs text-muted-foreground/60">
-              Powered by <span className="text-primary/80">{config.companyName}</span>
+            <DropdownMenuSeparator className="bg-zinc-700" />
+            <div className="px-2 py-2 text-xs text-zinc-500">
+              Powered by <span className="text-teal-400">{config.companyName}</span>
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -169,8 +168,8 @@ export function ChatHeader({
           onClick={onClose}
           className={cn(
             "p-2.5 rounded-xl",
-            "text-muted-foreground hover:text-foreground",
-            "hover:bg-white/5 active:bg-white/10",
+            "text-zinc-400 hover:text-white",
+            "hover:bg-zinc-700/50 active:bg-zinc-700",
             "transition-all duration-200"
           )}
           title="Закрыть"
