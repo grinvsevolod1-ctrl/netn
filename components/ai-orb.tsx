@@ -267,38 +267,49 @@ export function AIOrbCanvas({
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-background">
           <div
             className={cn(
-              "flex flex-col items-center gap-6 transition-all duration-500",
+              "flex flex-col items-center gap-8 transition-all duration-500",
               isTransitioning && "opacity-0 scale-95 translate-y-4"
             )}
           >
-            {/* Orb with progress ring */}
+            {/* Large Siri Orb */}
             <div className="relative">
-              {/* SVG circular progress */}
+              {/* Ambient glow behind orb */}
+              <div 
+                className="absolute inset-[-40px] rounded-full opacity-60"
+                style={{
+                  background: "radial-gradient(circle, rgba(79,209,197,0.3) 0%, rgba(99,179,237,0.15) 40%, transparent 70%)",
+                  filter: "blur(20px)",
+                }}
+              />
+              
+              <SiriOrb size={140} isHovered={true} />
+              
+              {/* Subtle progress ring */}
               <svg
-                className="absolute -inset-1 -rotate-90"
-                viewBox="0 0 96 96"
-                style={{ width: 96, height: 96 }}
+                className="absolute inset-[-8px] -rotate-90 pointer-events-none"
+                viewBox="0 0 156 156"
+                style={{ width: 156, height: 156 }}
               >
                 <circle
-                  cx="48"
-                  cy="48"
-                  r="46"
+                  cx="78"
+                  cy="78"
+                  r="76"
                   fill="none"
-                  stroke="var(--border)"
-                  strokeWidth="1.5"
-                  opacity="0.3"
+                  stroke="rgba(79,209,197,0.1)"
+                  strokeWidth="1"
                 />
                 <circle
-                  cx="48"
-                  cy="48"
-                  r="46"
+                  cx="78"
+                  cy="78"
+                  r="76"
                   fill="none"
                   stroke="url(#progressGradient)"
                   strokeWidth="2"
                   strokeLinecap="round"
-                  strokeDasharray={`${2 * Math.PI * 46}`}
-                  strokeDashoffset={`${2 * Math.PI * 46 * (1 - progressClamped / 100)}`}
+                  strokeDasharray={`${2 * Math.PI * 76}`}
+                  strokeDashoffset={`${2 * Math.PI * 76 * (1 - progressClamped / 100)}`}
                   className="transition-[stroke-dashoffset] duration-300 ease-out"
+                  opacity="0.8"
                 />
                 <defs>
                   <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -307,36 +318,21 @@ export function AIOrbCanvas({
                   </linearGradient>
                 </defs>
               </svg>
-              
-              <div className="p-4">
-                <SiriOrb size={80} isHovered={false} />
-              </div>
             </div>
 
             {/* Brand */}
             <div className="flex items-center gap-2.5">
-              <span className="font-mono text-base md:text-lg tracking-wide">
-                <span className="text-muted-foreground/50">{"<"}</span>
+              <span className="font-mono text-lg md:text-xl tracking-wide">
+                <span className="text-muted-foreground/40">{"<"}</span>
                 <span className="text-foreground font-semibold">NetNext</span>
-                <span className="text-muted-foreground/50">{" />"}</span>
+                <span className="text-muted-foreground/40">{" />"}</span>
               </span>
             </div>
 
-            {/* Minimal progress */}
-            <div className="flex items-center gap-3 text-muted-foreground/60">
-              <span className="font-mono text-xs tabular-nums w-8 text-right">
-                {progressClamped}%
-              </span>
-              <div className="w-32 h-[3px] bg-border/30 rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full transition-all duration-300 ease-out"
-                  style={{
-                    width: `${progressClamped}%`,
-                    background: "linear-gradient(90deg, #4fd1c5, #63b3ed)",
-                  }}
-                />
-              </div>
-            </div>
+            {/* Minimal progress text */}
+            <span className="font-mono text-xs text-muted-foreground/50 tabular-nums">
+              {progressClamped}%
+            </span>
           </div>
         </div>
       )}
