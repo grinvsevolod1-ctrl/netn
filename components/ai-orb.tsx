@@ -24,7 +24,7 @@ const COLORS = [
   { r: 56, g: 178, b: 172 },   // dark teal
 ]
 
-function SiriOrb({ 
+export function SiriOrb({ 
   size = 56, 
   isHovered = false,
   isActive = false,

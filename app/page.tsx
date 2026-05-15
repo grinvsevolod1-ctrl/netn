@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback, lazy, Suspense } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { SidebarNav } from "@/components/sidebar-nav"
 import { CookieConsent } from "@/components/cookie-consent"
 import { HeroSection } from "@/components/sections/hero-section"
@@ -13,9 +13,7 @@ import { ContactSection } from "@/components/sections/contact-section"
 import { Footer } from "@/components/footer"
 import { FloatingCTA } from "@/components/floating-cta"
 import { AIOrbCanvas } from "@/components/ai-orb"
-
-// Lazy-load only the heavy chat component
-const AIChat = lazy(() => import("@/components/ai-chat/index"))
+import { Chat } from "@/components/chat"
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -83,13 +81,27 @@ export default function Home() {
         isChatOpen={isChatOpen}
       />
 
-      <Suspense fallback={null}>
-        <AIChat
-          isOpen={isChatOpen}
-          onClose={() => setIsChatOpen(false)}
-          onNavigate={handleNavigate}
-        />
-      </Suspense>
+      <Chat
+        isOpen={isChatOpen}
+        onOpenChange={setIsChatOpen}
+        config={{
+          companyName: 'NetNext',
+          assistantName: 'AI Ассистент',
+          welcomeMessage: 'Привет! Я AI-ассистент NetNext. Чем могу помочь?',
+          apiEndpoint: '/api/chat/ai',
+          quickActions: [
+            { id: '1', label: 'Узнать об услугах', action: 'custom', icon: 'MessageSquare' },
+            { id: '2', label: 'Записаться на консультацию', action: 'consultation', icon: 'Calendar' },
+            { id: '3', label: 'Связаться с оператором', action: 'operator', icon: 'Headphones' },
+          ]
+        }}
+        displayConfig={{
+          mode: 'modal',
+          modalSize: 'lg',
+          position: 'center',
+          mobileFullscreen: true,
+        }}
+      />
 
       {showContent && (
         <SidebarNav activeSection={activeSection} onNavigate={handleNavigate} />

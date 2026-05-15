@@ -5,16 +5,19 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Copy, Check, Eye, Code, Terminal, MessageSquare } from "lucide-react"
+import { Copy, Check, Eye, Code, Terminal, MessageSquare, Maximize2, Minimize2, Monitor } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export default function WidgetSettingsPage() {
   const [config, setConfig] = useState({
     clientId: "netnext",
-    color: "#00ffff",
+    color: "#4fd1c5",
     position: "bottom-right",
     greeting: "Привет! Чем могу помочь?",
     botName: "Nexik AI",
+    // New display options
+    displayMode: "modal" as "modal" | "mini",
+    modalSize: "lg" as "sm" | "md" | "lg" | "xl",
   })
   const [copied, setCopied] = useState(false)
   const [activeTab, setActiveTab] = useState<"html" | "react" | "api">("html")
@@ -29,6 +32,8 @@ export default function WidgetSettingsPage() {
   data-position="${config.position}"
   data-greeting="${config.greeting}"
   data-bot-name="${config.botName}"
+  data-display-mode="${config.displayMode}"
+  data-modal-size="${config.modalSize}"
   async
 ></script>`
 
@@ -45,6 +50,8 @@ export default function Layout({ children }) {
         data-position="${config.position}"
         data-greeting="${config.greeting}"
         data-bot-name="${config.botName}"
+        data-display-mode="${config.displayMode}"
+        data-modal-size="${config.modalSize}"
         strategy="lazyOnload"
       />
     </>
@@ -56,6 +63,13 @@ export default function Layout({ children }) {
     await navigator.clipboard.writeText(code)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  const modalSizePercent = {
+    sm: "50%",
+    md: "60%",
+    lg: "70%",
+    xl: "80%",
   }
 
   return (
@@ -139,8 +153,66 @@ export default function Layout({ children }) {
               </div>
             </div>
 
+            {/* Display Mode - NEW */}
             <div className="space-y-2">
-              <Label className="text-sm text-muted-foreground">Позиция на экране</Label>
+              <Label className="text-sm text-muted-foreground">Режим отображения</Label>
+              <div className="flex gap-2">
+                <Button
+                  variant={config.displayMode === "modal" ? "default" : "outline"}
+                  onClick={() => setConfig({ ...config, displayMode: "modal" })}
+                  className={cn(
+                    "flex-1 gap-2",
+                    config.displayMode !== "modal" && "bg-transparent"
+                  )}
+                >
+                  <Maximize2 className="w-4 h-4" />
+                  Модальное окно
+                </Button>
+                <Button
+                  variant={config.displayMode === "mini" ? "default" : "outline"}
+                  onClick={() => setConfig({ ...config, displayMode: "mini" })}
+                  className={cn(
+                    "flex-1 gap-2",
+                    config.displayMode !== "mini" && "bg-transparent"
+                  )}
+                >
+                  <Minimize2 className="w-4 h-4" />
+                  Мини-чат
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {config.displayMode === "modal" 
+                  ? "Чат открывается на большую часть экрана" 
+                  : "Компактный чат в углу экрана"
+                }
+              </p>
+            </div>
+
+            {/* Modal Size - Only show when modal mode */}
+            {config.displayMode === "modal" && (
+              <div className="space-y-2">
+                <Label className="text-sm text-muted-foreground">Размер окна</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {(["sm", "md", "lg", "xl"] as const).map((size) => (
+                    <Button
+                      key={size}
+                      variant={config.modalSize === size ? "default" : "outline"}
+                      onClick={() => setConfig({ ...config, modalSize: size })}
+                      className={cn(
+                        "flex-col py-3 h-auto gap-1",
+                        config.modalSize !== size && "bg-transparent"
+                      )}
+                    >
+                      <Monitor className="w-4 h-4" />
+                      <span className="text-xs">{modalSizePercent[size]}</span>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-2">
+              <Label className="text-sm text-muted-foreground">Позиция кнопки</Label>
               <div className="flex gap-2">
                 <Button
                   variant={config.position === "bottom-right" ? "default" : "outline"}
@@ -242,6 +314,8 @@ export default function Layout({ children }) {
                   { code: "Nexik.open()", desc: "Открыть чат программно" },
                   { code: "Nexik.close()", desc: "Закрыть чат" },
                   { code: "Nexik.toggle()", desc: "Переключить состояние" },
+                  { code: "Nexik.setMode('modal')", desc: "Переключить в модальный режим" },
+                  { code: "Nexik.setMode('mini')", desc: "Переключить в мини-режим" },
                 ].map((item) => (
                   <div key={item.code} className="p-4 rounded-xl bg-secondary/30 border border-border">
                     <code className="text-primary font-mono">{item.code}</code>
@@ -268,14 +342,17 @@ export default function Layout({ children }) {
         <div className="p-6 border-b border-border">
           <h2 className="text-lg font-semibold">Предпросмотр</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Так будет выглядеть кнопка чата на вашем сайте
+            {config.displayMode === "modal" 
+              ? "При клике чат откроется на " + modalSizePercent[config.modalSize] + " экрана"
+              : "Компактный чат в углу экрана"
+            }
           </p>
         </div>
         <div className="p-6">
           <div 
-            className="relative h-40 rounded-xl overflow-hidden"
+            className="relative h-64 rounded-xl overflow-hidden"
             style={{
-              background: "linear-gradient(135deg, rgba(0, 255, 255, 0.05) 0%, rgba(255, 0, 170, 0.05) 100%)",
+              background: "linear-gradient(135deg, rgba(79, 209, 197, 0.05) 0%, rgba(99, 179, 237, 0.05) 100%)",
             }}
           >
             {/* Grid pattern */}
@@ -290,6 +367,69 @@ export default function Layout({ children }) {
               }}
             />
             
+            {/* Modal preview */}
+            {config.displayMode === "modal" && (
+              <div className="absolute inset-4 flex items-center justify-center">
+                <div 
+                  className="bg-background/95 rounded-lg border border-border shadow-xl flex flex-col"
+                  style={{ 
+                    width: modalSizePercent[config.modalSize],
+                    height: "80%",
+                  }}
+                >
+                  <div 
+                    className="h-12 rounded-t-lg flex items-center px-4 gap-3"
+                    style={{ backgroundColor: config.color + "20" }}
+                  >
+                    <div 
+                      className="w-8 h-8 rounded-full"
+                      style={{ 
+                        background: `linear-gradient(135deg, ${config.color}, ${config.color}80)`,
+                      }}
+                    />
+                    <div>
+                      <div className="text-sm font-medium">{config.botName}</div>
+                      <div className="text-xs text-muted-foreground">Онлайн</div>
+                    </div>
+                  </div>
+                  <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">
+                    Область чата
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Mini chat preview */}
+            {config.displayMode === "mini" && (
+              <div
+                className="absolute bg-background/95 rounded-lg border border-border shadow-xl w-80 h-96"
+                style={{
+                  bottom: "60px",
+                  [config.position === "bottom-left" ? "left" : "right"]: "16px",
+                }}
+              >
+                <div 
+                  className="h-12 rounded-t-lg flex items-center px-4 gap-3"
+                  style={{ backgroundColor: config.color + "20" }}
+                >
+                  <div 
+                    className="w-8 h-8 rounded-full"
+                    style={{ 
+                      background: `linear-gradient(135deg, ${config.color}, ${config.color}80)`,
+                    }}
+                  />
+                  <div>
+                    <div className="text-sm font-medium">{config.botName}</div>
+                    <div className="text-xs text-muted-foreground">Онлайн</div>
+                  </div>
+                </div>
+                <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm h-40">
+                  Область чата
+                </div>
+              </div>
+            )}
+
+            {/* Chat button */}
             <div
               className="absolute bottom-4"
               style={{
