@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useCallback, KeyboardEvent } from 'react'
-import { Send, Paperclip, Mic } from 'lucide-react'
+import { Send, Paperclip, Smile, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ChatConfig } from './types'
 
@@ -22,7 +22,6 @@ export function ChatInput({ config, onSend, disabled, className }: ChatInputProp
     onSend(value.trim())
     setValue('')
     
-    // Reset textarea height
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto'
     }
@@ -43,30 +42,48 @@ export function ChatInput({ config, onSend, disabled, className }: ChatInputProp
     }
   }
 
+  const hasContent = value.trim().length > 0
+
   return (
-    <div className={cn("p-3 border-t border-border/50", className)}>
-      {/* Input container with gradient border on focus */}
+    <div className={cn("relative px-4 pb-4 pt-2", className)}>
+      {/* Gradient border effect container */}
       <div 
         className={cn(
           "relative rounded-2xl transition-all duration-300",
-          isFocused && "ring-2 ring-primary/20"
+          isFocused && "shadow-[0_0_30px_-10px_rgba(79,209,197,0.3)]"
         )}
       >
-        {/* Gradient border effect */}
+        {/* Animated gradient border */}
         <div 
           className={cn(
-            "absolute -inset-[1px] rounded-2xl opacity-0 transition-opacity duration-300",
-            "bg-gradient-to-r from-primary via-primary/50 to-primary",
+            "absolute -inset-px rounded-2xl transition-opacity duration-300",
+            "bg-gradient-to-r from-primary/50 via-primary to-primary/50",
+            "opacity-0",
             isFocused && "opacity-100"
           )}
+          style={{
+            backgroundSize: '200% 100%',
+            animation: isFocused ? 'gradient-shift 3s ease infinite' : 'none',
+          }}
         />
         
         {/* Inner container */}
-        <div className="relative flex items-end gap-2 p-2 bg-accent/30 rounded-2xl">
+        <div className={cn(
+          "relative flex items-end gap-2 p-3 rounded-2xl",
+          "bg-white/5 backdrop-blur-sm",
+          "border border-white/10",
+          isFocused && "border-transparent"
+        )}>
           {/* Attachment button */}
           <button
             type="button"
-            className="flex-shrink-0 p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-accent transition-colors disabled:opacity-50"
+            className={cn(
+              "flex-shrink-0 p-2 rounded-xl",
+              "text-muted-foreground hover:text-foreground",
+              "hover:bg-white/10 active:bg-white/15",
+              "transition-all duration-200",
+              "disabled:opacity-40 disabled:pointer-events-none"
+            )}
             disabled={disabled}
             title="Прикрепить файл"
           >
@@ -74,58 +91,88 @@ export function ChatInput({ config, onSend, disabled, className }: ChatInputProp
           </button>
 
           {/* Text input */}
-          <textarea
-            ref={textareaRef}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            onInput={handleInput}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            placeholder={config.placeholder || 'Напишите сообщение...'}
-            disabled={disabled}
-            rows={1}
-            className={cn(
-              "flex-1 bg-transparent resize-none outline-none",
-              "text-sm text-foreground placeholder:text-muted-foreground/60",
-              "max-h-[120px] py-2 px-1",
-              "disabled:opacity-50 disabled:cursor-not-allowed"
-            )}
-          />
+          <div className="flex-1 relative">
+            <textarea
+              ref={textareaRef}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              onInput={handleInput}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              placeholder={config.placeholder || 'Напишите сообщение...'}
+              disabled={disabled}
+              rows={1}
+              className={cn(
+                "w-full bg-transparent resize-none outline-none",
+                "text-sm text-foreground placeholder:text-muted-foreground/50",
+                "max-h-[120px] py-2 pr-2",
+                "disabled:opacity-50 disabled:cursor-not-allowed"
+              )}
+            />
+          </div>
 
-          {/* Voice input button */}
+          {/* Emoji button */}
           <button
             type="button"
-            className="flex-shrink-0 p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-accent transition-colors disabled:opacity-50"
+            className={cn(
+              "flex-shrink-0 p-2 rounded-xl",
+              "text-muted-foreground hover:text-foreground",
+              "hover:bg-white/10 active:bg-white/15",
+              "transition-all duration-200",
+              "disabled:opacity-40 disabled:pointer-events-none"
+            )}
             disabled={disabled}
-            title="Голосовой ввод"
+            title="Эмодзи"
           >
-            <Mic className="w-5 h-5" />
+            <Smile className="w-5 h-5" />
           </button>
 
           {/* Send button */}
           <button
             type="button"
             onClick={handleSend}
-            disabled={!value.trim() || disabled}
+            disabled={!hasContent || disabled}
             className={cn(
-              "flex-shrink-0 p-2.5 rounded-xl transition-all duration-200",
-              "disabled:opacity-30 disabled:cursor-not-allowed",
-              value.trim() 
-                ? "bg-primary text-primary-foreground hover:bg-primary/90 scale-100" 
-                : "bg-accent text-muted-foreground scale-95"
+              "flex-shrink-0 p-2.5 rounded-xl",
+              "transition-all duration-300",
+              "disabled:opacity-30 disabled:cursor-not-allowed disabled:scale-95",
+              hasContent ? [
+                "bg-gradient-to-r from-primary to-primary/80",
+                "text-primary-foreground",
+                "shadow-lg shadow-primary/25",
+                "hover:shadow-xl hover:shadow-primary/30",
+                "hover:scale-105 active:scale-95",
+              ] : [
+                "bg-white/5",
+                "text-muted-foreground/50",
+              ]
             )}
             title="Отправить"
           >
-            <Send className="w-5 h-5" />
+            <Send className={cn(
+              "w-5 h-5 transition-transform duration-300",
+              hasContent && "-rotate-45"
+            )} />
           </button>
         </div>
       </div>
 
-      {/* Hint */}
-      <p className="text-[10px] text-muted-foreground/50 text-center mt-2">
-        Enter - отправить, Shift+Enter - новая строка
-      </p>
+      {/* AI hint */}
+      <div className="flex items-center justify-center gap-2 mt-3">
+        <Sparkles className="w-3 h-3 text-primary/40" />
+        <p className="text-[10px] text-muted-foreground/40">
+          AI-ассистент от {config.companyName}
+        </p>
+      </div>
+
+      {/* Gradient animation keyframes */}
+      <style jsx>{`
+        @keyframes gradient-shift {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+      `}</style>
     </div>
   )
 }

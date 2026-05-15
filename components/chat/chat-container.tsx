@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
 import { ChatDisplayConfig } from './types'
 
@@ -20,38 +20,56 @@ export function ChatContainer({
   className,
 }: ChatContainerProps) {
   const { mode, modalSize, position, mobileFullscreen } = displayConfig
+  const containerRef = useRef<HTMLDivElement>(null)
 
   // Lock body scroll when modal is open
   useEffect(() => {
     if (isOpen && mode === 'modal') {
-      document.body.style.overflow = 'hidden'
+      const scrollY = window.scrollY
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollY}px`
+      document.body.style.width = '100%'
       return () => {
-        document.body.style.overflow = ''
+        document.body.style.position = ''
+        document.body.style.top = ''
+        document.body.style.width = ''
+        window.scrollTo(0, scrollY)
       }
     }
   }, [isOpen, mode])
+
+  // Escape key handler
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose()
+      }
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [isOpen, onClose])
 
   if (!isOpen) return null
 
   // Get size classes for modal
   const getSizeClasses = () => {
     switch (modalSize) {
-      case 'sm': return 'max-w-[50vw] max-h-[60vh]'
-      case 'md': return 'max-w-[60vw] max-h-[70vh]'
-      case 'lg': return 'max-w-[70vw] max-h-[80vh]'
-      case 'xl': return 'max-w-[80vw] max-h-[85vh]'
-      default: return 'max-w-[70vw] max-h-[80vh]'
+      case 'sm': return 'w-[min(500px,95vw)] h-[min(550px,85vh)]'
+      case 'md': return 'w-[min(600px,95vw)] h-[min(650px,85vh)]'
+      case 'lg': return 'w-[min(700px,95vw)] h-[min(750px,90vh)]'
+      case 'xl': return 'w-[min(900px,95vw)] h-[min(850px,92vh)]'
+      default: return 'w-[min(700px,95vw)] h-[min(750px,90vh)]'
     }
   }
 
   // Get position classes for mini mode
   const getPositionClasses = () => {
     switch (position) {
-      case 'bottom-right': return 'bottom-4 right-4'
-      case 'bottom-left': return 'bottom-4 left-4'
-      case 'top-right': return 'top-4 right-4'
-      case 'top-left': return 'top-4 left-4'
-      default: return 'bottom-4 right-4'
+      case 'bottom-right': return 'bottom-6 right-6'
+      case 'bottom-left': return 'bottom-6 left-6'
+      case 'top-right': return 'top-6 right-6'
+      case 'top-left': return 'top-6 left-6'
+      default: return 'bottom-6 right-6'
     }
   }
 
@@ -59,32 +77,42 @@ export function ChatContainer({
   if (mode === 'modal') {
     return (
       <>
-        {/* Backdrop */}
+        {/* Backdrop with blur */}
         <div 
-          className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200"
+          className={cn(
+            "fixed inset-0 z-[100]",
+            "bg-black/60 backdrop-blur-md",
+            "animate-in fade-in duration-200"
+          )}
           onClick={onClose}
+          aria-hidden="true"
         />
         
         {/* Modal container */}
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+        <div 
+          className="fixed inset-0 z-[101] flex items-center justify-center p-4 pointer-events-none"
+        >
           <div
+            ref={containerRef}
+            role="dialog"
+            aria-modal="true"
             className={cn(
-              "relative w-full h-full pointer-events-auto",
-              "flex flex-col bg-background rounded-2xl",
-              "border border-border/50 shadow-2xl shadow-primary/5",
-              "animate-in fade-in zoom-in-95 duration-300",
-              // Mobile: fullscreen
-              mobileFullscreen && "md:rounded-2xl md:h-auto",
-              mobileFullscreen ? "max-md:rounded-none max-md:max-w-full max-md:max-h-full" : "",
-              // Desktop: sized
-              !mobileFullscreen || "md:w-auto md:h-auto",
+              "pointer-events-auto",
+              "flex flex-col overflow-hidden",
+              // Glassmorphism effect
+              "bg-background/95 backdrop-blur-xl",
+              "border border-white/10",
+              "rounded-3xl",
+              // Shadow
+              "shadow-[0_0_80px_-20px_rgba(79,209,197,0.3)]",
+              // Animation
+              "animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-300",
+              // Sizing
               getSizeClasses(),
+              // Mobile fullscreen
+              mobileFullscreen && "max-md:!w-full max-md:!h-full max-md:!rounded-none max-md:!max-w-none max-md:!max-h-none",
               className
             )}
-            style={{
-              minWidth: '320px',
-              minHeight: '400px',
-            }}
           >
             {children}
           </div>
@@ -97,15 +125,24 @@ export function ChatContainer({
   if (mode === 'mini') {
     return (
       <div
+        ref={containerRef}
+        role="dialog"
         className={cn(
-          "fixed z-50",
-          "w-[360px] h-[500px]",
-          "flex flex-col bg-background rounded-2xl",
-          "border border-border/50 shadow-2xl shadow-primary/5",
-          "animate-in fade-in slide-in-from-bottom-4 duration-300",
+          "fixed z-[100]",
+          "w-[380px] h-[560px]",
+          "flex flex-col overflow-hidden",
+          // Glassmorphism
+          "bg-background/95 backdrop-blur-xl",
+          "border border-white/10",
+          "rounded-2xl",
+          // Shadow
+          "shadow-[0_0_60px_-15px_rgba(79,209,197,0.25)]",
+          // Animation
+          "animate-in fade-in slide-in-from-bottom-6 duration-300",
+          // Position
           getPositionClasses(),
-          // Mobile: wider
-          "max-md:w-[calc(100%-2rem)] max-md:left-4 max-md:right-4 max-md:bottom-4",
+          // Mobile
+          "max-md:w-[calc(100%-2rem)] max-md:h-[70vh] max-md:left-4 max-md:right-4 max-md:bottom-4",
           className
         )}
       >
@@ -114,12 +151,14 @@ export function ChatContainer({
     )
   }
 
-  // Inline mode - just render children
+  // Inline mode
   return (
     <div 
+      ref={containerRef}
       className={cn(
-        "flex flex-col bg-background rounded-2xl",
-        "border border-border/50",
+        "flex flex-col overflow-hidden",
+        "bg-background/95 backdrop-blur-xl",
+        "border border-white/10 rounded-2xl",
         className
       )}
     >

@@ -5,6 +5,7 @@ export interface ChatMessage {
   timestamp: Date
   isTyping?: boolean
   actions?: ChatAction[]
+  status?: 'sending' | 'sent' | 'delivered' | 'read' | 'error'
 }
 
 export interface ChatAction {
@@ -21,6 +22,7 @@ export interface ChatConfig {
   assistantName: string
   assistantAvatar?: string
   primaryColor?: string
+  userName?: string
   
   // Behavior
   welcomeMessage: string

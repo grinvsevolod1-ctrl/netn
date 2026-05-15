@@ -70,6 +70,7 @@ export function useChat(options: UseChatOptions) {
       role: 'user',
       content: content.trim(),
       timestamp: new Date(),
+      status: 'sent',
     }
     
     setMessages(prev => [...prev, userMessage])
@@ -108,9 +109,10 @@ export function useChat(options: UseChatOptions) {
       const assistantMessage: ChatMessage = {
         id: generateId(),
         role: 'assistant',
-        content: data.response || data.message || 'Извините, произошла ошибка.',
+        content: data.text || data.response || data.message || 'Извините, произошла ошибка.',
         timestamp: new Date(),
-        actions: data.suggestedActions,
+        actions: data.buttons || data.suggestedActions,
+        status: 'delivered',
       }
       
       setMessages(prev => [...prev, assistantMessage])

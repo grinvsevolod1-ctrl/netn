@@ -29,7 +29,10 @@ export function ChatMessages({
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const timer = setTimeout(() => {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, 100)
+    return () => clearTimeout(timer)
   }, [messages, isTyping])
 
   // Show welcome screen if no messages
@@ -50,12 +53,25 @@ export function ChatMessages({
       ref={containerRef}
       className={cn(
         "flex-1 overflow-y-auto overflow-x-hidden",
-        "scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border/50",
+        // Custom scrollbar
+        "scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10",
+        "hover:scrollbar-thumb-white/20",
         className
       )}
     >
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 1px)`,
+            backgroundSize: '24px 24px',
+          }}
+        />
+      </div>
+
       {/* Messages */}
-      <div className="py-4">
+      <div className="relative py-4">
         {messages.map((message, index) => (
           <ChatMessage
             key={message.id}
@@ -69,7 +85,7 @@ export function ChatMessages({
         {isTyping && <ChatTyping />}
 
         {/* Scroll anchor */}
-        <div ref={bottomRef} />
+        <div ref={bottomRef} className="h-1" />
       </div>
     </div>
   )

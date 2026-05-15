@@ -11,23 +11,41 @@ export function ChatTyping({ className }: ChatTypingProps) {
   return (
     <div
       className={cn(
-        "flex items-center gap-3 px-4 py-3 animate-in fade-in slide-in-from-left-2 duration-300",
+        "flex items-center gap-3 px-5 py-3",
+        "animate-in fade-in slide-in-from-left-4 duration-300",
         className
       )}
     >
-      {/* Mini orb as typing indicator */}
-      <div className="flex-shrink-0">
+      {/* Mini orb with glow */}
+      <div className="relative flex-shrink-0">
+        <div 
+          className="absolute inset-[-6px] rounded-full opacity-50 blur-md animate-pulse"
+          style={{ background: 'radial-gradient(circle, rgba(79,209,197,0.4) 0%, transparent 70%)' }}
+        />
         <SiriOrb size={32} isHovered={true} isActive={true} />
       </div>
 
-      {/* Typing text */}
-      <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-        <span>Печатает</span>
-        <span className="flex gap-0.5">
-          <span className="w-1 h-1 rounded-full bg-current animate-bounce [animation-delay:0ms]" />
-          <span className="w-1 h-1 rounded-full bg-current animate-bounce [animation-delay:150ms]" />
-          <span className="w-1 h-1 rounded-full bg-current animate-bounce [animation-delay:300ms]" />
-        </span>
+      {/* Typing indicator bubble */}
+      <div className={cn(
+        "flex items-center gap-2 px-4 py-3 rounded-2xl rounded-bl-md",
+        "bg-white/5 border border-white/10"
+      )}>
+        <span className="text-sm text-muted-foreground">Печатает</span>
+        <div className="flex gap-1">
+          {[0, 1, 2].map((i) => (
+            <span 
+              key={i}
+              className={cn(
+                "w-1.5 h-1.5 rounded-full bg-primary",
+                "animate-bounce"
+              )}
+              style={{ 
+                animationDelay: `${i * 150}ms`,
+                animationDuration: '0.6s'
+              }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   )

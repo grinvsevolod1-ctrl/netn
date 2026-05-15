@@ -1,6 +1,6 @@
 "use client"
 
-import { MessageSquare, Calendar, Phone, Headphones } from 'lucide-react'
+import { MessageSquare, Calendar, Headphones, ArrowRight, Sparkles, Zap } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { SiriOrb } from '@/components/ai-orb'
 import { ChatConfig, ChatAction } from './types'
@@ -21,52 +21,62 @@ const defaultQuickActions: ChatAction[] = [
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   MessageSquare,
   Calendar,
-  Phone,
   Headphones,
+  Zap,
 }
 
-export function ChatWelcome({ config, onQuickAction, onSendMessage, className }: ChatWelcomeProps) {
+export function ChatWelcome({ config, onQuickAction, className }: ChatWelcomeProps) {
   const quickActions = config.quickActions || defaultQuickActions
 
   const handleAction = (action: ChatAction) => {
     if (onQuickAction) {
       onQuickAction(action)
     }
-    
-    // Also send as message for context
-    if (onSendMessage && action.label) {
-      onSendMessage(action.label)
-    }
   }
 
   return (
     <div 
       className={cn(
-        "flex flex-col items-center justify-center flex-1 p-6 text-center",
+        "flex flex-col items-center justify-center flex-1 p-6",
         "animate-in fade-in duration-500",
         className
       )}
     >
-      {/* Animated orb */}
-      <div className="mb-6">
-        <SiriOrb size={80} isHovered={false} />
+      {/* Orb with glow */}
+      <div className="relative mb-8">
+        {/* Ambient glow */}
+        <div 
+          className="absolute inset-[-30px] rounded-full opacity-50 blur-2xl"
+          style={{ 
+            background: 'radial-gradient(circle, rgba(79,209,197,0.3) 0%, transparent 70%)' 
+          }}
+        />
+        <SiriOrb size={100} isHovered={true} />
       </div>
 
-      {/* Welcome text */}
-      <h3 className="text-lg font-semibold text-foreground mb-2">
-        {config.assistantName}
-      </h3>
-      <p className="text-sm text-muted-foreground max-w-[280px] mb-8">
-        {config.welcomeMessage}
-      </p>
+      {/* Welcome content */}
+      <div className="text-center mb-8">
+        <div className="flex items-center justify-center gap-2 mb-3">
+          <h3 className="text-xl font-semibold text-foreground">
+            {config.assistantName}
+          </h3>
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20">
+            <Sparkles className="w-3 h-3 text-primary" />
+            <span className="text-[10px] font-semibold text-primary uppercase tracking-wide">AI</span>
+          </div>
+        </div>
+        <p className="text-sm text-muted-foreground max-w-[300px] leading-relaxed">
+          {config.welcomeMessage}
+        </p>
+      </div>
 
-      {/* Quick action cards */}
-      <div className="w-full max-w-[320px] space-y-2">
-        <p className="text-xs text-muted-foreground/70 mb-3">
+      {/* Quick actions */}
+      <div className="w-full max-w-[340px] space-y-3">
+        <p className="text-[10px] font-medium text-muted-foreground/50 uppercase tracking-wider text-center mb-4">
           Быстрые действия
         </p>
         
-        {quickActions.map((action) => {
+        {quickActions.map((action, index) => {
           const Icon = action.icon ? iconMap[action.icon] : MessageSquare
           
           return (
@@ -74,32 +84,52 @@ export function ChatWelcome({ config, onQuickAction, onSendMessage, className }:
               key={action.id}
               onClick={() => handleAction(action)}
               className={cn(
-                "w-full flex items-center gap-3 p-3 rounded-xl",
-                "bg-accent/30 hover:bg-accent/50 border border-border/50",
-                "text-left transition-all duration-200",
-                "hover:scale-[1.02] hover:shadow-lg hover:shadow-primary/5",
-                "group"
+                "group w-full flex items-center gap-4 p-4 rounded-2xl",
+                "bg-white/5 hover:bg-white/10",
+                "border border-white/5 hover:border-primary/20",
+                "text-left transition-all duration-300",
+                "hover:shadow-lg hover:shadow-primary/5",
+                "hover:translate-x-1",
+                "animate-in fade-in slide-in-from-bottom-2",
               )}
+              style={{ animationDelay: `${index * 100}ms` }}
             >
+              {/* Icon container */}
               <div className={cn(
-                "flex-shrink-0 w-10 h-10 rounded-lg",
-                "bg-primary/10 group-hover:bg-primary/20",
-                "flex items-center justify-center transition-colors"
+                "flex-shrink-0 w-11 h-11 rounded-xl",
+                "bg-gradient-to-br from-primary/20 to-primary/5",
+                "border border-primary/10",
+                "flex items-center justify-center",
+                "group-hover:from-primary/30 group-hover:to-primary/10",
+                "group-hover:border-primary/20",
+                "transition-all duration-300",
+                "group-hover:shadow-lg group-hover:shadow-primary/20"
               )}>
                 <Icon className="w-5 h-5 text-primary" />
               </div>
-              <span className="text-sm font-medium text-foreground">
+              
+              {/* Label */}
+              <span className="flex-1 text-sm font-medium text-foreground group-hover:text-primary transition-colors">
                 {action.label}
               </span>
+
+              {/* Arrow */}
+              <ArrowRight className={cn(
+                "w-4 h-4 text-muted-foreground/30",
+                "group-hover:text-primary group-hover:translate-x-1",
+                "transition-all duration-300"
+              )} />
             </button>
           )
         })}
       </div>
 
-      {/* Powered by */}
-      <p className="text-[10px] text-muted-foreground/40 mt-8">
-        Powered by {config.companyName}
-      </p>
+      {/* Footer */}
+      <div className="flex items-center gap-2 mt-10 text-muted-foreground/30">
+        <div className="w-8 h-px bg-gradient-to-r from-transparent to-muted-foreground/20" />
+        <span className="text-[10px]">Powered by {config.companyName}</span>
+        <div className="w-8 h-px bg-gradient-to-l from-transparent to-muted-foreground/20" />
+      </div>
     </div>
   )
 }

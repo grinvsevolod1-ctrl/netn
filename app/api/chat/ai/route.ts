@@ -1,12 +1,9 @@
 /**
  * Nexik AI Chat API
- * Endpoint для AI-ответов с поддержкой streaming
+ * Endpoint для AI-ответов с демо-режимом (без БД)
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { generateResponse, streamResponse, type ChatContext } from '@/lib/ai/router'
-import { getSession, createSession, addMessage, getSessionMessages } from '@/lib/db/chat'
-import { findMatchingAutoResponse, incrementAutoResponseUse } from '@/lib/db/auto-responses'
 
 export const runtime = 'nodejs'
 export const maxDuration = 30
@@ -14,95 +11,142 @@ export const maxDuration = 30
 interface AIRequestBody {
   sessionId: string
   message: string
-  // Опциональный контекст от клиента Nexik
   context?: {
     companyName?: string
     companyDescription?: string
-    knowledgeBase?: string
   }
-  // Streaming или обычный ответ
   stream?: boolean
 }
 
-async function getOrCreateSession(sessionId: string) {
-  let session = await getSession(sessionId)
-  if (!session) {
-    session = await createSession(sessionId, 'website')
-  }
-  return session
+// Демо-ответы для разных тем
+const DEMO_RESPONSES: Record<string, string> = {
+  услуги: `Мы предлагаем полный спектр веб-услуг:
+
+**Разработка сайтов**
+- Landing pages и корпоративные сайты
+- Интернет-магазины и маркетплейсы
+- Веб-приложения любой сложности
+
+**Дизайн**
+- UI/UX дизайн
+- Брендинг и айдентика
+- Прототипирование
+
+**Поддержка**
+- Техническая поддержка 24/7
+- SEO-оптимизация
+- Интеграции с внешними сервисами
+
+Хотите узнать подробнее о каком-то направлении?`,
+
+  цена: `Стоимость проекта зависит от его сложности и требований.
+
+**Примерные цены:**
+- Landing page: от $500
+- Корпоративный сайт: от $1,500
+- Интернет-магазин: от $3,000
+- Веб-приложение: от $5,000
+
+Для точной оценки мне нужно узнать:
+1. Тип проекта
+2. Основные функции
+3. Желаемые сроки
+
+Могу записать вас на бесплатную консультацию!`,
+
+  консультация: `Отлично! Я могу записать вас на бесплатную консультацию.
+
+**Как это работает:**
+1. Вы выбираете удобное время
+2. Наш специалист связывается с вами
+3. Обсуждаете проект и получаете оценку
+
+**Для записи мне нужно:**
+- Ваше имя
+- Контактный телефон или email
+- Удобное время для звонка
+
+Готовы оставить контакты?`,
+
+  оператор: `Понял, сейчас подключу оператора!
+
+Пожалуйста, подождите несколько секунд. В среднем время ожидания — 1-2 минуты.
+
+Пока ждёте, можете описать свой вопрос подробнее — оператор сразу увидит эту информацию.`,
+
+  default: `Спасибо за сообщение! Я AI-ассистент компании NetNext.
+
+Я могу помочь вам:
+- Узнать об услугах компании
+- Рассчитать примерную стоимость проекта
+- Записать на консультацию
+- Подключить оператора
+
+Чем могу помочь?`,
 }
+
+// Простой поиск релевантного ответа
+function findResponse(message: string): string {
+  const lowerMessage = message.toLowerCase()
+  
+  if (lowerMessage.includes('услуг') || lowerMessage.includes('делает') || lowerMessage.includes('предлага')) {
+    return DEMO_RESPONSES.услуги
+  }
+  if (lowerMessage.includes('цен') || lowerMessage.includes('стоим') || lowerMessage.includes('скольк')) {
+    return DEMO_RESPONSES.цена
+  }
+  if (lowerMessage.includes('консультац') || lowerMessage.includes('запис') || lowerMessage.includes('встреч')) {
+    return DEMO_RESPONSES.консультация
+  }
+  if (lowerMessage.includes('оператор') || lowerMessage.includes('человек') || lowerMessage.includes('менеджер')) {
+    return DEMO_RESPONSES.оператор
+  }
+  if (lowerMessage.includes('привет') || lowerMessage.includes('здравств') || lowerMessage.includes('добр')) {
+    return 'Привет! Рад вас видеть! Я AI-ассистент NetNext. Чем могу помочь сегодня?'
+  }
+  if (lowerMessage.includes('спасибо') || lowerMessage.includes('благодар')) {
+    return 'Пожалуйста! Рад был помочь. Если возникнут ещё вопросы — обращайтесь!'
+  }
+  
+  return DEMO_RESPONSES.default
+}
+
+// Имитация задержки для реалистичности
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 export async function POST(request: NextRequest) {
   try {
     const body: AIRequestBody = await request.json()
-    const { sessionId, message, context, stream = false } = body
+    const { message, stream = false } = body
 
-    if (!sessionId || !message) {
+    if (!message) {
       return NextResponse.json(
-        { error: 'sessionId and message are required' },
+        { error: 'message is required' },
         { status: 400 }
       )
     }
 
-    // Получаем или создаём сессию
-    const session = await getOrCreateSession(sessionId)
+    // Имитация времени "думания" AI
+    await delay(800 + Math.random() * 700)
 
-    // Проверяем, подключен ли оператор
-    if (session.operator_connected) {
-      // Если оператор подключен — просто сохраняем сообщение, AI не отвечает
-      await addMessage(sessionId, 'user', message)
-      return NextResponse.json({ 
-        operatorMode: true,
-        message: 'Оператор подключен, ожидайте ответ'
-      })
-    }
-
-    // Сохраняем сообщение пользователя
-    await addMessage(sessionId, 'user', message)
-
-    // 1. Сначала проверяем правила автоответов (для точных сценариев)
-    const autoResponse = await findMatchingAutoResponse(message)
-    if (autoResponse) {
-      incrementAutoResponseUse(autoResponse.id).catch(() => {})
-      
-      // Сохраняем ответ бота
-      await addMessage(sessionId, 'bot', autoResponse.response_text)
-      
-      return NextResponse.json({
-        text: autoResponse.response_text,
-        buttons: autoResponse.response_buttons || [],
-        source: 'auto-response',
-        ruleId: autoResponse.id,
-      })
-    }
-
-    // 2. Если автоответ не найден — используем AI
-    // Получаем историю для контекста
-    const history = await getSessionMessages(sessionId, 10)
-    const previousMessages = history
-      .reverse() // От старых к новым
-      .slice(0, -1) // Исключаем текущее сообщение
-      .map(msg => ({
-        role: msg.sender_type === 'user' ? 'user' as const : 'assistant' as const,
-        content: msg.message,
-      }))
-
-    const chatContext: ChatContext = {
-      clientId: 'netnext', // ID для RAG базы знаний
-      companyName: context?.companyName || 'NetNext',
-      companyDescription: context?.companyDescription || 'Веб-студия разработки в Минске',
-      knowledgeBase: context?.knowledgeBase,
-      useRAG: true, // Явно включаем RAG поиск по базе знаний
-      previousMessages,
-      language: 'ru',
-    }
+    const responseText = findResponse(message)
 
     // Streaming ответ
     if (stream) {
-      const result = await streamResponse(message, chatContext)
+      const encoder = new TextEncoder()
+      const words = responseText.split(' ')
       
-      // Возвращаем stream
-      return new Response(result.textStream, {
+      const readable = new ReadableStream({
+        async start(controller) {
+          for (const word of words) {
+            controller.enqueue(encoder.encode(word + ' '))
+            await delay(30 + Math.random() * 20)
+          }
+          controller.close()
+        },
+      })
+
+      return new Response(readable, {
         headers: {
           'Content-Type': 'text/event-stream',
           'Cache-Control': 'no-cache',
@@ -112,16 +156,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Обычный ответ
-    const { text, model } = await generateResponse(message, chatContext)
-
-    // Сохраняем ответ AI
-    await addMessage(sessionId, 'bot', text)
-
     return NextResponse.json({
-      text,
-      source: 'ollama',
-      model,
-      buttons: [], // AI не генерирует кнопки пока
+      text: responseText,
+      source: 'demo',
+      buttons: [],
     })
 
   } catch (error) {
