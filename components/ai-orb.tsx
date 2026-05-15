@@ -1,13 +1,11 @@
 "use client"
 
-import { useRef, useState, useEffect, useId } from "react"
+import { useRef, useState, useEffect, useCallback } from "react"
 import { cn } from "@/lib/utils"
 
 /* ───────────────────────────────────────────────
-   Organic "liquid" orb with SVG turbulence filter.
-   - Subtle bubbling/morphing effect
-   - Loading state: compact card in center of screen
-   - Minimized state: corner button for AI chat
+   Siri-style liquid orb with canvas animation.
+   Smooth morphing blob with gradient colors.
    ─────────────────────────────────────────────── */
 
 interface AIORBProps {
@@ -16,6 +14,205 @@ interface AIORBProps {
   onLoadingComplete: () => void
   onOrbClick: () => void
   isChatOpen: boolean
+}
+
+// Siri-like color palette
+const COLORS = [
+  { r: 79, g: 209, b: 197 },   // teal
+  { r: 99, g: 179, b: 237 },   // blue
+  { r: 129, g: 230, b: 217 },  // mint
+  { r: 56, g: 178, b: 172 },   // dark teal
+]
+
+function SiriOrb({ 
+  size = 56, 
+  isHovered = false,
+  isActive = false,
+}: { 
+  size?: number
+  isHovered?: boolean
+  isActive?: boolean
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const animationRef = useRef<number>(0)
+  const timeRef = useRef(0)
+  
+  const draw = useCallback(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    
+    const dpr = window.devicePixelRatio || 1
+    const width = canvas.width / dpr
+    const height = canvas.height / dpr
+    const centerX = width / 2
+    const centerY = height / 2
+    const baseRadius = Math.min(width, height) * 0.38
+    
+    // Clear
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.save()
+    ctx.scale(dpr, dpr)
+    
+    timeRef.current += isHovered ? 0.025 : 0.015
+    const t = timeRef.current
+    
+    // Amplitude of wobble
+    const wobbleAmp = isHovered ? 6 : 3
+    const wobbleSpeed = isHovered ? 1.5 : 1
+    
+    // Draw multiple layered blobs
+    const layers = [
+      { offset: 0, alpha: 0.15, scale: 1.15, blur: 12 },
+      { offset: 0.5, alpha: 0.25, scale: 1.08, blur: 6 },
+      { offset: 1, alpha: 0.4, scale: 1.0, blur: 2 },
+    ]
+    
+    layers.forEach((layer) => {
+      ctx.save()
+      
+      // Create gradient
+      const gradient = ctx.createRadialGradient(
+        centerX - baseRadius * 0.3, 
+        centerY - baseRadius * 0.3, 
+        0,
+        centerX, 
+        centerY, 
+        baseRadius * layer.scale * 1.2
+      )
+      
+      // Animated color stops
+      const colorIndex = Math.floor((t * 0.3 + layer.offset) % COLORS.length)
+      const nextColorIndex = (colorIndex + 1) % COLORS.length
+      const colorMix = ((t * 0.3 + layer.offset) % 1)
+      
+      const c1 = COLORS[colorIndex]
+      const c2 = COLORS[nextColorIndex]
+      const r = Math.round(c1.r + (c2.r - c1.r) * colorMix)
+      const g = Math.round(c1.g + (c2.g - c1.g) * colorMix)
+      const b = Math.round(c1.b + (c2.b - c1.b) * colorMix)
+      
+      gradient.addColorStop(0, `rgba(255, 255, 255, ${layer.alpha * 1.5})`)
+      gradient.addColorStop(0.3, `rgba(${r}, ${g}, ${b}, ${layer.alpha * 1.2})`)
+      gradient.addColorStop(0.7, `rgba(${r * 0.7}, ${g * 0.8}, ${b * 0.9}, ${layer.alpha})`)
+      gradient.addColorStop(1, `rgba(${r * 0.4}, ${g * 0.5}, ${b * 0.6}, ${layer.alpha * 0.5})`)
+      
+      ctx.filter = `blur(${layer.blur}px)`
+      ctx.fillStyle = gradient
+      
+      // Draw blob shape
+      ctx.beginPath()
+      const points = 64
+      for (let i = 0; i <= points; i++) {
+        const angle = (i / points) * Math.PI * 2
+        
+        // Multiple sine waves for organic movement
+        const wave1 = Math.sin(angle * 3 + t * wobbleSpeed * 2 + layer.offset) * wobbleAmp
+        const wave2 = Math.sin(angle * 5 - t * wobbleSpeed * 1.5 + layer.offset * 2) * wobbleAmp * 0.5
+        const wave3 = Math.cos(angle * 2 + t * wobbleSpeed + layer.offset * 3) * wobbleAmp * 0.7
+        
+        const radius = baseRadius * layer.scale + wave1 + wave2 + wave3
+        
+        const x = centerX + Math.cos(angle) * radius
+        const y = centerY + Math.sin(angle) * radius
+        
+        if (i === 0) {
+          ctx.moveTo(x, y)
+        } else {
+          ctx.lineTo(x, y)
+        }
+      }
+      ctx.closePath()
+      ctx.fill()
+      
+      ctx.restore()
+    })
+    
+    // Inner bright core
+    ctx.save()
+    const coreGradient = ctx.createRadialGradient(
+      centerX - baseRadius * 0.2,
+      centerY - baseRadius * 0.2,
+      0,
+      centerX,
+      centerY,
+      baseRadius * 0.6
+    )
+    coreGradient.addColorStop(0, 'rgba(255, 255, 255, 0.95)')
+    coreGradient.addColorStop(0.4, 'rgba(200, 255, 250, 0.6)')
+    coreGradient.addColorStop(0.8, 'rgba(79, 209, 197, 0.2)')
+    coreGradient.addColorStop(1, 'rgba(79, 209, 197, 0)')
+    
+    ctx.fillStyle = coreGradient
+    ctx.beginPath()
+    ctx.arc(centerX, centerY, baseRadius * 0.55, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.restore()
+    
+    // Highlight reflection
+    ctx.save()
+    const highlightGradient = ctx.createRadialGradient(
+      centerX - baseRadius * 0.35,
+      centerY - baseRadius * 0.35,
+      0,
+      centerX - baseRadius * 0.2,
+      centerY - baseRadius * 0.2,
+      baseRadius * 0.5
+    )
+    highlightGradient.addColorStop(0, 'rgba(255, 255, 255, 0.7)')
+    highlightGradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.1)')
+    highlightGradient.addColorStop(1, 'rgba(255, 255, 255, 0)')
+    
+    ctx.fillStyle = highlightGradient
+    ctx.beginPath()
+    ctx.ellipse(
+      centerX - baseRadius * 0.25,
+      centerY - baseRadius * 0.25,
+      baseRadius * 0.35,
+      baseRadius * 0.25,
+      -Math.PI / 4,
+      0,
+      Math.PI * 2
+    )
+    ctx.fill()
+    ctx.restore()
+    
+    ctx.restore()
+    
+    animationRef.current = requestAnimationFrame(draw)
+  }, [isHovered])
+  
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    
+    const dpr = window.devicePixelRatio || 1
+    canvas.width = size * dpr
+    canvas.height = size * dpr
+    canvas.style.width = `${size}px`
+    canvas.style.height = `${size}px`
+    
+    animationRef.current = requestAnimationFrame(draw)
+    
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+    }
+  }, [size, draw])
+  
+  return (
+    <canvas
+      ref={canvasRef}
+      className={cn(
+        "transition-transform duration-300",
+        isHovered && "scale-110",
+        isActive && "scale-95"
+      )}
+    />
+  )
 }
 
 export function AIOrbCanvas({
@@ -29,26 +226,7 @@ export function AIOrbCanvas({
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const [showHint, setShowHint] = useState(false)
-  const [turbulenceSeed, setTurbulenceSeed] = useState(1)
   const timerRef = useRef<ReturnType<typeof setInterval>>(null)
-  const turbulenceRef = useRef<SVGFETurbulenceElement>(null)
-  const filterId = useId()
-  
-  // Animate turbulence for organic movement
-  useEffect(() => {
-    let animationFrame: number
-    let seed = 1
-    
-    const animate = () => {
-      seed += 0.015
-      if (seed > 100) seed = 1
-      setTurbulenceSeed(seed)
-      animationFrame = requestAnimationFrame(animate)
-    }
-    
-    animationFrame = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(animationFrame)
-  }, [])
 
   // Loading progress
   useEffect(() => {
@@ -84,32 +262,7 @@ export function AIOrbCanvas({
 
   return (
     <>
-      {/* SVG Filter for organic turbulence effect */}
-      <svg className="absolute w-0 h-0" aria-hidden="true">
-        <defs>
-          <filter id={filterId} x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence
-              ref={turbulenceRef}
-              type="fractalNoise"
-              baseFrequency="0.015"
-              numOctaves="2"
-              seed={turbulenceSeed}
-              result="noise"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="noise"
-              scale={isHovered ? 6 : 3}
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-          </filter>
-        </defs>
-      </svg>
-
-      {/* ══════════════════════════════════════════
-          LOADING STATE: compact card, not full screen
-          ══════════════════════════════════════════ */}
+      {/* LOADING STATE */}
       {isLoading && !isMinimized && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-background">
           <div
@@ -118,52 +271,45 @@ export function AIOrbCanvas({
               isTransitioning && "opacity-0 scale-95 translate-y-4"
             )}
           >
-            {/* Compact orb */}
-            <div className="relative w-20 h-20">
-              {/* Outer breathing ring */}
-              <div className="absolute inset-[-8px] rounded-full border border-primary/20 orb-breathe" />
-
+            {/* Orb with progress ring */}
+            <div className="relative">
               {/* SVG circular progress */}
               <svg
                 className="absolute inset-0 w-full h-full -rotate-90"
                 viewBox="0 0 80 80"
+                style={{ width: 80, height: 80 }}
               >
                 <circle
                   cx="40"
                   cy="40"
-                  r="36"
+                  r="38"
                   fill="none"
                   stroke="var(--border)"
-                  strokeWidth="2"
+                  strokeWidth="1.5"
                   opacity="0.3"
                 />
                 <circle
                   cx="40"
                   cy="40"
-                  r="36"
+                  r="38"
                   fill="none"
-                  stroke="var(--primary)"
+                  stroke="url(#progressGradient)"
                   strokeWidth="2"
                   strokeLinecap="round"
-                  strokeDasharray={`${2 * Math.PI * 36}`}
-                  strokeDashoffset={`${2 * Math.PI * 36 * (1 - progressClamped / 100)}`}
+                  strokeDasharray={`${2 * Math.PI * 38}`}
+                  strokeDashoffset={`${2 * Math.PI * 38 * (1 - progressClamped / 100)}`}
                   className="transition-[stroke-dashoffset] duration-300 ease-out"
-                  style={{
-                    filter: `drop-shadow(0 0 6px var(--primary))`,
-                  }}
                 />
+                <defs>
+                  <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#4fd1c5" />
+                    <stop offset="100%" stopColor="#63b3ed" />
+                  </linearGradient>
+                </defs>
               </svg>
-
-              {/* The orb sphere (small) - organic bubbling */}
-              <div 
-                className="absolute inset-[6px] rounded-full overflow-hidden"
-                style={{ filter: `url(#${filterId})` }}
-              >
-                <div className="absolute inset-0 rounded-full orb-base" />
-                <div className="absolute inset-0 rounded-full orb-layer-1 orb-rotate" />
-                <div className="absolute inset-0 rounded-full orb-layer-2 orb-rotate-reverse" />
-                <div className="absolute inset-[20%] rounded-full orb-core orb-pulse" />
-                <div className="absolute inset-0 rounded-full orb-edge" />
+              
+              <div className="p-3">
+                <SiriOrb size={68} isHovered={false} />
               </div>
             </div>
 
@@ -186,8 +332,7 @@ export function AIOrbCanvas({
                   className="h-full rounded-full transition-all duration-300 ease-out"
                   style={{
                     width: `${progressClamped}%`,
-                    background:
-                      "linear-gradient(90deg, var(--primary), var(--accent))",
+                    background: "linear-gradient(90deg, #4fd1c5, #63b3ed)",
                   }}
                 />
               </div>
@@ -196,14 +341,11 @@ export function AIOrbCanvas({
         </div>
       )}
 
-      {/* ══════════════════════════════════════════
-          MINIMIZED STATE: corner AI assistant button
-          ══════════════════════════════════════════ */}
+      {/* MINIMIZED STATE */}
       {isMinimized && (
         <div
           className={cn(
             "fixed z-[60] top-[72px] right-3 md:top-5 md:right-5 select-none cursor-pointer",
-            "w-11 h-11 md:w-14 md:h-14",
             "transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
             isChatOpen && "opacity-0 pointer-events-none md:opacity-100 md:pointer-events-auto"
           )}
@@ -214,39 +356,24 @@ export function AIOrbCanvas({
           {/* Outer glow */}
           <div
             className={cn(
-              "absolute inset-[-10px] rounded-full transition-all duration-500",
+              "absolute inset-[-8px] rounded-full transition-all duration-500",
               isHovered || isChatOpen
-                ? "opacity-100 scale-[1.3]"
-                : "opacity-40 scale-100"
+                ? "opacity-100 scale-[1.2]"
+                : "opacity-50 scale-100"
             )}
             style={{
-              background: "radial-gradient(circle, rgba(79,209,197,0.35) 0%, rgba(56,178,172,0.15) 50%, transparent 70%)",
-              filter: "blur(6px)",
+              background: "radial-gradient(circle, rgba(79,209,197,0.4) 0%, rgba(99,179,237,0.2) 50%, transparent 70%)",
+              filter: "blur(8px)",
             }}
           />
 
-          {/* Breathing ring */}
-          <div className="absolute inset-[-3px] rounded-full border border-primary/25 orb-breathe" />
-
-          {/* Hover ring */}
-          {isHovered && (
-            <div className="absolute inset-[-7px] rounded-full border border-primary/15 orb-spin" />
-          )}
-
-          {/* Mini orb - organic bubbling */}
-          <div
-            className={cn(
-              "relative w-full h-full rounded-full overflow-hidden transition-all duration-300",
-              isHovered && "scale-110",
-              isChatOpen && "scale-95"
-            )}
-            style={{ filter: `url(#${filterId})` }}
-          >
-            <div className="absolute inset-0 rounded-full orb-base" />
-            <div className="absolute inset-0 rounded-full orb-layer-1 orb-rotate" />
-            <div className="absolute inset-0 rounded-full orb-layer-2 orb-rotate-reverse" />
-            <div className="absolute inset-[18%] rounded-full orb-core orb-pulse" />
-            <div className="absolute inset-0 rounded-full orb-edge" />
+          {/* The orb */}
+          <div className="w-11 h-11 md:w-14 md:h-14">
+            <SiriOrb 
+              size={56} 
+              isHovered={isHovered} 
+              isActive={isChatOpen}
+            />
           </div>
 
           {/* Hint tooltip */}
