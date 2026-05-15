@@ -275,29 +275,29 @@ export function AIOrbCanvas({
             <div className="relative">
               {/* SVG circular progress */}
               <svg
-                className="absolute inset-0 w-full h-full -rotate-90"
-                viewBox="0 0 80 80"
-                style={{ width: 80, height: 80 }}
+                className="absolute -inset-1 -rotate-90"
+                viewBox="0 0 96 96"
+                style={{ width: 96, height: 96 }}
               >
                 <circle
-                  cx="40"
-                  cy="40"
-                  r="38"
+                  cx="48"
+                  cy="48"
+                  r="46"
                   fill="none"
                   stroke="var(--border)"
                   strokeWidth="1.5"
                   opacity="0.3"
                 />
                 <circle
-                  cx="40"
-                  cy="40"
-                  r="38"
+                  cx="48"
+                  cy="48"
+                  r="46"
                   fill="none"
                   stroke="url(#progressGradient)"
                   strokeWidth="2"
                   strokeLinecap="round"
-                  strokeDasharray={`${2 * Math.PI * 38}`}
-                  strokeDashoffset={`${2 * Math.PI * 38 * (1 - progressClamped / 100)}`}
+                  strokeDasharray={`${2 * Math.PI * 46}`}
+                  strokeDashoffset={`${2 * Math.PI * 46 * (1 - progressClamped / 100)}`}
                   className="transition-[stroke-dashoffset] duration-300 ease-out"
                 />
                 <defs>
@@ -308,8 +308,8 @@ export function AIOrbCanvas({
                 </defs>
               </svg>
               
-              <div className="p-3">
-                <SiriOrb size={68} isHovered={false} />
+              <div className="p-4">
+                <SiriOrb size={80} isHovered={false} />
               </div>
             </div>
 
@@ -368,13 +368,11 @@ export function AIOrbCanvas({
           />
 
           {/* The orb */}
-          <div className="w-11 h-11 md:w-14 md:h-14">
-            <SiriOrb 
-              size={56} 
-              isHovered={isHovered} 
-              isActive={isChatOpen}
-            />
-          </div>
+          <SiriOrb 
+            size={72} 
+            isHovered={isHovered} 
+            isActive={isChatOpen}
+          />
 
           {/* Hint tooltip */}
           {showHint && !isChatOpen && (
