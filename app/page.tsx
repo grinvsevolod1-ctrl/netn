@@ -82,26 +82,10 @@ export default function Home() {
         isChatOpen={isChatOpen}
       />
 
+      {/* Chat uses LOCAL_CHAT_CONFIG by default - no registration needed */}
       <Chat
         isOpen={isChatOpen}
         onOpenChange={setIsChatOpen}
-        config={{
-          companyName: 'NetNext',
-          assistantName: 'Nexik',
-          welcomeMessage: 'Привет! Я Nexik — AI-ассистент NetNext. Чем могу помочь?',
-          apiEndpoint: '/api/chat/ai',
-          quickActions: [
-            { id: '1', label: 'Узнать об услугах', action: 'custom', icon: 'MessageSquare' },
-            { id: '2', label: 'Записаться на консультацию', action: 'consultation', icon: 'Calendar' },
-            { id: '3', label: 'Связаться с оператором', action: 'operator', icon: 'Headphones' },
-          ]
-        }}
-        displayConfig={{
-          mode: 'modal',
-          modalSize: 'lg',
-          position: 'center',
-          mobileFullscreen: true,
-        }}
       />
 
       {showContent && (

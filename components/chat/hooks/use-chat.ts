@@ -1,12 +1,17 @@
 "use client"
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { ChatMessage, ChatConfig, UseChatOptions, DEFAULT_CHAT_CONFIG } from '../types'
+import { 
+  ChatMessage, 
+  ChatConfig, 
+  UseChatOptions, 
+  DEFAULT_CHAT_CONFIG,
+  getChatApiEndpoint,
+  getChatStorageKey,
+  getSessionStorageKey,
+} from '../types'
 
 const generateId = () => Math.random().toString(36).substring(2, 15)
-
-const STORAGE_KEY = 'netnext_chat_history'
-const SESSION_KEY = 'netnext_chat_session'
 
 export function useChat(options: UseChatOptions) {
   const config: ChatConfig = { ...DEFAULT_CHAT_CONFIG, ...options.config }
@@ -18,14 +23,19 @@ export function useChat(options: UseChatOptions) {
   const [error, setError] = useState<string | null>(null)
   
   const abortControllerRef = useRef<AbortController | null>(null)
+  
+  // Get storage keys based on mode
+  const storageKey = getChatStorageKey(config)
+  const sessionKey = getSessionStorageKey(config)
+  const apiEndpoint = getChatApiEndpoint(config)
 
   // Load history from localStorage
   useEffect(() => {
     if (!config.enableHistory) return
     
     try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      const storedSession = localStorage.getItem(SESSION_KEY)
+      const stored = localStorage.getItem(storageKey)
+      const storedSession = localStorage.getItem(sessionKey)
       
       if (stored) {
         const parsed = JSON.parse(stored) as ChatMessage[]
@@ -38,12 +48,12 @@ export function useChat(options: UseChatOptions) {
       } else {
         const newSession = generateId()
         setSessionId(newSession)
-        localStorage.setItem(SESSION_KEY, newSession)
+        localStorage.setItem(sessionKey, newSession)
       }
     } catch {
       // Ignore localStorage errors
     }
-  }, [config.enableHistory, config.maxHistoryMessages])
+  }, [config.enableHistory, config.maxHistoryMessages, storageKey, sessionKey])
 
   // Save history to localStorage
   useEffect(() => {
@@ -51,11 +61,11 @@ export function useChat(options: UseChatOptions) {
     
     try {
       const limited = messages.slice(-(config.maxHistoryMessages || 50))
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(limited))
+      localStorage.setItem(storageKey, JSON.stringify(limited))
     } catch {
       // Ignore localStorage errors
     }
-  }, [messages, config.enableHistory, config.maxHistoryMessages])
+  }, [messages, config.enableHistory, config.maxHistoryMessages, storageKey])
 
   const sendMessage = useCallback(async (content: string) => {
     if (!content.trim()) return
@@ -70,7 +80,7 @@ export function useChat(options: UseChatOptions) {
       role: 'user',
       content: content.trim(),
       timestamp: new Date(),
-      status: 'sent',
+      status: 'sending',
     }
     
     setMessages(prev => [...prev, userMessage])
@@ -82,21 +92,30 @@ export function useChat(options: UseChatOptions) {
     try {
       abortControllerRef.current = new AbortController()
       
-      const response = await fetch(config.apiEndpoint, {
+      // Build request body based on mode
+      const requestBody: Record<string, unknown> = {
+        message: content.trim(),
+        sessionId,
+        context: {
+          companyName: config.companyName,
+          assistantName: config.assistantName,
+          isConnectedToOperator,
+        },
+        previousMessages: messages.slice(-10).map(m => ({
+          role: m.role,
+          content: m.content,
+        })),
+      }
+      
+      // Add clientId for nexik mode
+      if (config.mode === 'nexik' && config.clientId) {
+        requestBody.clientId = config.clientId
+      }
+      
+      const response = await fetch(apiEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: content.trim(),
-          sessionId,
-          context: {
-            companyName: config.companyName,
-            isConnectedToOperator,
-          },
-          previousMessages: messages.slice(-10).map(m => ({
-            role: m.role,
-            content: m.content,
-          })),
-        }),
+        body: JSON.stringify(requestBody),
         signal: abortControllerRef.current.signal,
       })
       
@@ -105,6 +124,11 @@ export function useChat(options: UseChatOptions) {
       }
       
       const data = await response.json()
+      
+      // Update user message status
+      setMessages(prev => prev.map(m => 
+        m.id === userMessage.id ? { ...m, status: 'sent' as const } : m
+      ))
       
       const assistantMessage: ChatMessage = {
         id: generateId(),
@@ -127,18 +151,24 @@ export function useChat(options: UseChatOptions) {
       setError(errorMessage)
       options.onError?.(errorMessage)
       
+      // Update user message status to error
+      setMessages(prev => prev.map(m => 
+        m.id === userMessage.id ? { ...m, status: 'error' as const } : m
+      ))
+      
       // Add error message to chat
       setMessages(prev => [...prev, {
         id: generateId(),
         role: 'assistant',
         content: 'Извините, произошла ошибка. Попробуйте позже или свяжитесь с нами напрямую.',
         timestamp: new Date(),
+        status: 'delivered',
       }])
     } finally {
       setIsTyping(false)
       abortControllerRef.current = null
     }
-  }, [config, sessionId, isConnectedToOperator, messages, options])
+  }, [config, sessionId, isConnectedToOperator, messages, options, apiEndpoint])
 
   const connectToOperator = useCallback(async () => {
     setIsConnectedToOperator(true)
@@ -152,16 +182,33 @@ export function useChat(options: UseChatOptions) {
     }
     
     setMessages(prev => [...prev, systemMessage])
-  }, [options])
+    
+    // В nexik режиме можно отправить webhook о запросе оператора
+    if (config.mode === 'nexik' && config.clientId) {
+      try {
+        await fetch('/api/nexik/operator', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            clientId: config.clientId,
+            sessionId,
+            messages: messages.slice(-10),
+          }),
+        })
+      } catch {
+        // Ignore - operator notification is optional
+      }
+    }
+  }, [options, config, sessionId, messages])
 
   const clearHistory = useCallback(() => {
     setMessages([])
     try {
-      localStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(storageKey)
     } catch {
       // Ignore
     }
-  }, [])
+  }, [storageKey])
 
   const resetSession = useCallback(() => {
     clearHistory()
@@ -171,11 +218,11 @@ export function useChat(options: UseChatOptions) {
     const newSession = generateId()
     setSessionId(newSession)
     try {
-      localStorage.setItem(SESSION_KEY, newSession)
+      localStorage.setItem(sessionKey, newSession)
     } catch {
       // Ignore
     }
-  }, [clearHistory])
+  }, [clearHistory, sessionKey])
 
   return {
     messages,

@@ -28,10 +28,10 @@
     color: '#4fd1c5',
     position: 'bottom-right',
     greeting: 'Привет! Чем могу помочь?',
-    botName: 'AI Ассистент',
+    botName: 'Nexik',
     displayMode: 'modal', // 'modal' | 'mini'
     modalSize: 'lg', // 'sm' | 'md' | 'lg' | 'xl'
-    apiEndpoint: '/api/chat/ai'
+    apiEndpoint: '/api/nexik/chat' // Nexik client API
   };
   
   let sessionId = null;
@@ -107,11 +107,12 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          clientId: config.clientId,
           message: text.trim(),
           sessionId: sessionId,
           context: {
             companyName: config.botName,
-            clientId: config.clientId
+            assistantName: config.botName
           },
           previousMessages: messages.slice(-10).map(m => ({
             role: m.role,
@@ -124,7 +125,7 @@
       
       const aiMessage = {
         id: 'msg_' + Date.now(),
-        content: data.response || data.message || 'Извините, произошла ошибка.',
+        content: data.text || data.response || data.message || 'Извините, произошла ошибка.',
         role: 'assistant',
         timestamp: new Date().toISOString()
       };
