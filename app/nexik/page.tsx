@@ -404,7 +404,7 @@ export default function NexikPage() {
       </header>
 
       {/* Main content */}
-      <main className="relative min-h-screen flex flex-col items-center px-4 sm:px-6 pt-24 pb-12">
+      <main className="relative min-h-screen flex flex-col items-center px-4 sm:px-6 pt-20 sm:pt-24 pb-8 sm:pb-12">
         {/* Animated title -> chat transition */}
         <AnimatePresence mode="wait">
           {phase === "title" && (
@@ -416,11 +416,11 @@ export default function NexikPage() {
               transition={{ duration: 0.5 }}
               className="text-center flex-1 flex items-center justify-center"
             >
-              <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-tighter leading-none">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-none">
                 <span className="block bg-gradient-to-b from-white to-zinc-400 bg-clip-text text-transparent">
                   Общение
                 </span>
-                <span className="block mt-2 bg-gradient-to-r from-cyan-300 to-cyan-500 bg-clip-text text-transparent">
+                <span className="block mt-1 sm:mt-2 bg-gradient-to-r from-cyan-300 to-cyan-500 bg-clip-text text-transparent">
                   без ожидания
                 </span>
               </h1>
@@ -433,7 +433,7 @@ export default function NexikPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="w-full mt-8"
+              className="w-full mt-4 sm:mt-8"
             >
               <ChatDemo visible={true} />
             </motion.div>
@@ -442,8 +442,8 @@ export default function NexikPage() {
       </main>
 
       {/* Floating orb button */}
-      <div className="fixed bottom-6 right-6 z-40">
-        <SiriOrb size={64} state="idle" onClick={() => {}} />
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40">
+        <SiriOrb size={56} state="idle" onClick={() => {}} />
       </div>
     </div>
   )

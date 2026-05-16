@@ -152,21 +152,21 @@ export default function NexikDashboardPage() {
       title: "Время ответа",
       value: stats.avgResponseTime,
       change: "мгновенно",
-      icon: ,
+      icon: Clock,
       accent: "#ffaa00",
     },
   ]
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between">
+      <div className="mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold mb-1">Добро пожаловать!</h1>
-            <p className="text-[#888]">Nexik работает и обрабатывает заявки</p>
+            <h1 className="text-2xl sm:text-3xl font-bold mb-1">Добро пожаловать!</h1>
+            <p className="text-sm sm:text-base text-[#888]">Nexik работает и обрабатывает заявки</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <div className={`flex items-center gap-2 px-4 py-2 rounded-xl border ${
               isConnected 
                 ? 'bg-[#00ff88]/10 border-[#00ff88]/20' 
@@ -192,30 +192,30 @@ export default function NexikDashboardPage() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
         {statCards.map((stat) => (
           <div 
             key={stat.title}
-            className="group relative rounded-2xl border border-[#1a1a2e] bg-[#0a0a0f]/80 backdrop-blur-sm p-6 transition-all duration-300 hover:border-[#2a2a3e]"
+            className="group relative rounded-xl sm:rounded-2xl border border-[#1a1a2e] bg-[#0a0a0f]/80 backdrop-blur-sm p-4 sm:p-6 transition-all duration-300 hover:border-[#2a2a3e]"
           >
             <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm font-medium text-[#888]">
+              <div className="min-w-0 flex-1">
+                <p className="text-xs sm:text-sm font-medium text-[#888] truncate">
                   {stat.title}
                 </p>
-                <p className="text-3xl font-bold mt-2" style={{ color: stat.accent }}>
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold mt-1 sm:mt-2" style={{ color: stat.accent }}>
                   {loading ? "—" : stat.value}
                 </p>
-                <p className="text-xs text-[#00ff88] mt-1 flex items-center gap-1">
-                  <TrendingUp className="w-3 h-3" />
-                  {stat.change}
+                <p className="text-[10px] sm:text-xs text-[#00ff88] mt-1 flex items-center gap-1">
+                  <TrendingUp className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                  <span className="truncate">{stat.change}</span>
                 </p>
               </div>
               <div 
-                className="p-3 rounded-xl transition-all duration-300"
+                className="p-2 sm:p-3 rounded-lg sm:rounded-xl transition-all duration-300 flex-shrink-0"
                 style={{ background: `${stat.accent}15`, color: stat.accent }}
               >
-                <stat.icon className="w-5 h-5" />
+                <stat.icon className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
             </div>
           </div>
@@ -223,7 +223,7 @@ export default function NexikDashboardPage() {
       </div>
 
       {/* Main content grid */}
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
         
         {/* Recent chats */}
         <div className="lg:col-span-2 rounded-2xl border border-[#1a1a2e] bg-[#0a0a0f]/80 backdrop-blur-sm overflow-hidden">

@@ -117,7 +117,7 @@ export default function AdminDashboard() {
       />
 
       {/* Hero Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <StatsCard
           title="Всего чатов"
           value={data?.stats.totalChats || 0}
@@ -150,13 +150,13 @@ export default function AdminDashboard() {
       </div>
 
       {/* Main Grid */}
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Email Queue Status */}
-        <div className="lg:col-span-2 bg-[#0a0a0a]/50 border border-[#1a1a1a] rounded-xl p-6">
-          <div className="flex items-center justify-between mb-6">
+        <div className="lg:col-span-2 bg-[#0a0a0a]/50 border border-[#1a1a1a] rounded-xl p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 sm:mb-6">
             <div>
-              <h2 className="text-lg font-semibold text-white">Очередь рассылок</h2>
-              <p className="text-sm text-[#888]">Статус обработки писем</p>
+              <h2 className="text-base sm:text-lg font-semibold text-white">Очередь рассылок</h2>
+              <p className="text-xs sm:text-sm text-[#888]">Статус обработки писем</p>
             </div>
             <Link href="/admin/mailings">
               <Button variant="ghost" size="sm" className="text-[#888] hover:text-white">
@@ -167,34 +167,34 @@ export default function AdminDashboard() {
           </div>
 
           {data?.queueStats ? (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="bg-[#111] rounded-xl p-4 border border-[#1a1a1a]">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
-                  <span className="text-xs text-[#888] uppercase tracking-wider">Ожидание</span>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
+              <div className="bg-[#111] rounded-lg sm:rounded-xl p-3 sm:p-4 border border-[#1a1a1a]">
+                <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-pulse" />
+                  <span className="text-[10px] sm:text-xs text-[#888] uppercase tracking-wider">Ожидание</span>
                 </div>
-                <div className="text-2xl font-bold text-amber-400">{data.queueStats.waiting}</div>
+                <div className="text-lg sm:text-2xl font-bold text-amber-400">{data.queueStats.waiting}</div>
               </div>
-              <div className="bg-[#111] rounded-xl p-4 border border-[#1a1a1a]">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
-                  <span className="text-xs text-[#888] uppercase tracking-wider">Активные</span>
+              <div className="bg-[#111] rounded-lg sm:rounded-xl p-3 sm:p-4 border border-[#1a1a1a]">
+                <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-400 rounded-full animate-pulse" />
+                  <span className="text-[10px] sm:text-xs text-[#888] uppercase tracking-wider">Активные</span>
                 </div>
-                <div className="text-2xl font-bold text-blue-400">{data.queueStats.active}</div>
+                <div className="text-lg sm:text-2xl font-bold text-blue-400">{data.queueStats.active}</div>
               </div>
-              <div className="bg-[#111] rounded-xl p-4 border border-[#1a1a1a]">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-2 h-2 bg-emerald-400 rounded-full" />
-                  <span className="text-xs text-[#888] uppercase tracking-wider">Готово</span>
+              <div className="bg-[#111] rounded-lg sm:rounded-xl p-3 sm:p-4 border border-[#1a1a1a]">
+                <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-400 rounded-full" />
+                  <span className="text-[10px] sm:text-xs text-[#888] uppercase tracking-wider">Готово</span>
                 </div>
-                <div className="text-2xl font-bold text-emerald-400">{data.queueStats.completed}</div>
+                <div className="text-lg sm:text-2xl font-bold text-emerald-400">{data.queueStats.completed}</div>
               </div>
-              <div className="bg-[#111] rounded-xl p-4 border border-[#1a1a1a]">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-2 h-2 bg-red-400 rounded-full" />
-                  <span className="text-xs text-[#888] uppercase tracking-wider">Ошибки</span>
+              <div className="bg-[#111] rounded-lg sm:rounded-xl p-3 sm:p-4 border border-[#1a1a1a]">
+                <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-red-400 rounded-full" />
+                  <span className="text-[10px] sm:text-xs text-[#888] uppercase tracking-wider">Ошибки</span>
                 </div>
-                <div className="text-2xl font-bold text-red-400">{data.queueStats.failed}</div>
+                <div className="text-lg sm:text-2xl font-bold text-red-400">{data.queueStats.failed}</div>
               </div>
             </div>
           ) : (
@@ -206,8 +206,8 @@ export default function AdminDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-[#0a0a0a]/50 border border-[#1a1a1a] rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Быстрые действия</h2>
+        <div className="bg-[#0a0a0a]/50 border border-[#1a1a1a] rounded-xl p-4 sm:p-6">
+          <h2 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">Быстрые действия</h2>
           <div className="space-y-3">
             <Link href="/admin/mailings" className="block">
               <div className="flex items-center gap-4 p-4 bg-[#111] hover:bg-[#151515] border border-[#1a1a1a] rounded-xl transition-all group">

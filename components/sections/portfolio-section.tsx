@@ -74,12 +74,12 @@ export function PortfolioSection() {
     <section
       ref={sectionRef}
       id="portfolio"
-      className="py-20 md:py-32 relative overflow-hidden"
+      className="py-16 sm:py-20 md:py-32 relative overflow-hidden"
     >
       {/* Subtle bg */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/5 to-background" />
 
-      <div className="container mx-auto px-4 md:px-6 lg:px-20 relative z-10 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-20 relative z-10 max-w-7xl">
         {/* Header */}
         <div className={cn(
           "text-center mb-12 md:mb-20 transition-all duration-700",
@@ -89,7 +89,7 @@ export function PortfolioSection() {
             <Award className="w-3.5 h-3.5" />
             Опыт и достижения
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-balance">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 text-balance">
             Результаты говорят{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">за нас</span>
           </h2>
@@ -101,37 +101,37 @@ export function PortfolioSection() {
 
         {/* Stats Grid */}
         <div className={cn(
-          "grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12 md:mb-16 transition-all duration-700 delay-200",
+          "grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mb-8 sm:mb-12 md:mb-16 transition-all duration-700 delay-200",
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
         )}>
           {stats.map((stat, index) => (
             <div
               key={stat.label}
-              className="relative p-5 md:p-6 rounded-2xl bg-card border border-border/50 hover:border-border transition-all duration-300 group"
+              className="relative p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl bg-card border border-border/50 hover:border-border transition-all duration-300 group"
               style={{
                 animationDelay: `${index * 100}ms`,
               }}
             >
               {/* Glow effect on hover */}
               <div 
-                className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 style={{ boxShadow: `0 0 40px ${stat.color}15` }}
               />
               
               <div 
-                className="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center mb-4"
+                className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4"
                 style={{ backgroundColor: `${stat.color}15` }}
               >
-                <stat.icon className="w-5 h-5 md:w-6 md:h-6" style={{ color: stat.color }} />
+                <stat.icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" style={{ color: stat.color }} />
               </div>
               
-              <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-1" style={{ color: stat.color }}>
+              <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-0.5 sm:mb-1" style={{ color: stat.color }}>
                 {stat.value}
               </div>
-              <div className="text-sm md:text-base font-semibold text-foreground mb-1">
+              <div className="text-xs sm:text-sm md:text-base font-semibold text-foreground mb-0.5 sm:mb-1">
                 {stat.label}
               </div>
-              <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+              <p className="text-[10px] sm:text-xs md:text-sm text-muted-foreground leading-relaxed">
                 {stat.description}
               </p>
             </div>

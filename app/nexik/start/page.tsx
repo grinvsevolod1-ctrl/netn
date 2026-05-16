@@ -125,7 +125,7 @@ export default function NexikStartPage() {
 
       {/* Header */}
       <header className="relative z-10 border-b border-white/5">
-        <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <Link href="/nexik" className="flex items-center gap-3">
             <SiriOrb size={32} color="#00ffff" state="idle" />
             <span className="font-semibold">Nexik</span>
@@ -137,7 +137,7 @@ export default function NexikStartPage() {
       </header>
 
       {/* Main */}
-      <main className="flex-1 flex flex-col max-w-2xl mx-auto w-full px-6 py-8">
+      <main className="flex-1 flex flex-col max-w-2xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8">
         <AnimatePresence mode="wait">
           {/* Chat Step */}
           {step === "chat" && (
@@ -204,7 +204,7 @@ export default function NexikStartPage() {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                   placeholder="Например: у меня автосервис..."
-                  className="w-full px-5 py-4 pr-14 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-zinc-500 focus:outline-none focus:border-cyan-500/50 transition-colors"
+                  className="w-full px-4 sm:px-5 py-3.5 sm:py-4 pr-14 bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl text-sm sm:text-base text-white placeholder-zinc-500 focus:outline-none focus:border-cyan-500/50 transition-colors"
                 />
                 <button
                   onClick={sendMessage}
@@ -329,8 +329,8 @@ export default function NexikStartPage() {
       </main>
 
       {/* Floating orb */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <SiriOrb size={56} color="#00ffff" state={isTyping || isAnalyzing ? "thinking" : "idle"} />
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
+        <SiriOrb size={48} color="#00ffff" state={isTyping || isAnalyzing ? "thinking" : "idle"} />
       </div>
     </div>
   )

@@ -309,7 +309,7 @@ export function ProcessSection() {
         <div className="absolute bottom-1/3 right-1/4 w-48 md:w-96 h-48 md:h-96 bg-accent/3 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 md:px-6 lg:px-20 relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-20 relative">
         <div className="flex flex-col lg:flex-row gap-8 md:gap-16 lg:gap-24">
           <div className="lg:w-1/3 lg:sticky lg:top-24 lg:self-start">
             <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">

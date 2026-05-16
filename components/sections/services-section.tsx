@@ -170,8 +170,8 @@ export function ServicesSection() {
         <div className="absolute bottom-1/4 -right-20 md:-right-40 w-40 md:w-80 h-40 md:h-80 bg-accent/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 md:px-6 lg:px-20 relative">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 md:gap-8 mb-10 md:mb-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-20 relative">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-10 md:mb-16">
           <div className="max-w-2xl">
             <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
               <div className="w-8 md:w-12 h-0.5 bg-primary" />
@@ -187,7 +187,7 @@ export function ServicesSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
           {services.map((service, index) => (
             <ServiceCard
               key={service.id}
