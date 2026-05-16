@@ -234,7 +234,7 @@ export function AIChat({ isOpen, onClose, onNavigate }: AIChatProps) {
       const operatorMsg: Message = {
         id: `a_${Date.now()}`,
         role: "assistant",
-        content: "Подключаю живого оператора. Обычно отвечаем в течение нескольких минут.\n\nПока ждёте, можете описать свой вопрос — оператор увидит всю переписку.",
+        content: "Подключаю живо��о оператора. Обычно отвечаем в течение нескольких минут.\n\nПока ждёте, можете описать свой вопрос — оператор увидит всю переписку.",
         timestamp: new Date(),
       }
       setMessages(prev => [...prev, operatorMsg])
@@ -316,19 +316,19 @@ export function AIChat({ isOpen, onClose, onNavigate }: AIChatProps) {
     <div
       className={cn(
         "fixed z-50 flex flex-col bg-card border border-border/50 shadow-2xl overflow-hidden transition-all duration-300 ease-out",
-        // Mobile: full screen
+        // Mobile: full screen with safe areas
         "inset-0 md:inset-auto",
         // Desktop: bottom right corner
-        "md:bottom-6 md:right-6 md:w-[380px] md:h-[560px] md:rounded-2xl",
+        "md:bottom-6 md:right-6 md:w-[400px] md:h-[580px] md:rounded-2xl",
         isOpen
           ? "opacity-100 translate-y-0 pointer-events-auto"
-          : "opacity-0 translate-y-4 pointer-events-none"
+          : "opacity-0 translate-y-4 pointer-events-none md:translate-y-8"
       )}
     >
       <ChatHeader operatorConnected={operatorConnected} onClose={onClose} />
 
-      <ScrollArea className="flex-1 px-4 py-4">
-        <div ref={scrollRef} className="flex flex-col gap-3">
+      <ScrollArea className="flex-1 overflow-y-auto">
+        <div ref={scrollRef} className="flex flex-col gap-3 px-4 py-4">
           {messages.length === 0 ? (
             <ChatWelcome onSend={handleSend} />
           ) : (

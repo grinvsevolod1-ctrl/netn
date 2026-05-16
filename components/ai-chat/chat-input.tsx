@@ -54,19 +54,19 @@ export function ChatInput({
   }
 
   return (
-    <div className="border-t border-border/50 bg-card shrink-0 pb-safe md:pb-0">
+    <div className="border-t border-border/50 bg-card shrink-0 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:pb-0">
       {/* Quick actions -- only when no operator */}
       {!operatorConnected && showQuickActions && (
-        <div className="flex gap-1.5 px-3 pt-2.5 pb-0 overflow-x-auto scrollbar-none">
+        <div className="flex flex-wrap gap-2 px-3 pt-3 pb-1">
           {quickActions.map((a) => (
             <button
               key={a.action}
               onClick={() => onSend("", a.action)}
               className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium rounded-full shrink-0",
-                "bg-secondary/60 hover:bg-primary hover:text-primary-foreground",
-                "border border-border/40 hover:border-primary",
-                "transition-colors"
+                "flex items-center gap-1.5 px-3 py-2 text-[13px] font-medium rounded-xl",
+                "bg-secondary/70 hover:bg-primary hover:text-primary-foreground active:scale-95",
+                "border border-border/50 hover:border-primary",
+                "transition-all touch-manipulation"
               )}
             >
               {a.icon}
@@ -76,7 +76,7 @@ export function ChatInput({
         </div>
       )}
 
-      <div className="flex gap-2 items-end p-3">
+      <div className="flex gap-2 items-end p-3 pt-2">
         <textarea
           ref={inputRef}
           value={value}
@@ -85,17 +85,17 @@ export function ChatInput({
           placeholder={operatorConnected ? "Сообщение оператору..." : "Напишите сообщение..."}
           rows={1}
           className={cn(
-            "flex-1 resize-none text-[14px] leading-relaxed",
-            "bg-secondary/40 border border-border/50 rounded-xl px-3.5 py-2.5",
-            "focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary/40",
-            "placeholder:text-muted-foreground/60 transition-colors",
+            "flex-1 resize-none text-[15px] leading-relaxed",
+            "bg-secondary/50 border border-border/50 rounded-xl px-4 py-3",
+            "focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50",
+            "placeholder:text-muted-foreground/60 transition-all",
             "max-h-[120px]"
           )}
         />
         <Button
           size="icon"
           className={cn(
-            "h-10 w-10 rounded-xl shrink-0 transition-all",
+            "h-11 w-11 rounded-xl shrink-0 transition-all touch-manipulation",
             value.trim() ? "opacity-100" : "opacity-40 pointer-events-none"
           )}
           onClick={() => onSend(value)}
@@ -103,9 +103,9 @@ export function ChatInput({
           aria-label="Отправить"
         >
           {operatorConnected ? (
-            <Send className="h-4 w-4" />
+            <Send className="h-5 w-5" />
           ) : (
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-5 w-5" />
           )}
         </Button>
       </div>
