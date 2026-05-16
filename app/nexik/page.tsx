@@ -112,22 +112,37 @@ function ChatDemo({ visible }: { visible: boolean }) {
       className="w-full max-w-lg mx-auto"
     >
       <div 
-        className="relative rounded-2xl overflow-hidden"
+        className="relative rounded-3xl overflow-hidden"
         style={{
-          background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
-          backdropFilter: "blur(20px)",
-          boxShadow: "0 0 0 1px rgba(255,255,255,0.08), 0 40px 80px -20px rgba(0,0,0,0.5)",
+          background: "linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 50%, rgba(0,255,255,0.03) 100%)",
+          backdropFilter: "blur(24px)",
+          boxShadow: "0 0 0 1px rgba(255,255,255,0.1), 0 0 60px -10px rgba(0,255,255,0.15), 0 40px 80px -20px rgba(0,0,0,0.6)",
         }}
       >
+        {/* Subtle glow border effect */}
+        <div 
+          className="absolute inset-0 rounded-3xl pointer-events-none"
+          style={{
+            background: "linear-gradient(135deg, rgba(0,255,255,0.1) 0%, transparent 50%, rgba(0,255,255,0.05) 100%)",
+            mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            maskComposite: "exclude",
+            padding: "1px",
+          }}
+        />
         {/* Header */}
-        <div className="flex items-center gap-4 p-5 border-b border-white/5">
+        <div 
+          className="flex items-center gap-4 p-5 border-b border-white/5"
+          style={{
+            background: "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%)",
+          }}
+        >
           <div className="relative">
             <SiriOrb size={48} state={isTyping ? "thinking" : "idle"} />
-            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-black" />
+            <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-[#0a0f14] shadow-lg shadow-emerald-500/50" />
           </div>
           <div>
             <h3 className="font-semibold text-white text-lg">Nexik</h3>
-            <p className="text-sm text-zinc-500">Онлайн</p>
+            <p className="text-sm text-emerald-400/80">Онлайн</p>
           </div>
         </div>
 
@@ -216,17 +231,36 @@ function ChatDemo({ visible }: { visible: boolean }) {
       </div>
 
       {/* CTA below chat */}
-      <div className="mt-8 text-center">
-        <Button 
-          className="bg-white text-black hover:bg-zinc-200 h-12 px-8 text-base font-medium" 
-          asChild
+      <div className="mt-10 text-center">
+        <Link 
+          href="/nexik/start"
+          className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-base transition-all duration-300"
+          style={{
+            background: "linear-gradient(135deg, #22d3ee 0%, #06b6d4 50%, #0891b2 100%)",
+            boxShadow: "0 0 0 1px rgba(34,211,238,0.3), 0 10px 40px -10px rgba(34,211,238,0.5), 0 0 80px -20px rgba(34,211,238,0.4)",
+          }}
         >
-          <Link href="/nexik/start">
-            Запустить Nexik
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </Link>
-        </Button>
-        <p className="mt-4 text-sm text-zinc-600">Бесплатно. Без карты. 2 минуты на настройку.</p>
+          {/* Shine effect */}
+          <span 
+            className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            style={{
+              background: "linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%, rgba(255,255,255,0.1) 100%)",
+            }}
+          />
+          {/* Glow pulse on hover */}
+          <span 
+            className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            style={{
+              boxShadow: "0 0 60px 10px rgba(34,211,238,0.3)",
+            }}
+          />
+          <span className="relative text-black">Запустить Nexik</span>
+          <ArrowRight className="relative w-5 h-5 text-black/80 group-hover:translate-x-1 transition-transform duration-300" />
+        </Link>
+        <p className="mt-5 text-sm text-zinc-500">Бесплатно. Без карты. 2 минуты на настройку.</p>
+        <p className="mt-1.5 text-xs text-zinc-600">
+          powered by <Link href="/" className="text-cyan-500/70 hover:text-cyan-400 transition-colors">NetNext</Link>
+        </p>
       </div>
     </motion.div>
   )
