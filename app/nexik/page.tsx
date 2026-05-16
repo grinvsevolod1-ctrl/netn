@@ -246,12 +246,10 @@ function DemoChat() {
               <div className="max-w-[90%] rounded-2xl rounded-bl-md px-4 py-3 bg-gradient-to-r from-[#00ffff]/20 to-[#00ff88]/20 border border-[#00ffff]/30 text-white text-sm">
                 <p className="font-medium mb-2">Готов работать на твоём сайте!</p>
                 <div className="flex gap-2">
-                  <Button size="sm" className="bg-[#00ffff] text-black hover:bg-[#00ffff]/90 gap-1.5" asChild>
-                    <Link href="/nexik/start">
-                      <Zap className="w-3.5 h-3.5" />
-                      Запустить
-                    </Link>
-                  </Button>
+                  <Link href="/nexik/start" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm bg-[#00ffff] text-black hover:bg-[#00ffff]/90 font-medium transition-colors">
+                    <Zap className="w-3.5 h-3.5" />
+                    Запустить
+                  </Link>
                   <Button size="sm" variant="outline" onClick={resetDemo} className="border-[#2a2a3e] hover:bg-[#1a1a2e]">
                     Попробовать снова
                   </Button>
@@ -421,18 +419,14 @@ export default function NexikLandingPage() {
               <Link href="/#services" className="hidden md:block text-sm text-zinc-500 hover:text-white transition-colors">
                 Заказать сайт
               </Link>
-              <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-white gap-2" asChild>
-                <Link href="/nexik/login">
-                  <LogIn className="w-4 h-4" />
-                  Войти
-                </Link>
-              </Button>
-              <Button className="bg-[#00ffff] text-black hover:bg-[#00ffff]/90 gap-2" asChild>
-                <Link href="/nexik/start">
-                  Начать
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
+              <Link href="/nexik/login" className="inline-flex items-center gap-2 px-3 py-1.5 text-sm text-zinc-400 hover:text-white transition-colors">
+                <LogIn className="w-4 h-4" />
+                Войти
+              </Link>
+              <Link href="/nexik/start" className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#00ffff] text-black hover:bg-[#00ffff]/90 font-medium transition-colors">
+                Начать
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </div>
@@ -463,12 +457,10 @@ export default function NexikLandingPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Button size="lg" className="bg-[#00ffff] text-black hover:bg-[#00ffff]/90 text-base px-8 h-14 w-full sm:w-auto gap-2 group" asChild>
-                  <Link href="/nexik/start">
-                    Запустить за 2 минуты
-                    <Zap className="w-5 h-5 transition-transform group-hover:scale-110" />
-                  </Link>
-                </Button>
+                <Link href="/nexik/start" className="inline-flex items-center justify-center gap-2 px-8 h-14 w-full sm:w-auto rounded-md text-base font-medium bg-[#00ffff] text-black hover:bg-[#00ffff]/90 transition-colors group">
+                  Запустить за 2 минуты
+                  <Zap className="w-5 h-5 transition-transform group-hover:scale-110" />
+                </Link>
                 <Button 
                   variant="outline" 
                   size="lg" 
@@ -549,7 +541,7 @@ export default function NexikLandingPage() {
               {
                 step: "04",
                 icon: <TrendingUp className="w-7 h-7" />,
-                title: "Nexik работает",
+                title: "Nexik работ��ет",
                 description: "AI общается с клиентами, собирает заявки и передает тебе горячих лидов.",
                 accent: "#ffaa00"
               }
@@ -702,7 +694,7 @@ export default function NexikLandingPage() {
                 </h2>
                 <p className="text-lg text-zinc-400 mb-8 leading-relaxed">
                   Мы создаем не просто сайты, а готовые бизнес-инструменты. 
-                  Каждый сайт от NetNext получает AI-ассистента Nexik.
+                  Каждый сайт от NetNext полу��ает AI-ассистента Nexik.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link href="/#services">
@@ -823,12 +815,10 @@ export default function NexikLandingPage() {
             <p className="text-xl text-zinc-400 mb-10">
               Запусти Nexik за 2 минуты. Бесплатно. Без программистов.
             </p>
-            <Button size="lg" className="bg-[#00ffff] text-black hover:bg-[#00ffff]/90 text-lg px-12 h-16 gap-3 group" asChild>
-              <Link href="/nexik/start">
-                Запустить Nexik
-                <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
+            <Link href="/nexik/start" className="inline-flex items-center justify-center gap-3 px-12 h-16 rounded-md text-lg font-medium bg-[#00ffff] text-black hover:bg-[#00ffff]/90 transition-colors group">
+              Запустить Nexik
+              <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-1" />
+            </Link>
           </div>
         </div>
       </section>
