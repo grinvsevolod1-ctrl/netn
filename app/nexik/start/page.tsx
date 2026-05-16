@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Send, ArrowRight, Check, Loader2, Globe, Copy } from "lucide-react"
+import { Send, ArrowRight, Check, Loader2, Globe, Copy, X, Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SiriOrb } from "@/components/nexik/siri-orb"
 
@@ -48,8 +48,14 @@ export default function NexikStartPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [widgetId, setWidgetId] = useState("")
   const [copied, setCopied] = useState(false)
+  const [showToast, setShowToast] = useState(false)
   const chatRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const handleOrbClick = () => {
+    setShowToast(true)
+    setTimeout(() => setShowToast(false), 4000)
+  }
 
   // Auto scroll
   useEffect(() => {
@@ -330,8 +336,70 @@ export default function NexikStartPage() {
 
       {/* Floating orb */}
       <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
-        <SiriOrb size={48} color="#00ffff" state={isTyping || isAnalyzing ? "thinking" : "idle"} />
+        <SiriOrb size={48} color="#00ffff" state={isTyping || isAnalyzing ? "thinking" : "idle"} onClick={handleOrbClick} />
       </div>
+
+      {/* Toast notification */}
+      <AnimatePresence>
+        {showToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-50 max-w-xs sm:max-w-sm"
+          >
+            <div 
+              className="relative p-4 rounded-2xl border border-cyan-500/20 shadow-2xl"
+              style={{
+                background: "linear-gradient(135deg, rgba(6,182,212,0.15) 0%, rgba(15,23,42,0.95) 50%, rgba(6,182,212,0.1) 100%)",
+                backdropFilter: "blur(20px)",
+                boxShadow: "0 0 40px rgba(6,182,212,0.15), 0 20px 40px -10px rgba(0,0,0,0.5)",
+              }}
+            >
+              {/* Close button */}
+              <button
+                onClick={() => setShowToast(false)}
+                className="absolute top-3 right-3 p-1 rounded-full text-zinc-500 hover:text-white hover:bg-white/10 transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              {/* Content */}
+              <div className="flex gap-3 pr-6">
+                <div 
+                  className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(6,182,212,0.3) 0%, rgba(6,182,212,0.1) 100%)",
+                    boxShadow: "0 0 20px rgba(6,182,212,0.2)",
+                  }}
+                >
+                  <Sparkles className="w-5 h-5 text-cyan-400" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-white mb-1">
+                    Демо виджета Nexik
+                  </p>
+                  <p className="text-xs text-zinc-400 leading-relaxed">
+                    Так будет выглядеть AI-чат на вашем сайте. Клиенты смогут общаться с ботом 24/7.
+                  </p>
+                </div>
+              </div>
+
+              {/* Decorative glow */}
+              <div 
+                className="absolute -inset-px rounded-2xl pointer-events-none"
+                style={{
+                  background: "linear-gradient(135deg, rgba(6,182,212,0.3) 0%, transparent 30%, transparent 70%, rgba(6,182,212,0.2) 100%)",
+                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  maskComposite: "exclude",
+                  padding: "1px",
+                }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
