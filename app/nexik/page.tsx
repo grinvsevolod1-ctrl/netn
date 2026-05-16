@@ -254,49 +254,58 @@ export default function NexikPage() {
 
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50">
-        <div 
-          className="mx-4 sm:mx-6 mt-4 rounded-2xl"
-          style={{
-            background: "rgba(0,0,0,0.5)",
-            backdropFilter: "blur(20px)",
-            border: "1px solid rgba(255,255,255,0.05)",
-          }}
-        >
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+        <div className="mx-4 sm:mx-6 mt-4 flex items-center justify-between gap-4">
+          {/* Left pill - Logo & Title */}
+          <div 
+            className="rounded-full px-3 py-2 flex items-center gap-3"
+            style={{
+              background: "rgba(0,0,0,0.5)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(255,255,255,0.05)",
+            }}
+          >
             <Link href="/nexik" className="flex items-center gap-3">
               <SiriOrb size={28} state="idle" />
               <span className="font-semibold text-lg">Nexik</span>
-              <AnimatePresence>
-                {headerTitle && (
-                  <motion.span
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="hidden sm:block text-sm text-zinc-500 ml-2"
-                  >
-                    Общение без ожидания
-                  </motion.span>
-                )}
-              </AnimatePresence>
             </Link>
-            
-            <div className="flex items-center gap-2">
-              <Link 
-                href="/nexik/login" 
-                className="px-4 py-2 text-sm text-zinc-400 hover:text-white transition-colors"
-              >
-                Войти
+            <AnimatePresence>
+              {headerTitle && (
+                <motion.div
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "auto" }}
+                  transition={{ duration: 0.4 }}
+                  className="hidden sm:flex flex-col leading-tight border-l border-white/10 pl-3 ml-1"
+                >
+                  <span className="text-xs text-zinc-400">Общение</span>
+                  <span className="text-xs text-zinc-500">без ожидания</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+          
+          {/* Right pill - Actions */}
+          <div 
+            className="rounded-full px-2 py-2 flex items-center gap-1"
+            style={{
+              background: "rgba(0,0,0,0.5)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(255,255,255,0.05)",
+            }}
+          >
+            <Link 
+              href="/nexik/login" 
+              className="px-4 py-1.5 text-sm text-zinc-400 hover:text-white transition-colors rounded-full hover:bg-white/5"
+            >
+              Войти
+            </Link>
+            <Button 
+              className="bg-white text-black hover:bg-zinc-200 h-8 px-4 text-sm font-medium rounded-full" 
+              asChild
+            >
+              <Link href="/nexik/start">
+                Начать
               </Link>
-              <Button 
-                className="bg-white/10 hover:bg-white/20 border border-white/10 text-white h-9 px-5 text-sm font-medium" 
-                asChild
-              >
-                <Link href="/nexik/start">
-                  Начать
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              </Button>
-            </div>
+            </Button>
           </div>
         </div>
       </header>
