@@ -205,9 +205,18 @@ export default function NexikStartPage() {
       
       if (data.success && data.widget) {
         setWidgetId(data.widget.id)
+        // Save org_id for dashboard access
+        const orgId = data.widget.org_id || data.widget.id
+        localStorage.setItem('nexik_org_id', orgId)
+        localStorage.setItem('nexik_widget_id', data.widget.id)
+        document.cookie = `nexik_org_id=${orgId}; path=/; max-age=31536000`
       } else {
         // Fallback - generate local ID for demo
-        setWidgetId(`nxk_${Math.random().toString(36).substring(2, 10)}`)
+        const fallbackId = `nxk_${Math.random().toString(36).substring(2, 10)}`
+        setWidgetId(fallbackId)
+        localStorage.setItem('nexik_org_id', fallbackId)
+        localStorage.setItem('nexik_widget_id', fallbackId)
+        document.cookie = `nexik_org_id=${fallbackId}; path=/; max-age=31536000`
       }
     } catch (error) {
       console.error('[Onboarding] Widget creation failed:', error)

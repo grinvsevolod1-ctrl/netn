@@ -397,7 +397,7 @@ export default function NexikLandingPage() {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00ffff]/10 border border-[#00ffff]/20 mb-6">
               <Sparkles className="w-4 h-4 text-[#00ffff]" />
-              <span className="text-sm text-[#00ffff]">Максимальная простота</span>
+              <span className="text-sm text-[#00ffff]">Максимальная простот��</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
               3 шага — и Nexik работает
@@ -678,16 +678,18 @@ export default function NexikLandingPage() {
                   ))}
                 </ul>
 
-                <Button 
-                  className={cn(
-                    "w-full",
-                    plan.popular 
-                      ? "bg-[#00ffff] text-black hover:bg-[#00ffff]/90" 
-                      : "bg-[#1a1a2e] text-white hover:bg-[#2a2a3e]"
-                  )}
-                >
-                  {plan.cta}
-                </Button>
+                <Link href={plan.name === "Корпорация" ? "/#contact" : "/nexik/start"}>
+                  <Button 
+                    className={cn(
+                      "w-full",
+                      plan.popular 
+                        ? "bg-[#00ffff] text-black hover:bg-[#00ffff]/90" 
+                        : "bg-[#1a1a2e] text-white hover:bg-[#2a2a3e]"
+                    )}
+                  >
+                    {plan.cta}
+                  </Button>
+                </Link>
               </div>
             ))}
           </div>
