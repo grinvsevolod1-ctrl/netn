@@ -186,13 +186,29 @@ export default function NexikStartPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
     setRegisterError("")
+    
+    // Get values from form directly as fallback
+    const form = e.target as HTMLFormElement
+    const emailValue = email || (form.querySelector('input[type="email"]') as HTMLInputElement)?.value || ''
+    const passwordValue = password || (form.querySelector('input[type="password"]') as HTMLInputElement)?.value || ''
+    
+    if (!emailValue.trim() || !passwordValue.trim()) {
+      setRegisterError("Email и пароль обязательны")
+      return
+    }
+    
+    if (passwordValue.length < 6) {
+      setRegisterError("Пароль должен быть минимум 6 символов")
+      return
+    }
+    
     setRegisterLoading(true)
 
     try {
       const res = await fetch("/api/nexik/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: emailValue, password: passwordValue }),
       })
 
       const data = await res.json()
@@ -736,7 +752,7 @@ export default function NexikStartPage() {
                       <div className="space-y-3">
                         <p className="flex items-center gap-2">
                           <Sparkles className="w-4 h-4 text-[#00ffff]" />
-                          Твой AI-ассистент готов!
+                          ��вой AI-ассистент готов!
                         </p>
                         <p>Теперь добавим его на сайт. Выбери способ:</p>
                       </div>
