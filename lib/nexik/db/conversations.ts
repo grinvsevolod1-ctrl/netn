@@ -3,6 +3,7 @@
  */
 
 import { query, queryOne, execute } from '@/lib/db'
+import type { QuickReply } from './widgets'
 
 export interface VisitorMetadata {
   [key: string]: unknown
