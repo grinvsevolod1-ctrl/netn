@@ -46,6 +46,8 @@ export function SiriOrb({
     const rgb = hexToRgb(color)
 
     function draw() {
+      if (!ctx) return
+      
       const currentState = state
       timeRef.current += currentState === "thinking" ? 0.06 : currentState === "speaking" ? 0.04 : 0.02
       const time = timeRef.current

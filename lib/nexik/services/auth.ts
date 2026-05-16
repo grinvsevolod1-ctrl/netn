@@ -52,10 +52,11 @@ export interface SessionPayload {
   orgId: string
   email: string
   role: string
+  [key: string]: string // Index signature for JWTPayload compatibility
 }
 
 async function createSessionToken(payload: SessionPayload): Promise<string> {
-  return new SignJWT(payload)
+  return new SignJWT(payload as Record<string, string>)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('7d')
@@ -161,7 +162,7 @@ export async function login(input: LoginInput): Promise<{
     // Find member by email across all orgs (simplified - in production you'd want org selection)
     const { query } = await import('@/lib/db')
     
-    const members = await query<OrgMember & { org_slug: string }>(
+    const members = await query<OrgMember & { org_slug: string; password_hash: string }>(
       `SELECT m.*, o.slug as org_slug 
        FROM nexik_org_members m
        JOIN nexik_organizations o ON m.org_id = o.id

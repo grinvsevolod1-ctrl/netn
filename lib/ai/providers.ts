@@ -58,6 +58,11 @@ export class OllamaClient {
     this.config = { ...getConfig(), ...config }
   }
 
+  /** Get the base URL for the Ollama server */
+  get baseUrl(): string {
+    return this.config.baseUrl
+  }
+
   /**
    * Генерация ответа (chat completion)
    */

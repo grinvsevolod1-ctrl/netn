@@ -76,10 +76,7 @@ export interface Attachment {
   size?: number
 }
 
-export interface QuickReply {
-  label: string
-  message: string
-}
+// QuickReply is defined in widgets.ts
 
 // Conversation CRUD
 export async function createConversation(data: {

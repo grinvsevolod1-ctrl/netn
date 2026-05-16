@@ -182,8 +182,11 @@ function ChatDemo({ visible }: { visible: boolean }) {
       return
     }
 
-    const SpeechRecognition = (window as typeof window & { webkitSpeechRecognition?: typeof window.SpeechRecognition }).webkitSpeechRecognition || window.SpeechRecognition
-    const recognition = new SpeechRecognition()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SpeechRecognitionAPI = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition
+    if (!SpeechRecognitionAPI) return
+    
+    const recognition = new SpeechRecognitionAPI()
     recognition.lang = 'ru-RU'
     recognition.continuous = false
     recognition.interimResults = false
@@ -192,7 +195,8 @@ function ChatDemo({ visible }: { visible: boolean }) {
     recognition.onend = () => setIsListening(false)
     recognition.onerror = () => setIsListening(false)
     
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript
       setInput(transcript)
       setIsListening(false)

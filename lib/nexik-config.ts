@@ -79,5 +79,6 @@ export function getPlanLimits(plan: NexikPlan) {
 
 // Helper to check if feature is enabled for plan
 export function isPlanFeatureEnabled(plan: NexikPlan, feature: string): boolean {
-  return nexikConfig.plans[plan].features.includes(feature)
+  const planFeatures = nexikConfig.plans[plan].features as readonly string[]
+  return planFeatures.includes(feature)
 }

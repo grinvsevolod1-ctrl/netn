@@ -131,7 +131,7 @@ export default function AnalyticsPage() {
             <StatsCard
               title="Генераций"
               value={data.generator.totalGenerations}
-              icon={}
+              icon={BarChart3}
               color="primary"
               trend={data.rates.completion ? { value: parseFloat(data.rates.completion), isPositive: true } : undefined}
               subtitle={`${data.rates.completion}% завершено`}

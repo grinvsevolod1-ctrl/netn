@@ -208,7 +208,7 @@ export default function AutoResponsesPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatsCard title="Всего правил" value={rules.length} icon={} color="primary" />
+        <StatsCard title="Всего правил" value={rules.length} icon={MessageSquare} color="primary" />
         <StatsCard title="Активных" value={enabledRules} icon={Power} color="green" />
         <StatsCard title="Срабатываний" value={totalUseCount} icon={MessageSquare} color="blue" />
         <StatsCard title="Шаблонов" value={templates.length} icon={Tag} color="purple" />
