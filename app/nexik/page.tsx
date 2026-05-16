@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { SiriOrb } from "@/components/nexik/siri-orb"
 import { NexikLogo } from "@/components/nexik/logo"
+import { NetNextLogo } from "@/components/netnext-logo"
 import { 
   Zap, 
   MessageSquare, 
@@ -409,9 +410,7 @@ export default function NexikLandingPage() {
         <div className="container mx-auto px-4 md:px-6 lg:px-20">
           <div className="flex items-center justify-between h-16">
             <Link href="/nexik" className="flex items-center gap-3 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#00ffff] to-[#00cc99] flex items-center justify-center">
-                <NexikLogo size={20} />
-              </div>
+              <NetNextLogo size={36} showText={false} />
               <div className="flex items-baseline gap-2">
                 <span className="font-bold text-lg">Nexik</span>
                 <span className="text-xs text-zinc-600 font-mono">by NetNext</span>
