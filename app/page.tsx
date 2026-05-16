@@ -87,8 +87,8 @@ export default function Home() {
         onOpenChange={setIsChatOpen}
         config={{
           companyName: 'NetNext',
-          assistantName: 'AI Ассистент',
-          welcomeMessage: 'Привет! Я AI-ассистент NetNext. Чем могу помочь?',
+          assistantName: 'Nexik',
+          welcomeMessage: 'Привет! Я Nexik — AI-ассистент NetNext. Чем могу помочь?',
           apiEndpoint: '/api/chat/ai',
           quickActions: [
             { id: '1', label: 'Узнать об услугах', action: 'custom', icon: 'MessageSquare' },

@@ -21,7 +21,7 @@ export function ChatWelcome({ onSend }: ChatWelcomeProps) {
         <NNAssistantIcon className="w-7 h-7 text-primary" />
       </div>
       <div className="text-center">
-        <h3 className="font-semibold text-base mb-1.5">AI-ассистент NetNext</h3>
+        <h3 className="font-semibold text-base mb-1.5">Nexik</h3>
         <p className="text-sm text-muted-foreground max-w-[260px] leading-relaxed">
           Задайте вопрос или выберите тему
         </p>

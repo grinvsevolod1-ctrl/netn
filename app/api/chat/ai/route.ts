@@ -74,7 +74,7 @@ const DEMO_RESPONSES: Record<string, string> = {
 
 Пока ждёте, можете описать свой вопрос подробнее — оператор сразу увидит эту информацию.`,
 
-  default: `Спасибо за сообщение! Я AI-ассистент компании NetNext.
+  default: `Спасибо за сообщение! Я Nexik — AI-ассистент NetNext.
 
 Я могу помочь вам:
 - Узнать об услугах компании
@@ -102,7 +102,7 @@ function findResponse(message: string): string {
     return DEMO_RESPONSES.оператор
   }
   if (lowerMessage.includes('привет') || lowerMessage.includes('здравств') || lowerMessage.includes('добр')) {
-    return 'Привет! Рад вас видеть! Я AI-ассистент NetNext. Чем могу помочь сегодня?'
+    return 'Привет! Рад вас видеть! Я Nexik — AI-ассистент NetNext. Чем могу помочь сегодня?'
   }
   if (lowerMessage.includes('спасибо') || lowerMessage.includes('благодар')) {
     return 'Пожалуйста! Рад был помочь. Если возникнут ещё вопросы — обращайтесь!'

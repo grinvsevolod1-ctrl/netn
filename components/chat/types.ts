@@ -76,8 +76,8 @@ export const DEFAULT_DISPLAY_CONFIG: ChatDisplayConfig = {
 
 export const DEFAULT_CHAT_CONFIG: ChatConfig = {
   companyName: 'NetNext',
-  assistantName: 'AI Ассистент',
-  welcomeMessage: 'Привет! Я AI-ассистент. Чем могу помочь?',
+  assistantName: 'Nexik',
+  welcomeMessage: 'Привет! Я Nexik. Чем могу помочь?',
   placeholder: 'Напишите сообщение...',
   apiEndpoint: '/api/chat/ai',
   showOperatorButton: true,
