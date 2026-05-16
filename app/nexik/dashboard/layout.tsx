@@ -14,7 +14,8 @@ import {
   Clock,
   HelpCircle,
   Plug,
-  Zap
+  Zap,
+  Key
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -25,6 +26,7 @@ const navItems = [
   { href: "/nexik/dashboard/schedule", icon: Clock, label: "Расписание" },
   { href: "/nexik/dashboard/integration", icon: Zap, label: "Интеграция" },
   { href: "/nexik/dashboard/widget", icon: Code, label: "Виджет" },
+  { href: "/nexik/dashboard/api-keys", icon: Key, label: "API ключи" },
   { href: "/nexik/dashboard/settings", icon: Settings, label: "Настройки" },
 ]
 

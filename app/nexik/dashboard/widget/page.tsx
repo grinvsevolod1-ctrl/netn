@@ -136,8 +136,37 @@ export default function Layout({ children }) {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-3">
               <Label className="text-sm text-muted-foreground">Основной цвет</Label>
+              
+              {/* Preset colors */}
+              <div className="flex gap-2 flex-wrap">
+                {[
+                  { color: "#4fd1c5", name: "Teal" },
+                  { color: "#6366f1", name: "Indigo" },
+                  { color: "#ec4899", name: "Pink" },
+                  { color: "#f59e0b", name: "Amber" },
+                  { color: "#10b981", name: "Emerald" },
+                  { color: "#ef4444", name: "Red" },
+                  { color: "#8b5cf6", name: "Purple" },
+                  { color: "#3b82f6", name: "Blue" },
+                ].map((preset) => (
+                  <button
+                    key={preset.color}
+                    onClick={() => setConfig({ ...config, color: preset.color })}
+                    className={cn(
+                      "w-10 h-10 rounded-xl border-2 transition-all hover:scale-110",
+                      config.color === preset.color 
+                        ? "border-white shadow-lg scale-110" 
+                        : "border-transparent"
+                    )}
+                    style={{ backgroundColor: preset.color }}
+                    title={preset.name}
+                  />
+                ))}
+              </div>
+              
+              {/* Custom color input */}
               <div className="flex gap-2">
                 <Input
                   type="color"
@@ -151,6 +180,9 @@ export default function Layout({ children }) {
                   className="flex-1 bg-secondary/30 border-border font-mono"
                 />
               </div>
+              <p className="text-xs text-muted-foreground">
+                Выберите один из готовых цветов или укажите свой
+              </p>
             </div>
 
             {/* Display Mode - NEW */}
@@ -316,6 +348,7 @@ export default function Layout({ children }) {
                   { code: "Nexik.toggle()", desc: "Переключить состояние" },
                   { code: "Nexik.setMode('modal')", desc: "Переключить в модальный режим" },
                   { code: "Nexik.setMode('mini')", desc: "Переключить в мини-режим" },
+                  { code: "Nexik.updateColor('#6366f1')", desc: "Изменить цвет виджета динамически" },
                 ].map((item) => (
                   <div key={item.code} className="p-4 rounded-xl bg-secondary/30 border border-border">
                     <code className="text-primary font-mono">{item.code}</code>
