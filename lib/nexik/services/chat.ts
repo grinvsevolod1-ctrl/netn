@@ -12,7 +12,7 @@ import {
   type Message,
   type Conversation
 } from '../db/conversations'
-import { getWidget, type Widget } from '../db/widgets'
+import { getWidget, type Widget, type QuickReply } from '../db/widgets'
 import { getOrganization, incrementMessagesUsed, checkMessageLimit } from '../db/organizations'
 import { getRAGContextForPrompt } from '../db/knowledge'
 import { getOllamaClient } from '@/lib/ai/providers'
@@ -252,7 +252,7 @@ export async function processMessage(request: ChatRequest): Promise<ChatResponse
         sender_type: 'system',
         content: 'AI-ассистент временно недоступен. Оператор скоро ответит.',
         quick_replies: [
-          { label: 'Позвать оператора', message: '/operator' }
+          { id: 'qr-operator', label: 'Позвать оператора', message: '/operator' }
         ]
       })
     }
@@ -344,18 +344,19 @@ async function getConversationHistory(conversationId: string, limit: number): Pr
   return messages.reverse()
 }
 
-function extractQuickReplies(response: string): { label: string; message: string }[] {
+function extractQuickReplies(response: string): QuickReply[] {
   // Simple extraction - look for numbered options or bullet points
-  const replies: { label: string; message: string }[] = []
+  const replies: QuickReply[] = []
   
   // Match patterns like "1. Option" or "• Option"
   const matches = response.match(/(?:^\d+\.\s*|^[•-]\s*)(.{5,50})$/gm)
   
   if (matches && matches.length >= 2 && matches.length <= 4) {
-    for (const match of matches) {
+    for (let i = 0; i < matches.length; i++) {
+      const match = matches[i]
       const label = match.replace(/^[\d.•-\s]+/, '').trim()
       if (label.length > 3 && label.length < 50) {
-        replies.push({ label, message: label })
+        replies.push({ id: `qr-${Date.now()}-${i}`, label, message: label })
       }
     }
   }
