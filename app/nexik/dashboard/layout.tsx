@@ -12,7 +12,9 @@ import {
   ArrowLeft,
   Brain,
   Clock,
-  HelpCircle
+  HelpCircle,
+  Plug,
+  Zap
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -21,6 +23,7 @@ const navItems = [
   { href: "/nexik/dashboard/chats", icon: MessageSquare, label: "Диалоги" },
   { href: "/nexik/dashboard/knowledge", icon: BookOpen, label: "База знаний" },
   { href: "/nexik/dashboard/schedule", icon: Clock, label: "Расписание" },
+  { href: "/nexik/dashboard/integration", icon: Zap, label: "Интеграция" },
   { href: "/nexik/dashboard/widget", icon: Code, label: "Виджет" },
   { href: "/nexik/dashboard/settings", icon: Settings, label: "Настройки" },
 ]
