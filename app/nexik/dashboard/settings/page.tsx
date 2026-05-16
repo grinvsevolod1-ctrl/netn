@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import { Bell, Users, Brain, Save } from "lucide-react"
+import { Bell, Users, Save } from "lucide-react"
+import { NexikLogo } from "@/components/nexik/logo"
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState({
@@ -116,7 +117,7 @@ export default function SettingsPage() {
         <div className="rounded-2xl border border-border bg-card/80 backdrop-blur-sm overflow-hidden">
           <div className="p-6 border-b border-border">
             <div className="flex items-center gap-3">
-              <Brain className="w-5 h-5 text-[#00ff88]" />
+              <NexikLogo size={20} animated />
               <h2 className="text-lg font-semibold">Настройки AI</h2>
             </div>
             <p className="text-sm text-muted-foreground mt-1">

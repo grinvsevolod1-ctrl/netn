@@ -1,11 +1,11 @@
 "use client"
-
+// Nexik Landing Page v2
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { SiriOrb } from "@/components/nexik/siri-orb"
+import { NexikLogo } from "@/components/nexik/logo"
 import { 
-  Brain, 
   Zap, 
   MessageSquare, 
   ArrowRight,
@@ -159,7 +159,7 @@ function DemoChat() {
       {/* Header */}
       <div className="flex items-center gap-3 px-5 py-4 border-b border-[#1a1a2e] bg-[#0d0d14]">
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00ffff] to-[#00cc99] flex items-center justify-center">
-          <Brain className="w-5 h-5 text-black" />
+          <NexikLogo size={20} />
         </div>
         <div>
           <h4 className="font-semibold text-white">Nexik</h4>
@@ -410,7 +410,7 @@ export default function NexikLandingPage() {
           <div className="flex items-center justify-between h-16">
             <Link href="/nexik" className="flex items-center gap-3 group">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#00ffff] to-[#00cc99] flex items-center justify-center">
-                <Brain className="w-5 h-5 text-black" />
+                <NexikLogo size={20} />
               </div>
               <div className="flex items-baseline gap-2">
                 <span className="font-bold text-lg">Nexik</span>
@@ -622,7 +622,7 @@ export default function NexikLandingPage() {
                 accent: "#ffaa00"
               },
               {
-                icon: <Brain className="w-6 h-6" />,
+                icon: <NexikLogo size={24} animated />,
                 title: "Изучает сайт",
                 description: "Сам парсит твой сайт и соцсети. Знает все о бизнесе без обучения",
                 accent: "#aa00ff"
@@ -840,7 +840,7 @@ export default function NexikLandingPage() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00ffff] to-[#00cc99] flex items-center justify-center">
-                <Brain className="w-4 h-4 text-black" />
+                <NexikLogo size={16} />
               </div>
               <span className="font-semibold">Nexik</span>
               <span className="text-zinc-600 text-sm">— продукт студии NetNext</span>
