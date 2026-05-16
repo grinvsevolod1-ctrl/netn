@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { NexikLogo } from "@/components/nexik/logo"
+import { NetNextLogo } from "@/components/netnext-logo"
 import { 
   ArrowRight, 
   Send,
@@ -76,7 +76,7 @@ function ChatBubble({
     <div className={cn("flex gap-3", role === "user" ? "justify-end" : "justify-start")}>
       {role === "nexik" && (
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#00ffff] to-[#00cc99] flex items-center justify-center flex-shrink-0">
-          <NexikLogo size={20} />
+          <NetNextLogo size={20} />
         </div>
       )}
       <div className="flex flex-col gap-2 max-w-[85%]">
@@ -440,7 +440,7 @@ export default function NexikStartPage() {
           <div className="flex items-center justify-between h-16">
             <Link href="/nexik" className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#00ffff] to-[#00cc99] flex items-center justify-center">
-                <NexikLogo size={20} />
+                <NetNextLogo size={20} />
               </div>
               <span className="font-bold text-lg">Nexik</span>
             </Link>
@@ -473,7 +473,7 @@ export default function NexikStartPage() {
             <div className="space-y-8">
               <div className="text-center">
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#00ffff] to-[#00cc99] flex items-center justify-center mx-auto mb-6">
-                  <NexikLogo size={32} animated />
+                  <NetNextLogo size={32} />
                 </div>
                 <h1 className="text-3xl font-bold mb-3">Создайте аккаунт Nexik</h1>
                 <p className="text-zinc-400">Настроим AI-ассистента за 2 минуты</p>
@@ -551,7 +551,7 @@ export default function NexikStartPage() {
               {/* Chat header */}
               <div className="flex items-center gap-3 px-5 py-4 border-b border-[#1a1a2e] bg-[#0d0d14]">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00ffff] to-[#00cc99] flex items-center justify-center">
-                  <NexikLogo size={20} />
+                  <NetNextLogo size={20} />
                 </div>
                 <div>
                   <h4 className="font-semibold">Nexik</h4>

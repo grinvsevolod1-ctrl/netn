@@ -16,7 +16,7 @@ import {
   Zap,
   Key
 } from "lucide-react"
-import { NexikLogo } from "@/components/nexik/logo"
+import { NetNextLogo } from "@/components/netnext-logo"
 import { cn } from "@/lib/utils"
 
 const navItems = [
@@ -58,7 +58,7 @@ export default function NexikDashboardLayout({
         <div className="p-5 border-b border-white/5">
           <Link href="/nexik" className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00ffff] to-[#ff00aa] flex items-center justify-center transition-shadow group-hover:shadow-[0_0_30px_rgba(0,255,255,0.3)]">
-              <NexikLogo size={20} />
+              <NetNextLogo size={20} />
             </div>
             <div>
               <span className="font-bold text-lg block">Nexik</span>

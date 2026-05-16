@@ -6,7 +6,8 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Copy, Check, ArrowLeft, Cpu, Zap, Brain, Palette } from "lucide-react"
+import { Copy, Check, ArrowLeft, Cpu, Zap, Palette } from "lucide-react"
+import { NetNextLogo } from "@/components/netnext-logo"
 import { cn } from "@/lib/utils"
 
 export default function NexikDemoPage() {
@@ -47,7 +48,7 @@ export default function NexikDemoPage() {
       accent: "#00ffff",
     },
     {
-      icon: Brain,
+      icon: Cpu,
       title: "AI на базе LLM",
       description: "Умные ответы на вопросы посетителей 24/7",
       accent: "#00ff88",
@@ -333,7 +334,7 @@ export default function NexikDemoPage() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
               </span>
-              Нажмите на кнопку чата в правом нижнем углу, чтобы протестировать виджет
+              Нажмите на кнопку чата в правом нижнем углу, чтобы протестировать видж��т
             </div>
           </div>
         </div>

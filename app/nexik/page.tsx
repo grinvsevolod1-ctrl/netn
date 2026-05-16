@@ -1,10 +1,9 @@
 "use client"
-// Nexik Landing Page v2
+// Nexik Landing Page v3 - NetNext branding
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { SiriOrb } from "@/components/nexik/siri-orb"
-import { NexikLogo } from "@/components/nexik/logo"
 import { NetNextLogo } from "@/components/netnext-logo"
 import { 
   Zap, 
@@ -160,7 +159,7 @@ function DemoChat() {
       {/* Header */}
       <div className="flex items-center gap-3 px-5 py-4 border-b border-[#1a1a2e] bg-[#0d0d14]">
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00ffff] to-[#00cc99] flex items-center justify-center">
-          <NexikLogo size={20} />
+          <NetNextLogo size={20} />
         </div>
         <div>
           <h4 className="font-semibold text-white">Nexik</h4>
@@ -549,7 +548,7 @@ export default function NexikLandingPage() {
               {
                 step: "04",
                 icon: <TrendingUp className="w-7 h-7" />,
-                title: "Nexik работает",
+                title: "Nexik работ��ет",
                 description: "AI общается с клиентами, собирает заявки и передает тебе горячих лидов.",
                 accent: "#ffaa00"
               }
@@ -621,7 +620,7 @@ export default function NexikLandingPage() {
                 accent: "#ffaa00"
               },
               {
-                icon: <NexikLogo size={24} animated />,
+                icon: <NetNextLogo size={24} />,
                 title: "Изучает сайт",
                 description: "Сам парсит твой сайт и соцсети. Знает все о бизнесе без обучения",
                 accent: "#aa00ff"
@@ -839,7 +838,7 @@ export default function NexikLandingPage() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00ffff] to-[#00cc99] flex items-center justify-center">
-                <NexikLogo size={16} />
+                <NetNextLogo size={16} />
               </div>
               <span className="font-semibold">Nexik</span>
               <span className="text-zinc-600 text-sm">— продукт студии NetNext</span>

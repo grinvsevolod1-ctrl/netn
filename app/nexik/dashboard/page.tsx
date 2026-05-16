@@ -16,7 +16,7 @@ import {
   UserPlus,
   CheckCircle2
 } from "lucide-react"
-import { NexikLogo } from "@/components/nexik/logo"
+import { NetNextLogo } from "@/components/netnext-logo"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
@@ -284,7 +284,7 @@ export default function NexikDashboardPage() {
           {/* AI Performance */}
           <div className="rounded-2xl border border-[#1a1a2e] bg-[#0a0a0f]/80 backdrop-blur-sm p-6">
             <div className="flex items-center gap-3 mb-4">
-              <NexikLogo size={20} animated />
+              <NetNextLogo size={20} />
               <h2 className="font-semibold">Nexik за неделю</h2>
             </div>
             

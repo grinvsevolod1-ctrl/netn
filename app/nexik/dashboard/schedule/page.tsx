@@ -9,7 +9,7 @@ import {
   Moon,
   Calendar
 } from "lucide-react"
-import { NexikLogo } from "@/components/nexik/logo"
+import { NetNextLogo } from "@/components/netnext-logo"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
@@ -71,7 +71,7 @@ export default function SchedulePage() {
         >
           <div className="flex items-center justify-between mb-4">
             <div className="w-12 h-12 rounded-xl bg-[#00ffff]/10 flex items-center justify-center">
-              <NexikLogo size={24} animated />
+              <NetNextLogo size={24} />
             </div>
             {mode === "ai_only" && (
               <div className="w-6 h-6 rounded-full bg-[#00ffff] flex items-center justify-center">
@@ -143,7 +143,7 @@ export default function SchedulePage() {
         <div className="rounded-2xl border border-[#1a1a2e] bg-[#0a0a0f]/80 p-6 mb-8">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-xl bg-[#00ffff]/10 flex items-center justify-center flex-shrink-0">
-              <NexikLogo size={24} animated />
+              <NetNextLogo size={24} />
             </div>
             <div>
               <h3 className="font-semibold mb-2">Nexik работает круглосуточно</h3>
