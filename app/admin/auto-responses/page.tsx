@@ -565,7 +565,7 @@ function RuleForm({
           onChange={e => setForm(f => ({ ...f, response_text: e.target.value }))}
           required
           rows={4}
-          placeholder="Текст ответа, к��торый увидит пользователь..."
+          placeholder="Текст ответа, который увидит пользователь..."
           className="bg-[#111] border-[#222]"
         />
       </div>

@@ -535,7 +535,7 @@ export default function NexikLandingPage() {
               {
                 step: "02", 
                 icon: <Globe className="w-7 h-7" />,
-                title: "��кажи сайт",
+                title: "Укажи сайт",
                 description: "Nexik проанализирует твой сайт и сам изучит информацию о бизнесе.",
                 accent: "#ff00aa"
               },
@@ -702,7 +702,7 @@ export default function NexikLandingPage() {
                 </h2>
                 <p className="text-lg text-zinc-400 mb-8 leading-relaxed">
                   Мы создаем не просто сайты, а готовые бизнес-инструменты. 
-                  Каждый сайт от NetNext полу��ает AI-асси��тента Nexik.
+                  Каждый сайт от NetNext получает AI-ассистента Nexik.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link href="/#services">

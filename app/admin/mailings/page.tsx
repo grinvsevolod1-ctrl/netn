@@ -827,7 +827,7 @@ function CreateCampaignModal({
             onClick={step === 1 ? onClose : () => setStep(1)}
             className="text-[#888]"
           >
-            {step === 1 ? "От��ена" : "Назад"}
+            {step === 1 ? "Отмена" : "Назад"}
           </Button>
           
           {step === 1 ? (

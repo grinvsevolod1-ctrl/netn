@@ -752,7 +752,7 @@ export default function NexikStartPage() {
                       <div className="space-y-3">
                         <p className="flex items-center gap-2">
                           <Sparkles className="w-4 h-4 text-[#00ffff]" />
-                          ��вой AI-ассистент готов!
+                          Твой AI-ассистент готов!
                         </p>
                         <p>Теперь добавим его на сайт. Выбери способ:</p>
                       </div>
