@@ -38,7 +38,7 @@ function DotGrid() {
       <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="dotGrid" width="32" height="32" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.05)" />
+            <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.08)" />
           </pattern>
           <radialGradient id="gridFade" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="white" stopOpacity="1" />
@@ -255,42 +255,58 @@ export default function NexikPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-[#030303] text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#0a0f14] text-white overflow-x-hidden">
       {/* Background */}
       <div className="fixed inset-0">
-        {/* Base gradient */}
+        {/* Base gradient - much brighter */}
         <div 
           className="absolute inset-0"
           style={{
-            background: "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,60,60,0.4) 0%, transparent 50%)",
+            background: "radial-gradient(ellipse 100% 70% at 50% 0%, rgba(0,180,180,0.25) 0%, rgba(0,80,100,0.1) 40%, transparent 70%)",
+          }}
+        />
+        
+        {/* Secondary upper glow */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: "radial-gradient(ellipse 60% 40% at 50% 10%, rgba(34,211,238,0.15) 0%, transparent 50%)",
           }}
         />
         
         {/* Dot grid pattern */}
         <DotGrid />
         
-        {/* Center glow */}
+        {/* Center glow - more visible */}
         <div 
-          className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+          className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full pointer-events-none"
           style={{
-            background: "radial-gradient(circle, rgba(0,255,255,0.06) 0%, transparent 70%)",
-            filter: "blur(80px)",
-          }}
-        />
-        
-        {/* Subtle side accents */}
-        <div 
-          className="absolute top-1/2 -left-32 w-[400px] h-[400px] rounded-full pointer-events-none"
-          style={{
-            background: "radial-gradient(circle, rgba(0,200,150,0.04) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(0,255,255,0.12) 0%, rgba(0,200,200,0.05) 40%, transparent 70%)",
             filter: "blur(60px)",
           }}
         />
+        
+        {/* Side accents - brighter */}
         <div 
-          className="absolute top-1/3 -right-32 w-[300px] h-[300px] rounded-full pointer-events-none"
+          className="absolute top-1/2 -left-32 w-[500px] h-[500px] rounded-full pointer-events-none"
           style={{
-            background: "radial-gradient(circle, rgba(0,255,255,0.03) 0%, transparent 70%)",
-            filter: "blur(50px)",
+            background: "radial-gradient(circle, rgba(0,200,150,0.1) 0%, transparent 70%)",
+            filter: "blur(80px)",
+          }}
+        />
+        <div 
+          className="absolute top-1/3 -right-32 w-[400px] h-[400px] rounded-full pointer-events-none"
+          style={{
+            background: "radial-gradient(circle, rgba(0,255,255,0.08) 0%, transparent 70%)",
+            filter: "blur(60px)",
+          }}
+        />
+        
+        {/* Bottom glow for depth */}
+        <div 
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[400px] pointer-events-none"
+          style={{
+            background: "radial-gradient(ellipse 80% 100% at 50% 100%, rgba(0,100,120,0.1) 0%, transparent 60%)",
           }}
         />
       </div>
