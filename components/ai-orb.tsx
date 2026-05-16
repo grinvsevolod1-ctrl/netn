@@ -207,10 +207,12 @@ export function SiriOrb({
     <canvas
       ref={canvasRef}
       className={cn(
+        "rounded-full",
         "transition-transform duration-300",
         isHovered && "scale-110",
         isActive && "scale-95"
       )}
+      style={{ background: 'transparent' }}
     />
   )
 }
