@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback, useMemo, useRef, memo } from "react"
-import { ArrowRight, Wand2, Zap, Clock, Users, Search, ChevronDown } from "lucide-react"
+import { ArrowRight, Wand2, Clock, Users, Search, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { GeneratorModalV2 } from "./generator-modal-v2"
 import {
@@ -420,7 +420,7 @@ export function GeneratorWidget({ variant = "default" }: GeneratorWidgetProps) {
                 className="flex items-center gap-1.5 px-2 py-1 rounded-full text-[10px] font-bold"
                 style={{ background: `${theme.accentColor}15`, color: theme.accentColor }}
               >
-                <Zap className="w-3 h-3" />
+                <div className="w-1.5 h-1.5 rounded-full" style={{ background: theme.accentColor }} />
                 AI
               </div>
             </div>

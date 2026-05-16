@@ -13,7 +13,6 @@ import {
   MessageSquare,
   UserCheck,
   BarChart3,
-  Zap,
   Bell,
   Search,
   Command,
@@ -53,7 +52,7 @@ const navigation = [
   { 
     name: "Автоответы", 
     href: "/admin/auto-responses", 
-    icon: Zap,
+    icon: ,
     description: "Правила бота"
   },
   { 

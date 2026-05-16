@@ -10,7 +10,6 @@ import {
   Target,
   ArrowRight,
   BarChart3,
-  Zap,
   ArrowUpRight,
   ArrowDownRight,
   Calendar
@@ -508,7 +507,7 @@ export function AdsWidget({ onContactClick }: AdsWidgetProps) {
               {/* Recommendations */}
               <div className="bg-white/[0.02] rounded-xl p-4 border border-white/[0.06] mb-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <Zap className="w-4 h-4" style={{ color: accentColor }} />
+                  <div className="w-2 h-2 rounded-full" style={{ background: accentColor }} />
                   <span className="text-sm font-medium text-white">Рекомендации для {currentNiche.name}</span>
                 </div>
                 <ul className="space-y-2">
@@ -535,7 +534,6 @@ export function AdsWidget({ onContactClick }: AdsWidgetProps) {
               boxShadow: `0 8px 32px ${accentColor}30`
             }}
           >
-            <Zap className="w-5 h-5 mr-2" />
             Получить бесплатный аудит
             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>

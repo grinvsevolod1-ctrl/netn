@@ -10,7 +10,6 @@ import {
   TrendingUp,
   MessageSquare,
   UserCheck,
-  Zap,
   ArrowUpRight,
   ArrowRight,
   Activity,

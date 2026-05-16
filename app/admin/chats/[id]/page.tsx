@@ -16,7 +16,6 @@ import {
   Link as LinkIcon,
   PhoneOff,
   Phone,
-  Zap,
   MessageSquare,
   ExternalLink
 } from "lucide-react"
@@ -447,7 +446,7 @@ export default function ChatDetailPage() {
         {showQuickReplies && (
           <div className="mb-3 p-3 bg-[#111] rounded-xl border border-[#1a1a1a]">
             <div className="flex items-center gap-2 mb-2">
-              <Zap className="w-4 h-4 text-amber-400" />
+              <div className="w-2 h-2 rounded-full bg-amber-400" />
               <span className="text-xs font-medium text-[#888]">Быстрые ответы</span>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -476,7 +475,7 @@ export default function ChatDetailPage() {
               showQuickReplies ? "bg-amber-500/10 text-amber-400" : "text-[#888] hover:text-white"
             )}
           >
-            <Zap className="w-5 h-5" />
+            <MessageSquare className="w-5 h-5" />
           </Button>
 
           {/* Input */}

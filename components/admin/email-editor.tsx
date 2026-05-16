@@ -18,7 +18,7 @@ import {
   Edit3,
   Undo,
   Redo,
-  Zap
+  
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -157,7 +157,6 @@ export function EmailEditor({ value, onChange, onGenerateWithAI }: EmailEditorPr
               onClick={onGenerateWithAI}
               className="text-violet-400 hover:text-violet-300 hover:bg-violet-500/10"
             >
-              <Zap className="w-4 h-4 mr-2" />
               AI
             </Button>
           )}

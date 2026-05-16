@@ -7,7 +7,7 @@ import {
   Check, 
   Globe, 
   Code, 
-  Zap,
+  ,
   HelpCircle,
   ExternalLink,
   Play,
@@ -544,7 +544,7 @@ export default function IntegrationPage() {
               </span>
               {platform.name}
               {platform.hasOAuth && (
-                <Zap className="w-3 h-3 text-[#00ff88]" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[#00ff88]" />
               )}
             </button>
           ))}
@@ -567,9 +567,7 @@ export default function IntegrationPage() {
                 >
                   {oauthLoading === selectedPlatform ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <Zap className="w-4 h-4" />
-                  )}
+                  ) : null}
                   Автоматически
                   {platformInstructions[selectedPlatform].oauthBeta && (
                     <span className="text-[10px] bg-black/20 px-1.5 py-0.5 rounded">BETA</span>

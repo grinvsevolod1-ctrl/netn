@@ -6,7 +6,7 @@ import {
   TrendingUp,
   Users,
   MessageSquare,
-  Zap,
+  ,
   Monitor,
   Smartphone,
   Tablet,
@@ -132,7 +132,7 @@ export default function AnalyticsPage() {
             <StatsCard
               title="Генераций"
               value={data.generator.totalGenerations}
-              icon={Zap}
+              icon={}
               color="primary"
               trend={data.rates.completion ? { value: parseFloat(data.rates.completion), isPositive: true } : undefined}
               subtitle={`${data.rates.completion}% завершено`}

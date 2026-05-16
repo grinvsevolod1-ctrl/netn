@@ -6,7 +6,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Copy, Check, ArrowLeft, Cpu, Zap, Palette } from "lucide-react"
+import { Copy, Check, ArrowLeft, Cpu, Palette } from "lucide-react"
 import { NetNextLogo } from "@/components/netnext-logo"
 import { cn } from "@/lib/utils"
 
@@ -42,7 +42,7 @@ export default function NexikDemoPage() {
 
   const features = [
     {
-      icon: Zap,
+      icon: Cpu,
       title: "Быстрая интеграция",
       description: "Одна строка кода — и AI-чат работает на вашем сайте",
       accent: "#00ffff",

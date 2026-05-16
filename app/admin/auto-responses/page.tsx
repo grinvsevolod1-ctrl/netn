@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react"
 import { 
-  Zap, 
+  
   Plus, 
   RefreshCw,
   MessageSquare,
@@ -208,7 +208,7 @@ export default function AutoResponsesPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatsCard title="Всего правил" value={rules.length} icon={Zap} color="primary" />
+        <StatsCard title="Всего правил" value={rules.length} icon={} color="primary" />
         <StatsCard title="Активных" value={enabledRules} icon={Power} color="green" />
         <StatsCard title="Срабатываний" value={totalUseCount} icon={MessageSquare} color="blue" />
         <StatsCard title="Шаблонов" value={templates.length} icon={Tag} color="purple" />
@@ -225,7 +225,7 @@ export default function AutoResponsesPage() {
               : "text-[#888] hover:text-white"
           )}
         >
-          <Zap className="w-4 h-4" />
+          <div className="w-2 h-2 rounded-full bg-current" />
           Правила бота
           <span className="px-1.5 py-0.5 bg-[#222] rounded text-xs">{rules.length}</span>
         </button>
@@ -263,7 +263,7 @@ export default function AutoResponsesPage() {
           <div className="space-y-3">
             {rules.length === 0 && !loading ? (
               <div className="flex flex-col items-center justify-center h-48 bg-[#0a0a0a]/50 border border-[#1a1a1a] rounded-xl">
-                <Zap className="w-10 h-10 text-[#555] mb-3" />
+                <MessageSquare className="w-10 h-10 text-[#555] mb-3" />
                 <p className="text-white font-medium">Нет правил</p>
                 <p className="text-sm text-[#888]">Добавьте первое правило автоответа</p>
               </div>

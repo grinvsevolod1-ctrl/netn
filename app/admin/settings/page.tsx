@@ -14,7 +14,7 @@ import {
   Activity,
   AlertCircle,
   CheckCircle2,
-  Zap,
+  ,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
@@ -136,7 +136,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
                 {conn.name === "SMTP" && <Mail className="w-5 h-5 text-[#888]" />}
-                {conn.name === "Redis" && <Zap className="w-5 h-5 text-[#888]" />}
+                {conn.name === "Redis" && <Database className="w-5 h-5 text-[#888]" />}
                 {conn.name === "PostgreSQL" && <Database className="w-5 h-5 text-[#888]" />}
                 <span className="font-medium text-white">{conn.name}</span>
               </div>

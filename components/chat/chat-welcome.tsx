@@ -1,6 +1,6 @@
 "use client"
 
-import { MessageSquare, Calendar, Headphones, ArrowRight, Zap, Calculator, type LucideIcon } from 'lucide-react'
+import { MessageSquare, Calendar, Headphones, ArrowRight, Calculator, type LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { SiriOrb } from '@/components/ai-orb'
 import { ChatConfig, ChatAction } from './types'
@@ -75,8 +75,8 @@ export function ChatWelcome({ config, onQuickAction, className }: ChatWelcomePro
           <h3 className="text-2xl font-bold text-white">
             {config.assistantName}
           </h3>
-          <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-teal-500/20 border border-teal-500/30">
-            <Zap className="w-3.5 h-3.5 text-teal-400" />
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-teal-500/20 border border-teal-500/30">
+            <div className="w-2 h-2 rounded-full bg-teal-400" />
             <span className="text-xs font-bold text-teal-400 uppercase tracking-wider">AI</span>
           </div>
         </div>

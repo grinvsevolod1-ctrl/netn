@@ -26,7 +26,6 @@ import {
   Gamepad2,
   Laptop,
   Phone,
-  Zap,
   type LucideIcon
 } from "lucide-react"
 
@@ -431,7 +430,7 @@ export const ADS_NICHES: Record<string, AdsNiche> = {
     competition: "high",
     recommendations: [
       "Весна-лето — основной сезон ремонтов",
-      "Показывайте портфолио и примеры работ",
+      "Показывайте ��ортфолио и примеры работ",
       "Разделите кампании: квартиры, офисы, коттеджи"
     ],
     keywords: ["ремонт", "строительств", "отделк", "дизайн интерьер", "мастер", "бригада", "под ключ"]
@@ -885,7 +884,7 @@ export const ADS_NICHES: Record<string, AdsNiche> = {
     id: "energy",
     name: "Энергетика и электрика",
     category: "B2B",
-    icon: Zap,
+    icon: Laptop,
     accentColor: "#FBBF24",
     yandex: {
       avgCpc: 72,

@@ -8,7 +8,6 @@ import {
   Users, 
   Check,
   Globe,
-  Zap,
   ArrowRight
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -161,7 +160,6 @@ export function PromotionSection({ onNavigate }: PromotionSectionProps) {
                 className="group bg-[#ff6b35] hover:bg-[#ff6b35]/90 text-white px-8 py-6 text-base"
                 onClick={() => onNavigate("contact")}
               >
-                <Zap className="w-5 h-5 mr-2" />
                 Получить аудит бесплатно
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>

@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Copy, Check, Key, Plus, Trash2, Shield, Server, Code, Zap, RefreshCw } from "lucide-react"
+import { Copy, Check, Key, Plus, Trash2, Shield, Server, Code, RefreshCw } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface ApiKey {
@@ -90,7 +90,7 @@ export default function ApiKeysPage() {
             </p>
             <div className="grid sm:grid-cols-3 gap-4">
               <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-primary" />
+                <div className="w-2 h-2 rounded-full bg-primary" />
                 <span className="text-sm">Автоустановка</span>
               </div>
               <div className="flex items-center gap-2">

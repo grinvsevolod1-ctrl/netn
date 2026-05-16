@@ -7,7 +7,7 @@ import {
   MessageSquare, 
   Users, 
   BookOpen, 
-  Zap, 
+  
   ArrowUpRight,
   Clock,
   TrendingUp,
@@ -152,7 +152,7 @@ export default function NexikDashboardPage() {
       title: "Время ответа",
       value: stats.avgResponseTime,
       change: "мгновенно",
-      icon: Zap,
+      icon: ,
       accent: "#ffaa00",
     },
   ]

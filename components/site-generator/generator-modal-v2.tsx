@@ -6,7 +6,6 @@ import {
   X, 
   Maximize2, 
   Minimize2, 
-  Zap,
   ExternalLink,
   RefreshCw,
   ChevronRight,
@@ -478,7 +477,7 @@ export function GeneratorModalV2({
                 className="relative w-9 h-9 md:w-10 md:h-10 rounded-xl flex items-center justify-center"
                 style={{ background: accentColor }}
               >
-                <Zap className="w-4 h-4 md:w-5 md:h-5 text-black" />
+                <div className="w-2.5 h-2.5 rounded-full bg-black" />
               </div>
             </div>
             <div>
@@ -727,7 +726,6 @@ export function GeneratorModalV2({
                     style={{ background: accentColor }}
                   >
                     <span className="flex items-center justify-center gap-2">
-                      <Zap className="w-5 h-5" />
                       Создать превью сайта
                     </span>
                   </button>

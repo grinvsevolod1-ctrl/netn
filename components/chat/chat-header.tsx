@@ -8,7 +8,6 @@ import {
   MoreHorizontal, 
   Trash2, 
   RotateCcw, 
-  Zap,
   Headphones,
   Volume2,
   VolumeX,
@@ -108,8 +107,8 @@ export function ChatHeader({
               {isConnectedToOperator ? 'Оператор' : config.assistantName}
             </span>
             {!isConnectedToOperator && (
-              <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-r from-teal-500/20 to-teal-400/10 border border-teal-500/20">
-                <Zap className="w-3 h-3 text-teal-400" />
+              <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-gradient-to-r from-teal-500/20 to-teal-400/10 border border-teal-500/20">
+                <div className="w-1.5 h-1.5 rounded-full bg-teal-400" />
                 <span className="text-[10px] font-semibold text-teal-400 tracking-wide">AI</span>
               </div>
             )}
