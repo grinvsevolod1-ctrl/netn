@@ -242,12 +242,39 @@ export default function NexikPage() {
     <div className="min-h-screen bg-[#030303] text-white overflow-x-hidden">
       {/* Background */}
       <div className="fixed inset-0">
-        <DotGrid />
+        {/* Base gradient */}
         <div 
-          className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full"
+          className="absolute inset-0"
           style={{
-            background: "radial-gradient(circle, rgba(0,255,255,0.08) 0%, transparent 60%)",
+            background: "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,60,60,0.4) 0%, transparent 50%)",
+          }}
+        />
+        
+        {/* Dot grid pattern */}
+        <DotGrid />
+        
+        {/* Center glow */}
+        <div 
+          className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+          style={{
+            background: "radial-gradient(circle, rgba(0,255,255,0.06) 0%, transparent 70%)",
+            filter: "blur(80px)",
+          }}
+        />
+        
+        {/* Subtle side accents */}
+        <div 
+          className="absolute top-1/2 -left-32 w-[400px] h-[400px] rounded-full pointer-events-none"
+          style={{
+            background: "radial-gradient(circle, rgba(0,200,150,0.04) 0%, transparent 70%)",
             filter: "blur(60px)",
+          }}
+        />
+        <div 
+          className="absolute top-1/3 -right-32 w-[300px] h-[300px] rounded-full pointer-events-none"
+          style={{
+            background: "radial-gradient(circle, rgba(0,255,255,0.03) 0%, transparent 70%)",
+            filter: "blur(50px)",
           }}
         />
       </div>
