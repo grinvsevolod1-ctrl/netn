@@ -3,26 +3,132 @@
 import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { ArrowRight, Send, X, Sparkles } from "lucide-react"
+import { ArrowRight, X, Sparkles, Mic, MicOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { SiriOrb } from "@/components/nexik/siri-orb"
 
+// Приветственное сообщение
+const WELCOME_MESSAGE = `Привет! Я Nexik — AI-ассистент для бизнеса.
+
+Я могу работать на вашем сайте 24/7: отвечать клиентам за секунды, записывать на услуги, собирать заявки и не терять ни одного обращения.
+
+Расскажите, какой у вас бизнес?`
+
+// Развернутые ответы для разных ниш
 const AI_RESPONSES: Record<string, string> = {
-  "автосервис": "Записываю на ТО, отвечаю о ценах, сообщаю статус ремонта и вызываю эвакуатор. 24/7 без выходных.",
-  "салон": "Записываю к мастерам, показываю свободные окна, напоминаю о визите. Всё автоматически.",
-  "ресторан": "Принимаю заказы, бронирую столы, показываю меню. Ни один заказ не потеряется.",
-  "клиника": "Записываю на приём, отвечаю о врачах и услугах, напоминаю о визите.",
-  "магазин": "Помогаю выбрать товар, отвечаю о наличии и доставке, принимаю заказы.",
-  "default": "Отвечаю клиентам мгновенно, записываю на услуги, собираю контакты. 24/7."
+  "автосервис": `Отлично, для автосервиса я могу:
+
+• Записывать на ТО и ремонт в свободные слоты
+• Отвечать о ценах, сроках и наличии запчастей
+• Сообщать клиенту статус ремонта
+• Вызывать эвакуатор и оформлять заявки
+• Напоминать о плановом ТО
+
+Работаю 24/7, даже когда ваши менеджеры спят.`,
+
+  "салон": `Идеально, для салона красоты я умею:
+
+• Записывать к мастерам в реальном времени
+• Показывать свободные окна и цены
+• Напоминать о визите за день
+• Отвечать о процедурах и акциях
+• Собирать отзывы после визита
+
+Ни один клиент не уйдёт без записи.`,
+
+  "ресторан": `Супер, для ресторана я могу:
+
+• Принимать заказы на доставку и самовывоз
+• Бронировать столики на нужное время
+• Показывать меню с ценами и составом
+• Отвечать об аллергенах и калориях
+• Собирать отзывы и пожелания
+
+Каждый заказ будет обработан мгновенно.`,
+
+  "клиника": `Отлично, для клиники я умею:
+
+• Записывать на приём к нужному врачу
+• Отвечать о специалистах и услугах
+• Напоминать о визите и подготовке
+• Собирать первичную информацию о симптомах
+• Отправлять результаты анализов
+
+HIPAA-совместимый, данные в безопасности.`,
+
+  "магазин": `Прекрасно, для магазина я могу:
+
+• Помогать выбрать нужный товар
+• Отвечать о наличии, размерах, цветах
+• Оформлять заказы и отслеживать доставку
+• Обрабатывать возвраты и обмены
+• Рекомендовать похожие товары
+
+Конверсия вырастает в среднем на 35%.`,
+
+  "фитнес": `Круто, для фитнес-клуба я умею:
+
+• Записывать на групповые занятия
+• Отвечать о расписании и тренерах
+• Продавать абонементы и доп. услуги
+• Напоминать о тренировках
+• Собирать обратную связь
+
+Ваш виртуальный администратор 24/7.`,
+
+  "недвижимость": `Для агентства недвижимости я могу:
+
+• Подбирать объекты под запрос клиента
+• Записывать на просмотры
+• Отвечать о ценах, метраже, районах
+• Квалифицировать лиды перед звонком
+• Собирать контакты потенциальных клиентов
+
+Горячие лиды не будут ждать.`,
+
+  "default": `Понял! Для вашего бизнеса я могу:
+
+• Отвечать клиентам мгновенно, 24/7
+• Записывать на услуги и консультации
+• Собирать заявки и контакты
+• Отвечать на частые вопросы
+• Интегрироваться с вашей CRM
+
+Хотите увидеть как это будет работать?`
 }
 
 function getResponse(input: string): string {
   const lower = input.toLowerCase()
-  if (lower.includes("авто") || lower.includes("сто")) return AI_RESPONSES["автосервис"]
-  if (lower.includes("салон") || lower.includes("красот")) return AI_RESPONSES["салон"]
-  if (lower.includes("ресторан") || lower.includes("кафе")) return AI_RESPONSES["ресторан"]
-  if (lower.includes("клиник") || lower.includes("врач")) return AI_RESPONSES["клиника"]
-  if (lower.includes("магазин") || lower.includes("товар")) return AI_RESPONSES["магазин"]
+  
+  // Автосервис
+  if (lower.includes("авто") || lower.includes("сто") || lower.includes("ремонт") || lower.includes("машин")) {
+    return AI_RESPONSES["автосервис"]
+  }
+  // Салон красоты
+  if (lower.includes("салон") || lower.includes("красот") || lower.includes("маникюр") || lower.includes("парик") || lower.includes("стриж")) {
+    return AI_RESPONSES["салон"]
+  }
+  // Ресторан/кафе
+  if (lower.includes("ресторан") || lower.includes("кафе") || lower.includes("еда") || lower.includes("доставк") || lower.includes("пицц")) {
+    return AI_RESPONSES["ресторан"]
+  }
+  // Клиника
+  if (lower.includes("клиник") || lower.includes("врач") || lower.includes("медиц") || lower.includes("стоматол") || lower.includes("здоров")) {
+    return AI_RESPONSES["клиника"]
+  }
+  // Магазин
+  if (lower.includes("магазин") || lower.includes("товар") || lower.includes("продаж") || lower.includes("интернет-магазин") || lower.includes("ecommerce")) {
+    return AI_RESPONSES["магазин"]
+  }
+  // Фитнес
+  if (lower.includes("фитнес") || lower.includes("спорт") || lower.includes("трениро") || lower.includes("зал") || lower.includes("йог")) {
+    return AI_RESPONSES["фитнес"]
+  }
+  // Недвижимость
+  if (lower.includes("недвижим") || lower.includes("квартир") || lower.includes("дом") || lower.includes("аренд") || lower.includes("риелтор")) {
+    return AI_RESPONSES["недвижимость"]
+  }
+  
   return AI_RESPONSES["default"]
 }
 
@@ -56,12 +162,44 @@ function DotGrid() {
 
 function ChatDemo({ visible }: { visible: boolean }) {
   const [messages, setMessages] = useState<Message[]>([
-    { id: "1", role: "assistant", content: "Привет! Чем занимаешься?" }
+    { id: "1", role: "assistant", content: WELCOME_MESSAGE }
   ])
   const [input, setInput] = useState("")
   const [isTyping, setIsTyping] = useState(false)
+  const [isListening, setIsListening] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const isFirstRender = useRef(true)
+
+  // Speech recognition
+  const toggleVoice = useCallback(() => {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      alert('Голосовой ввод не поддерживается в вашем браузере')
+      return
+    }
+    
+    if (isListening) {
+      setIsListening(false)
+      return
+    }
+
+    const SpeechRecognition = (window as typeof window & { webkitSpeechRecognition?: typeof window.SpeechRecognition }).webkitSpeechRecognition || window.SpeechRecognition
+    const recognition = new SpeechRecognition()
+    recognition.lang = 'ru-RU'
+    recognition.continuous = false
+    recognition.interimResults = false
+
+    recognition.onstart = () => setIsListening(true)
+    recognition.onend = () => setIsListening(false)
+    recognition.onerror = () => setIsListening(false)
+    
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      const transcript = event.results[0][0].transcript
+      setInput(transcript)
+      setIsListening(false)
+    }
+
+    recognition.start()
+  }, [isListening])
 
   useEffect(() => {
     // Don't auto-scroll on first render
@@ -87,7 +225,7 @@ function ChatDemo({ visible }: { visible: boolean }) {
     }, 600)
   }, [input, isTyping])
 
-  const quickActions = ["Автосервис", "Салон", "Ресторан", "Клиника", "Магазин"]
+  const quickActions = ["Автосервис", "Салон красоты", "Ресторан", "Клиника", "Магазин", "Фитнес"]
 
   const sendQuickAction = useCallback((action: string) => {
     if (isTyping) return
@@ -164,7 +302,11 @@ function ChatDemo({ visible }: { visible: boolean }) {
                       : "bg-white/[0.08] text-white/90 rounded-2xl rounded-bl-sm border border-white/10"
                   }`}
                 >
-                  {msg.content}
+                  {msg.content.split('\n').map((line, i) => (
+                    <span key={i} className={line.startsWith('•') ? 'block ml-1' : 'block'}>
+                      {line || <br />}
+                    </span>
+                  ))}
                 </div>
               </motion.div>
             ))}
@@ -210,23 +352,79 @@ function ChatDemo({ visible }: { visible: boolean }) {
 
         {/* Input */}
         <div className="p-4 border-t border-white/5">
-          <div className="flex gap-3">
+          <div className="flex gap-2">
+            {/* Voice button */}
+            <button
+              onClick={toggleVoice}
+              className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
+                isListening 
+                  ? "bg-red-500/20 border border-red-500/50 text-red-400" 
+                  : "bg-white/5 border border-white/10 text-zinc-500 hover:text-cyan-400 hover:border-cyan-500/30"
+              }`}
+            >
+              {isListening ? (
+                <MicOff className="w-5 h-5 animate-pulse" />
+              ) : (
+                <Mic className="w-5 h-5" />
+              )}
+            </button>
+
+            {/* Input field */}
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && send()}
-              placeholder="Напиши чем занимаешься..."
+              placeholder="Расскажите о вашем бизнесе..."
               className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-[15px] placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500/50 transition-colors"
             />
+
+            {/* Custom send button */}
             <button
               onClick={send}
               disabled={!input.trim() || isTyping}
-              className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400 to-cyan-500 text-black flex items-center justify-center disabled:opacity-40"
+              className="group relative w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400 to-cyan-500 flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed overflow-hidden transition-all hover:shadow-lg hover:shadow-cyan-500/30"
             >
-              <Send className="w-5 h-5" />
+              {/* Animated background */}
+              <span className="absolute inset-0 bg-gradient-to-br from-cyan-300 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+              
+              {/* Custom send icon - arrow burst */}
+              <svg 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                className="relative w-5 h-5 text-black group-hover:scale-110 transition-transform"
+              >
+                <path
+                  d="M5 12h14M13 6l6 6-6 6"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="group-hover:translate-x-0.5 transition-transform"
+                />
+                {/* Burst effect lines */}
+                <path
+                  d="M4 8L2 6M4 16L2 18M3 12H1"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  className="opacity-0 group-hover:opacity-60 transition-opacity"
+                />
+              </svg>
             </button>
           </div>
+
+          {/* Voice indicator */}
+          {isListening && (
+            <motion.p 
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-xs text-red-400 mt-2 flex items-center gap-2"
+            >
+              <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
+              Слушаю... Говорите
+            </motion.p>
+          )}
         </div>
       </div>
 
