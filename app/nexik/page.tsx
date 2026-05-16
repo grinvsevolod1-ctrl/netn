@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { SiriOrb } from "@/components/nexik/siri-orb"
 import { 
   Brain, 
   Zap, 
@@ -878,13 +879,15 @@ export default function NexikLandingPage() {
         }}
       />
 
-      {/* Floating widget button */}
-      <button
-        onClick={() => setIsChatOpen(true)}
-        className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-gradient-to-br from-[#00ffff] to-[#00cc99] text-black flex items-center justify-center shadow-lg shadow-[#00ffff]/20 hover:scale-110 transition-transform"
-      >
-        <MessageSquare className="w-6 h-6" />
-      </button>
+      {/* Floating Siri-like animated orb button */}
+      <div className="fixed bottom-6 right-6 z-40">
+        <SiriOrb 
+          size={72} 
+          color="#4fd1c5" 
+          state="idle"
+          onClick={() => setIsChatOpen(true)}
+        />
+      </div>
     </div>
   )
 }
