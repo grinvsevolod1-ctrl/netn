@@ -13,7 +13,6 @@ import {
   Menu, 
   X,
   Phone,
-  Cpu,
   ExternalLink,
 } from "lucide-react"
 import { TelegramIcon, WhatsAppIcon, ViberIcon, InstagramIcon, LinkedInIcon } from "@/components/icons"
@@ -41,7 +40,6 @@ const nexikLink = {
   label: "Nexik AI",
   labelRu: "Nexik AI",
   description: "AI-чат для бизнеса",
-  icon: Cpu,
   color: "#4fd1c5",
 }
 
@@ -57,6 +55,49 @@ const contactInfo = {
 interface SidebarNavProps {
   activeSection: string
   onNavigate: (section: string) => void
+}
+
+// Custom Nexik Icon - AI chat brain/bubble design
+function NexikIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
+  return (
+    <svg 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      className={className}
+      style={style}
+    >
+      <defs>
+        <linearGradient id="nexikGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="currentColor" stopOpacity="1" />
+          <stop offset="100%" stopColor="currentColor" stopOpacity="0.6" />
+        </linearGradient>
+      </defs>
+      {/* Chat bubble with AI brain pattern */}
+      <path
+        d="M12 2C6.48 2 2 5.82 2 10.5c0 2.55 1.35 4.84 3.5 6.36V21l3.7-2.04c.88.22 1.82.34 2.8.34 5.52 0 10-3.82 10-8.5S17.52 2 12 2z"
+        fill="url(#nexikGrad)"
+        fillOpacity="0.15"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Neural network dots */}
+      <circle cx="8" cy="10" r="1.5" fill="currentColor" />
+      <circle cx="12" cy="8" r="1.5" fill="currentColor" />
+      <circle cx="16" cy="10" r="1.5" fill="currentColor" />
+      <circle cx="10" cy="12.5" r="1" fill="currentColor" fillOpacity="0.7" />
+      <circle cx="14" cy="12.5" r="1" fill="currentColor" fillOpacity="0.7" />
+      {/* Connection lines */}
+      <path
+        d="M8 10L12 8M12 8L16 10M8 10L10 12.5M16 10L14 12.5M10 12.5L14 12.5"
+        stroke="currentColor"
+        strokeWidth="0.75"
+        strokeOpacity="0.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
 }
 
 // Custom Logo Component
@@ -323,7 +364,7 @@ export function SidebarNav({ activeSection, onNavigate }: SidebarNavProps) {
                 
                 {/* Header */}
                 <div className="flex items-center justify-between mb-5">
-                  <h3 className="text-lg font-semibold">Связаться с нами</h3>
+                  <h3 className="text-lg font-semibold">Связатьс�� с нами</h3>
                   <button
                     onClick={() => setIsMobileContactOpen(false)}
                     className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center"
@@ -467,7 +508,7 @@ export function SidebarNav({ activeSection, onNavigate }: SidebarNavProps) {
                         boxShadow: `0 0 20px ${nexikLink.color}20`,
                       }}
                     >
-                      <Cpu className="w-6 h-6" style={{ color: nexikLink.color }} />
+                      <NexikIcon className="w-6 h-6" style={{ color: nexikLink.color }} />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
@@ -620,7 +661,7 @@ export function SidebarNav({ activeSection, onNavigate }: SidebarNavProps) {
                 color: nexikLink.color,
               }}
             >
-              <Cpu className="w-[18px] h-[18px]" />
+              <NexikIcon className="w-[18px] h-[18px]" />
             </div>
 
             {/* Label */}
