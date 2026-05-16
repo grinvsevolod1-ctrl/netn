@@ -1,27 +1,24 @@
 "use client"
-// Nexik Premium Landing v4
-import { useState, useEffect, useCallback, useRef } from "react"
+// Nexik Ultra-Premium Landing v5
+import { useState, useEffect, useCallback, useRef, MouseEvent as ReactMouseEvent } from "react"
 import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
-import { ArrowRight, Send, Sparkles, Check, ChevronDown } from "lucide-react"
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion"
+import { ArrowRight, Send, Sparkles, Check, ChevronDown, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { SiriOrb } from "@/components/nexik/siri-orb"
-import { Chat } from "@/components/chat"
 
 // Demo responses
 const AI_RESPONSES: Record<string, string> = {
-  "привет": "Привет! Расскажи чем занимаешься — покажу как буду помогать.",
-  "автосервис": "Отлично! Буду записывать на ТО, отвечать о ценах, сообщать статус ремонта. 24/7.",
-  "салон": "Записываю к мастерам, показываю свободные окна, напоминаю о записи. Всё автоматически.",
+  "автосервис": "Записываю на ТО, отвечаю о ценах, сообщаю статус ремонта и вызываю эвакуатор. 24/7 без выходных.",
+  "салон": "Записываю к мастерам, показываю свободные окна, напоминаю о визите. Всё автоматически.",
   "ресторан": "Принимаю заказы, бронирую столы, показываю меню. Ни один заказ не потеряется.",
   "клиника": "Записываю на приём, отвечаю о врачах и услугах, напоминаю о визите.",
   "магазин": "Помогаю выбрать товар, отвечаю о наличии и доставке, принимаю заказы.",
-  "default": "Расскажи подробнее — я быстро пойму как помочь твоим клиентам."
+  "default": "Отвечаю клиентам мгновенно, записываю на услуги, собираю контакты. 24/7."
 }
 
 function getResponse(input: string): string {
   const lower = input.toLowerCase()
-  if (lower.includes("привет")) return AI_RESPONSES["привет"]
   if (lower.includes("авто") || lower.includes("сто")) return AI_RESPONSES["автосервис"]
   if (lower.includes("салон") || lower.includes("красот")) return AI_RESPONSES["салон"]
   if (lower.includes("ресторан") || lower.includes("кафе")) return AI_RESPONSES["ресторан"]
@@ -36,46 +33,133 @@ interface Message {
   content: string
 }
 
-// Animated gradient orb background
-function GradientOrb() {
+// Animated dot grid background
+function DotGrid() {
   return (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-      {/* Main orb */}
-      <motion.div
-        className="w-[600px] h-[600px] rounded-full"
+    <div className="absolute inset-0 overflow-hidden">
+      <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="dotGrid" width="32" height="32" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.07)" />
+          </pattern>
+          <radialGradient id="gridFade" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="white" stopOpacity="1" />
+            <stop offset="100%" stopColor="white" stopOpacity="0" />
+          </radialGradient>
+          <mask id="gridMask">
+            <rect width="100%" height="100%" fill="url(#gridFade)" />
+          </mask>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#dotGrid)" mask="url(#gridMask)" />
+      </svg>
+    </div>
+  )
+}
+
+// Cursor-following glow
+function CursorGlow() {
+  const [pos, setPos] = useState({ x: 0, y: 0 })
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const handleMove = (e: MouseEvent) => {
+      setPos({ x: e.clientX, y: e.clientY })
+      setVisible(true)
+    }
+    const handleLeave = () => setVisible(false)
+    
+    window.addEventListener("mousemove", handleMove)
+    document.body.addEventListener("mouseleave", handleLeave)
+    return () => {
+      window.removeEventListener("mousemove", handleMove)
+      document.body.removeEventListener("mouseleave", handleLeave)
+    }
+  }, [])
+
+  return (
+    <motion.div
+      className="pointer-events-none fixed z-0"
+      animate={{ 
+        x: pos.x - 200, 
+        y: pos.y - 200,
+        opacity: visible ? 1 : 0 
+      }}
+      transition={{ type: "spring", damping: 30, stiffness: 200 }}
+    >
+      <div 
+        className="w-[400px] h-[400px] rounded-full"
         style={{
-          background: "radial-gradient(circle, rgba(0,255,255,0.15) 0%, rgba(0,255,255,0.05) 40%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(0,255,255,0.08) 0%, transparent 70%)",
+        }}
+      />
+    </motion.div>
+  )
+}
+
+// Ambient animated orbs
+function AmbientOrbs() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Main cyan orb */}
+      <motion.div
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full"
+        style={{
+          background: "radial-gradient(circle, rgba(0,255,255,0.12) 0%, rgba(0,255,255,0.03) 40%, transparent 70%)",
+          filter: "blur(60px)",
         }}
         animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.5, 0.8, 0.5],
+          scale: [1, 1.15, 1],
+          x: ["-50%", "-48%", "-52%", "-50%"],
         }}
         transition={{
-          duration: 8,
+          duration: 15,
           repeat: Infinity,
           ease: "easeInOut",
         }}
       />
-      {/* Secondary glow */}
+      
+      {/* Secondary pink/purple orb */}
       <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full"
+        className="absolute top-1/2 right-1/4 w-[500px] h-[500px] rounded-full"
         style={{
-          background: "radial-gradient(circle, rgba(0,255,255,0.2) 0%, transparent 60%)",
+          background: "radial-gradient(circle, rgba(168,85,247,0.08) 0%, transparent 70%)",
+          filter: "blur(80px)",
+        }}
+        animate={{
+          scale: [1, 1.2, 1],
+          y: [0, -50, 0],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
+      />
+      
+      {/* Accent blue orb */}
+      <motion.div
+        className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] rounded-full"
+        style={{
+          background: "radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)",
+          filter: "blur(60px)",
         }}
         animate={{
           scale: [1.1, 1, 1.1],
+          x: [0, 30, 0],
         }}
         transition={{
-          duration: 6,
+          duration: 10,
           repeat: Infinity,
           ease: "easeInOut",
+          delay: 4,
         }}
       />
     </div>
   )
 }
 
-// Floating chat demo
+// 3D Perspective Chat Card
 function FloatingChat() {
   const [messages, setMessages] = useState<Message[]>([
     { id: "1", role: "assistant", content: "Привет! Чем занимаешься?" }
@@ -83,6 +167,28 @@ function FloatingChat() {
   const [input, setInput] = useState("")
   const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
+  
+  // 3D tilt effect
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), { stiffness: 300, damping: 30 })
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), { stiffness: 300, damping: 30 })
+
+  const handleMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width - 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5
+    mouseX.set(x)
+    mouseY.set(y)
+  }
+
+  const handleMouseLeave = () => {
+    mouseX.set(0)
+    mouseY.set(0)
+  }
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -100,10 +206,16 @@ function FloatingChat() {
       const response = getResponse(userMsg.content)
       setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), role: "assistant", content: response }])
       setIsTyping(false)
-    }, 600)
+    }, 800)
   }, [input, isTyping])
 
-  const quickActions = ["Автосервис", "Салон", "Ресторан", "Клиника", "Магазин"]
+  const quickActions = [
+    { label: "Автосервис", icon: "🚗" },
+    { label: "Салон", icon: "💅" },
+    { label: "Ресторан", icon: "🍽️" },
+    { label: "Клиника", icon: "🏥" },
+    { label: "Магазин", icon: "🛍️" },
+  ]
 
   const sendQuickAction = useCallback((action: string) => {
     if (isTyping) return
@@ -115,239 +227,307 @@ function FloatingChat() {
       const response = getResponse(userMsg.content)
       setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), role: "assistant", content: response }])
       setIsTyping(false)
-    }, 600)
+    }, 800)
   }, [isTyping])
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      initial={{ opacity: 0, y: 60, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.8, delay: 0.2 }}
-      className="w-full max-w-md mx-auto"
+      transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      className="w-full max-w-md mx-auto perspective-1000"
+      style={{ perspective: 1000 }}
     >
-      {/* Floating chat card with glass effect */}
-      <div 
-        className="relative rounded-3xl overflow-hidden"
-        style={{
-          background: "linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)",
-          backdropFilter: "blur(40px)",
-          boxShadow: "0 0 0 1px rgba(255,255,255,0.05), 0 40px 80px -20px rgba(0,0,0,0.5), 0 0 100px -50px rgba(0,255,255,0.3)",
-        }}
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        className="relative"
       >
-        {/* Glow border */}
-        <div className="absolute inset-0 rounded-3xl" style={{
-          background: "linear-gradient(135deg, rgba(0,255,255,0.1) 0%, transparent 50%, rgba(0,255,255,0.05) 100%)",
-          padding: "1px",
-          mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-          maskComposite: "exclude",
-        }} />
+        {/* Glow layer behind card */}
+        <div 
+          className="absolute -inset-4 rounded-[40px] opacity-50"
+          style={{
+            background: "radial-gradient(ellipse at center, rgba(0,255,255,0.15) 0%, transparent 70%)",
+            filter: "blur(40px)",
+            transform: "translateZ(-50px)",
+          }}
+        />
+        
+        {/* Main card */}
+        <div 
+          className="relative rounded-3xl overflow-hidden"
+          style={{
+            background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)",
+            backdropFilter: "blur(40px)",
+            boxShadow: `
+              0 0 0 1px rgba(255,255,255,0.1),
+              0 0 0 1px inset rgba(255,255,255,0.05),
+              0 50px 100px -30px rgba(0,0,0,0.6),
+              0 0 80px -20px rgba(0,255,255,0.2)
+            `,
+            transform: "translateZ(0)",
+          }}
+        >
+          {/* Shine effect */}
+          <div 
+            className="absolute inset-0 opacity-30"
+            style={{
+              background: "linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%)",
+            }}
+          />
 
-        {/* Header */}
-        <div className="relative flex items-center gap-4 p-5 border-b border-white/5">
-          <div className="relative">
-            <SiriOrb size={48} state={isTyping ? "thinking" : "idle"} />
-            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-black" />
+          {/* Header */}
+          <div className="relative flex items-center gap-4 p-6 border-b border-white/5">
+            <div className="relative">
+              <SiriOrb size={52} state={isTyping ? "thinking" : "idle"} />
+              <motion.div 
+                className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-black"
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </div>
+            <div>
+              <h3 className="font-semibold text-white text-xl tracking-tight">Nexik</h3>
+              <p className="text-sm text-zinc-500">Онлайн</p>
+            </div>
+            <div className="ml-auto flex gap-1">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="w-2 h-2 rounded-full bg-white/20" />
+              ))}
+            </div>
           </div>
-          <div>
-            <h3 className="font-semibold text-white text-lg">Nexik</h3>
-            <p className="text-xs text-zinc-500">AI-ассистент для бизнеса</p>
-          </div>
-        </div>
 
-        {/* Messages */}
-        <div className="relative h-72 overflow-y-auto p-5 space-y-4">
-          <AnimatePresence mode="popLayout">
-            {messages.map((msg, i) => (
-              <motion.div
-                key={msg.id}
-                initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`max-w-[80%] px-4 py-2.5 text-sm leading-relaxed ${
-                    msg.role === "user"
-                      ? "bg-gradient-to-r from-cyan-500 to-cyan-400 text-black rounded-2xl rounded-br-md"
-                      : "bg-white/5 text-white/90 rounded-2xl rounded-bl-md border border-white/5"
-                  }`}
+          {/* Messages */}
+          <div className="relative h-80 overflow-y-auto p-6 space-y-4">
+            <AnimatePresence mode="popLayout">
+              {messages.map((msg) => (
+                <motion.div
+                  key={msg.id}
+                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
-                  {msg.content}
+                  <div
+                    className={`max-w-[85%] px-5 py-3 text-[15px] leading-relaxed ${
+                      msg.role === "user"
+                        ? "bg-gradient-to-br from-cyan-400 to-cyan-500 text-black font-medium rounded-2xl rounded-br-sm shadow-lg shadow-cyan-500/20"
+                        : "bg-white/[0.08] text-white/95 rounded-2xl rounded-bl-sm border border-white/10"
+                    }`}
+                  >
+                    {msg.content}
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+
+            {isTyping && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex justify-start"
+              >
+                <div className="bg-white/[0.08] border border-white/10 rounded-2xl rounded-bl-sm px-5 py-4">
+                  <div className="flex gap-1.5">
+                    {[0, 1, 2].map((i) => (
+                      <motion.div
+                        key={i}
+                        className="w-2.5 h-2.5 rounded-full bg-cyan-400"
+                        animate={{ y: [0, -8, 0], opacity: [0.5, 1, 0.5] }}
+                        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
+                      />
+                    ))}
+                  </div>
                 </div>
               </motion.div>
-            ))}
-          </AnimatePresence>
+            )}
 
-          {isTyping && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex justify-start"
-            >
-              <div className="bg-white/5 border border-white/5 rounded-2xl rounded-bl-md px-4 py-3">
-                <div className="flex gap-1.5">
-                  {[0, 1, 2].map((i) => (
-                    <motion.div
-                      key={i}
-                      className="w-2 h-2 rounded-full bg-cyan-400"
-                      animate={{ y: [0, -6, 0] }}
-                      transition={{ duration: 0.5, repeat: Infinity, delay: i * 0.15 }}
-                    />
-                  ))}
-                </div>
+            {/* Quick actions */}
+            {messages.length === 1 && !isTyping && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+                className="flex flex-wrap gap-2 pt-4"
+              >
+                {quickActions.map((action, i) => (
+                  <motion.button
+                    key={action.label}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.6 + i * 0.08 }}
+                    onClick={() => sendQuickAction(action.label)}
+                    className="group flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:bg-cyan-500/10 hover:border-cyan-500/30 hover:text-cyan-300 transition-all duration-300"
+                  >
+                    <span className="text-base">{action.icon}</span>
+                    <span className="text-sm font-medium">{action.label}</span>
+                  </motion.button>
+                ))}
+              </motion.div>
+            )}
+
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input */}
+          <div className="relative p-5 border-t border-white/5">
+            <div className="flex gap-3">
+              <div className="relative flex-1">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && send()}
+                  placeholder="Напиши чем занимаешься..."
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white text-[15px] placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500/50 focus:bg-white/[0.08] focus:shadow-[0_0_30px_-5px_rgba(0,255,255,0.2)] transition-all duration-300"
+                />
               </div>
-            </motion.div>
-          )}
-
-          {/* Quick actions */}
-          {messages.length === 1 && !isTyping && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-wrap gap-2 pt-2"
-            >
-              {quickActions.map((action) => (
-                <button
-                  key={action}
-                  onClick={() => sendQuickAction(action)}
-                  className="px-3 py-1.5 text-xs rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:bg-cyan-500/10 hover:border-cyan-500/30 hover:text-cyan-400 transition-all duration-200"
-                >
-                  {action}
-                </button>
-              ))}
-            </motion.div>
-          )}
-
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* Input */}
-        <div className="relative p-4 border-t border-white/5">
-          <div className="flex gap-3">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && send()}
-              placeholder="Напиши чем занимаешься..."
-              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500/50 focus:bg-white/[0.07] transition-all duration-200"
-            />
-            <button
-              onClick={send}
-              disabled={!input.trim() || isTyping}
-              className="w-12 h-12 rounded-xl bg-gradient-to-r from-cyan-500 to-cyan-400 text-black flex items-center justify-center hover:from-cyan-400 hover:to-cyan-300 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-cyan-500/20"
-            >
-              <Send className="w-5 h-5" />
-            </button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={send}
+                disabled={!input.trim() || isTyping}
+                className="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-400 to-cyan-500 text-black flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-cyan-500/30"
+              >
+                <Send className="w-5 h-5" />
+              </motion.button>
+            </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
+  )
+}
+
+// Animated counter
+function Counter({ value, suffix = "" }: { value: string; suffix?: string }) {
+  return (
+    <span className="tabular-nums">
+      {value}{suffix}
+    </span>
   )
 }
 
 export default function NexikPage() {
   const [mounted, setMounted] = useState(false)
-  const [isChatOpen, setIsChatOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsChatOpen(false)
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault()
-        setIsChatOpen(prev => !prev)
-      }
-    }
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [])
-
   if (!mounted) return null
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
-      {/* Animated background */}
+    <div className="min-h-screen bg-[#030303] text-white overflow-x-hidden">
+      {/* Background layers */}
       <div className="fixed inset-0">
-        {/* Grid */}
-        <div 
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-            backgroundSize: "64px 64px",
-          }}
-        />
-        <GradientOrb />
+        <DotGrid />
+        <AmbientOrbs />
+        <CursorGlow />
       </div>
+
+      {/* Noise overlay */}
+      <div 
+        className="fixed inset-0 pointer-events-none opacity-[0.015]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }}
+      />
 
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="fixed top-0 left-0 right-0 z-50"
       >
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href="/nexik" className="flex items-center gap-3 group">
-            <SiriOrb size={32} state="idle" />
-            <span className="font-semibold text-lg tracking-tight">Nexik</span>
-          </Link>
-          
-          <div className="flex items-center gap-4">
-            <Link 
-              href="/nexik/login" 
-              className="text-sm text-zinc-500 hover:text-white transition-colors duration-200"
-            >
-              Войти
+        <div 
+          className="mx-6 mt-4 rounded-2xl"
+          style={{
+            background: "rgba(0,0,0,0.4)",
+            backdropFilter: "blur(20px)",
+            border: "1px solid rgba(255,255,255,0.05)",
+          }}
+        >
+          <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+            <Link href="/nexik" className="flex items-center gap-3 group">
+              <SiriOrb size={28} state="idle" />
+              <span className="font-semibold text-lg tracking-tight">Nexik</span>
             </Link>
-            <Button 
-              className="bg-white text-black hover:bg-zinc-200 h-9 px-4 text-sm font-medium" 
-              asChild
-            >
-              <Link href="/nexik/start">Начать</Link>
-            </Button>
+            
+            <div className="flex items-center gap-2">
+              <Link 
+                href="/nexik/login" 
+                className="px-4 py-2 text-sm text-zinc-400 hover:text-white transition-colors duration-200"
+              >
+                Войти
+              </Link>
+              <Button 
+                className="bg-white/10 hover:bg-white/20 border border-white/10 text-white h-9 px-5 text-sm font-medium backdrop-blur-sm" 
+                asChild
+              >
+                <Link href="/nexik/start">
+                  Начать
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </motion.header>
 
       {/* Hero */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-16">
-        {/* Tagline */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20">
+        {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-10"
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mb-8"
         >
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 mb-8"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="text-xs text-zinc-400 tracking-wide uppercase">AI для бизнеса</span>
-          </motion.div>
-          
-          <h1 className="text-5xl sm:text-7xl font-bold tracking-tight mb-6">
-            <span className="bg-gradient-to-b from-white to-zinc-400 bg-clip-text text-transparent">
-              Попробуй
+          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            >
+              <Sparkles className="w-4 h-4 text-cyan-400" />
+            </motion.div>
+            <span className="text-sm text-zinc-400">AI-ассистент нового поколения</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          </div>
+        </motion.div>
+
+        {/* Title */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-6"
+        >
+          <h1 className="text-6xl sm:text-8xl font-bold tracking-tighter leading-none">
+            <span className="block bg-gradient-to-b from-white via-white to-zinc-500 bg-clip-text text-transparent">
+              Общение
             </span>
-            <br />
-            <span className="bg-gradient-to-r from-cyan-400 via-cyan-300 to-cyan-500 bg-clip-text text-transparent">
-              прямо сейчас
+            <span className="block mt-2 bg-gradient-to-r from-cyan-300 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+              без ожидания
             </span>
           </h1>
-          
-          <p className="text-zinc-500 text-lg max-w-md mx-auto leading-relaxed">
-            Напиши чем занимаешься — Nexik покажет как будет работать на твоём сайте
-          </p>
         </motion.div>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-lg sm:text-xl text-zinc-500 max-w-lg text-center mb-12 leading-relaxed"
+        >
+          Клиенты получают ответы мгновенно.
+          <br className="hidden sm:block" />
+          <span className="text-zinc-400">Попробуй прямо сейчас.</span>
+        </motion.p>
 
         {/* Chat Demo */}
         <FloatingChat />
@@ -356,48 +536,48 @@ export default function NexikPage() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
+          transition={{ delay: 2 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
         >
           <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="flex flex-col items-center gap-2 text-zinc-600"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            className="flex flex-col items-center gap-3 text-zinc-600"
           >
-            <span className="text-xs tracking-wider uppercase">Подробнее</span>
-            <ChevronDown className="w-4 h-4" />
+            <span className="text-xs tracking-[0.2em] uppercase">Scroll</span>
+            <ChevronDown className="w-5 h-5" />
           </motion.div>
         </motion.div>
       </section>
 
       {/* Stats */}
-      <section className="relative py-32 px-6">
+      <section className="relative py-40 px-6">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-12"
           >
             {[
-              { value: "2 мин", label: "на запуск" },
-              { value: "24/7", label: "без выходных" },
-              { value: "1 сек", label: "время ответа" },
-              { value: "1 строка", label: "кода" },
+              { value: "2", suffix: " мин", label: "на запуск" },
+              { value: "24", suffix: "/7", label: "без выходных" },
+              { value: "<1", suffix: " сек", label: "время ответа" },
+              { value: "1", suffix: " строка", label: "кода" },
             ].map((stat, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 className="text-center"
               >
-                <div className="text-4xl md:text-5xl font-bold bg-gradient-to-b from-white to-zinc-500 bg-clip-text text-transparent mb-2">
-                  {stat.value}
+                <div className="text-5xl md:text-7xl font-bold bg-gradient-to-b from-white to-zinc-600 bg-clip-text text-transparent mb-3">
+                  <Counter value={stat.value} suffix={stat.suffix} />
                 </div>
-                <div className="text-sm text-zinc-600">{stat.label}</div>
+                <div className="text-sm text-zinc-600 tracking-wide">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -405,78 +585,47 @@ export default function NexikPage() {
       </section>
 
       {/* Features */}
-      <section className="relative py-32 px-6 border-t border-white/5">
+      <section className="relative py-40 px-6">
         <div className="max-w-4xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            transition={{ duration: 0.6 }}
+            className="text-center mb-20"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Что умеет Nexik</h2>
-            <p className="text-zinc-500">Автоматизирует общение с клиентами</p>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+              <span className="bg-gradient-to-b from-white to-zinc-500 bg-clip-text text-transparent">
+                Что умеет
+              </span>
+            </h2>
+            <p className="text-xl text-zinc-600">Автоматизирует рутину</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              "Отвечает на вопросы мгновенно",
-              "Записывает на услуги",
-              "Принимает заказы",
-              "Бронирует столики",
-              "Рассказывает о ценах",
-              "Собирает контакты",
-              "Напоминает о записи",
-              "Передаёт оператору если нужно",
+              { icon: "⚡", title: "Мгновенные ответы", desc: "Клиенты не ждут ни секунды" },
+              { icon: "📅", title: "Запись на услуги", desc: "Автоматическое бронирование" },
+              { icon: "🛒", title: "Приём заказов", desc: "Ни один заказ не потеряется" },
+              { icon: "💬", title: "Сбор контактов", desc: "Лиды прямо в CRM" },
+              { icon: "🔔", title: "Напоминания", desc: "Клиенты не забывают о визите" },
+              { icon: "👤", title: "Передача оператору", desc: "Когда нужен человек" },
             ].map((feature, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: i * 0.05 }}
-                className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-cyan-500/20 hover:bg-cyan-500/5 transition-all duration-300"
-              >
-                <div className="w-6 h-6 rounded-full bg-cyan-500/10 flex items-center justify-center flex-shrink-0">
-                  <Check className="w-3.5 h-3.5 text-cyan-400" />
-                </div>
-                <span className="text-zinc-300 text-sm">{feature}</span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How it works */}
-      <section className="relative py-32 px-6 border-t border-white/5">
-        <div className="max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Как запустить</h2>
-            <p className="text-zinc-500">Три простых шага</p>
-          </motion.div>
-
-          <div className="space-y-6">
-            {[
-              { num: "01", title: "Расскажи о бизнесе", desc: "В чате или укажи сайт — Nexik проанализирует" },
-              { num: "02", title: "Настрой под себя", desc: "Цвета, стиль общения, расписание работы" },
-              { num: "03", title: "Вставь код", desc: "Одна строка на сайт — и Nexik работает" },
-            ].map((step, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="flex items-start gap-6 p-6 rounded-2xl bg-white/[0.02] border border-white/5"
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+                className="group relative p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-cyan-500/20 transition-all duration-500"
               >
-                <span className="text-4xl font-bold text-cyan-500/20">{step.num}</span>
-                <div>
-                  <h3 className="font-semibold text-white mb-1">{step.title}</h3>
-                  <p className="text-zinc-500 text-sm">{step.desc}</p>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative flex items-start gap-4">
+                  <div className="text-2xl">{feature.icon}</div>
+                  <div>
+                    <h3 className="font-semibold text-white mb-1">{feature.title}</h3>
+                    <p className="text-sm text-zinc-500">{feature.desc}</p>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -485,83 +634,81 @@ export default function NexikPage() {
       </section>
 
       {/* CTA */}
-      <section className="relative py-32 px-6 border-t border-white/5">
-        <div className="max-w-xl mx-auto text-center">
+      <section className="relative py-40 px-6">
+        <div className="max-w-2xl mx-auto text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Готов запустить?
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+              <span className="bg-gradient-to-r from-cyan-300 to-emerald-400 bg-clip-text text-transparent">
+                Готов начать?
+              </span>
             </h2>
-            <p className="text-zinc-500 mb-10">
+            <p className="text-xl text-zinc-500 mb-12">
               Бесплатно при заказе сайта в NetNext
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                className="bg-gradient-to-r from-cyan-500 to-cyan-400 text-black hover:from-cyan-400 hover:to-cyan-300 h-14 px-8 text-base font-medium shadow-lg shadow-cyan-500/20"
-                asChild
-              >
-                <Link href="/nexik/start">
-                  Начать бесплатно
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Link>
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="border-white/10 hover:bg-white/5 h-14 px-8 text-base"
-                asChild
-              >
-                <Link href="/#services">Заказать сайт с Nexik</Link>
-              </Button>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-cyan-400 to-cyan-500 text-black hover:from-cyan-300 hover:to-cyan-400 h-14 px-10 text-base font-semibold shadow-xl shadow-cyan-500/25"
+                  asChild
+                >
+                  <Link href="/nexik/start">
+                    <Zap className="w-5 h-5 mr-2" />
+                    Запустить Nexik
+                  </Link>
+                </Button>
+              </motion.div>
+              
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="border-white/10 bg-white/5 hover:bg-white/10 h-14 px-10 text-base"
+                  asChild
+                >
+                  <Link href="/">
+                    NetNext Studio
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Link>
+                </Button>
+              </motion.div>
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative py-8 px-6 border-t border-white/5">
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-zinc-600">
-          <div className="flex items-center gap-2">
-            <SiriOrb size={20} state="idle" />
-            <span>Nexik by NetNext</span>
+      <footer className="relative py-12 px-6 border-t border-white/5">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <SiriOrb size={24} state="idle" />
+            <span className="text-sm text-zinc-500">Nexik by NetNext</span>
           </div>
-          <div className="flex items-center gap-6">
-            <Link href="/nexik/dashboard" className="hover:text-white transition-colors">Dashboard</Link>
-            <Link href="/" className="hover:text-white transition-colors">NetNext Studio</Link>
+          <div className="flex items-center gap-8 text-sm text-zinc-600">
+            <Link href="/" className="hover:text-white transition-colors">NetNext</Link>
+            <Link href="/nexik/login" className="hover:text-white transition-colors">Войти</Link>
+            <Link href="/nexik/start" className="hover:text-white transition-colors">Начать</Link>
           </div>
         </div>
       </footer>
 
-      {/* Chat widget */}
-      <Chat
-        isOpen={isChatOpen}
-        onClose={() => setIsChatOpen(false)}
-        config={{
-          title: "Nexik",
-          subtitle: "AI-ассистент",
-          welcomeMessage: "Привет! Задайте любой вопрос.",
-          placeholder: "Напишите сообщение...",
-          position: "bottom-right",
-          mode: "modal"
-        }}
-      />
-
-      {/* Floating orb */}
-      <motion.div 
-        initial={{ opacity: 0, scale: 0 }}
+      {/* Floating orb button */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1, type: "spring" }}
-        className="fixed bottom-6 right-6 z-40"
+        transition={{ delay: 1.5 }}
+        className="fixed bottom-6 right-6 z-50"
       >
         <SiriOrb 
           size={64} 
           state="idle"
-          onClick={() => setIsChatOpen(true)}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         />
       </motion.div>
     </div>
