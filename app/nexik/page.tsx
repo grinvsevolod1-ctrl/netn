@@ -257,8 +257,8 @@ function ChatDemo({ visible }: { visible: boolean }) {
           <span className="relative text-black">Запустить Nexik</span>
           <ArrowRight className="relative w-5 h-5 text-black/80 group-hover:translate-x-1 transition-transform duration-300" />
         </Link>
-        <p className="mt-5 text-sm text-zinc-500">Бесплатно. Без карты. 2 минуты на настройку.</p>
-        <p className="mt-1.5 text-xs text-zinc-600">
+        <p className="mt-8 text-sm text-zinc-500">Бесплатно. Без карты. 2 минуты на настройку.</p>
+        <p className="mt-2 text-xs text-zinc-600">
           powered by <Link href="/" className="text-cyan-500/70 hover:text-cyan-400 transition-colors">NetNext</Link>
         </p>
       </div>
