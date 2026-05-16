@@ -40,8 +40,11 @@ const nexikLink = {
   href: "/nexik",
   label: "Nexik AI",
   labelRu: "Nexik AI",
-  description: "AI-чат для бизнеса",
-  color: "#4fd1c5",
+  description: "AI-ассистент 24/7",
+  badge: "by Netnext",
+  color: "#22d3ee",
+  gradientFrom: "#22d3ee",
+  gradientTo: "#06b6d4",
 }
 
 const contactInfo = {
@@ -448,35 +451,82 @@ export function SidebarNav({ activeSection, onNavigate }: SidebarNavProps) {
                   })}
                 </div>
                 
-                {/* Nexik AI Product Link */}
+                {/* Nexik AI Product Link - Premium Mobile Card */}
                 <div className="mt-4 pt-4 border-t border-border/50">
                   <Link
                     href={nexikLink.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center gap-4 p-4 rounded-2xl transition-all relative overflow-hidden group"
+                    className="relative flex items-center gap-4 p-4 rounded-2xl transition-all overflow-hidden group active:scale-[0.98]"
                     style={{
-                      background: `linear-gradient(135deg, ${nexikLink.color}15, ${nexikLink.color}05)`,
-                      border: `1px solid ${nexikLink.color}30`,
+                      background: `linear-gradient(135deg, ${nexikLink.gradientFrom}12 0%, ${nexikLink.gradientTo}08 100%)`,
+                      border: `1px solid ${nexikLink.color}25`,
                     }}
                   >
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center transition-all"
+                    {/* Animated shimmer effect */}
+                    <div 
+                      className="absolute inset-0 -translate-x-full group-active:translate-x-full transition-transform duration-700"
                       style={{
-                        background: `${nexikLink.color}20`,
-                        boxShadow: `0 0 20px ${nexikLink.color}20`,
+                        background: `linear-gradient(90deg, transparent 0%, ${nexikLink.color}10 50%, transparent 100%)`,
                       }}
-                    >
-                      <NexikLogo size={28} color={nexikLink.color} />
+                    />
+                    
+                    {/* Orb with pulsing glow */}
+                    <div className="relative">
+                      <div
+                        className="absolute inset-0 rounded-xl animate-pulse"
+                        style={{
+                          background: `${nexikLink.color}30`,
+                          filter: 'blur(8px)',
+                        }}
+                      />
+                      <div
+                        className="relative w-14 h-14 rounded-xl flex items-center justify-center"
+                        style={{
+                          background: `linear-gradient(135deg, ${nexikLink.gradientFrom}30 0%, ${nexikLink.gradientTo}20 100%)`,
+                          boxShadow: `0 0 25px ${nexikLink.color}25`,
+                        }}
+                      >
+                        <NexikLogo size={32} color={nexikLink.color} />
+                      </div>
+                      {/* Live indicator */}
+                      <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                        <span 
+                          className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                          style={{ backgroundColor: nexikLink.color }}
+                        />
+                        <span 
+                          className="relative inline-flex rounded-full h-3 w-3 border-2 border-card"
+                          style={{ backgroundColor: nexikLink.color }}
+                        />
+                      </span>
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-semibold" style={{ color: nexikLink.color }}>
+                    
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span 
+                          className="font-bold text-base"
+                          style={{ 
+                            background: `linear-gradient(135deg, ${nexikLink.gradientFrom} 0%, ${nexikLink.gradientTo} 100%)`,
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                          }}
+                        >
                           {nexikLink.labelRu}
                         </span>
-                        <ExternalLink className="w-3.5 h-3.5 opacity-50" style={{ color: nexikLink.color }} />
+                        <span 
+                          className="px-2 py-0.5 text-[10px] font-semibold rounded-full"
+                          style={{ 
+                            background: `${nexikLink.color}20`,
+                            color: nexikLink.color,
+                          }}
+                        >
+                          {nexikLink.badge}
+                        </span>
                       </div>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs text-muted-foreground flex items-center gap-1.5">
                         {nexikLink.description}
+                        <ExternalLink className="w-3 h-3 opacity-40" />
                       </span>
                     </div>
                   </Link>
@@ -590,56 +640,95 @@ export function SidebarNav({ activeSection, onNavigate }: SidebarNavProps) {
           })}
         </div>
         
-        {/* Nexik AI Product Link */}
+        {/* Nexik AI Product Link - Premium Section */}
         <div className="mt-4 pt-4 border-t border-border/30">
           <Link
             href={nexikLink.href}
             onMouseEnter={() => setHoveredItem("nexik")}
             onMouseLeave={() => setHoveredItem(null)}
             className={cn(
-              "relative flex items-center w-full h-11 rounded-xl transition-all duration-200",
-              "hover:bg-secondary/50",
-              isExpanded ? "px-3 gap-3" : "justify-center"
+              "group relative flex items-center w-full rounded-xl transition-all duration-300 overflow-hidden",
+              isExpanded ? "px-3 py-2.5 gap-3" : "justify-center h-11"
             )}
           >
-            {/* Glow effect */}
+            {/* Animated gradient background */}
             <div 
-              className="absolute inset-0 rounded-xl opacity-10"
-              style={{ background: nexikLink.color }}
+              className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              style={{ 
+                background: `linear-gradient(135deg, ${nexikLink.gradientFrom}15 0%, ${nexikLink.gradientTo}10 100%)`,
+              }}
             />
             
-            {/* Icon */}
+            {/* Animated border glow on hover */}
+            <div 
+              className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              style={{
+                boxShadow: `inset 0 0 0 1px ${nexikLink.color}30, 0 0 20px ${nexikLink.color}15`,
+              }}
+            />
+            
+            {/* Pulsing dot indicator (live status) */}
+            <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span className="relative flex h-2 w-2">
+                <span 
+                  className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                  style={{ backgroundColor: nexikLink.color }}
+                />
+                <span 
+                  className="relative inline-flex rounded-full h-2 w-2"
+                  style={{ backgroundColor: nexikLink.color }}
+                />
+              </span>
+            </div>
+            
+            {/* Orb Icon with glow effect */}
             <div
               className={cn(
-                "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200 flex-shrink-0"
+                "relative flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-300 flex-shrink-0",
+                "group-hover:scale-110"
               )}
               style={{
-                background: `${nexikLink.color}20`,
-                boxShadow: hoveredItem === "nexik" ? `0 0 15px ${nexikLink.color}30` : "none",
-                color: nexikLink.color,
+                background: `linear-gradient(135deg, ${nexikLink.gradientFrom}25 0%, ${nexikLink.gradientTo}15 100%)`,
+                boxShadow: hoveredItem === "nexik" 
+                  ? `0 0 25px ${nexikLink.color}40, 0 0 10px ${nexikLink.color}20` 
+                  : `0 0 10px ${nexikLink.color}15`,
               }}
             >
-              <NexikLogo size={22} color={nexikLink.color} />
+              <NexikLogo size={24} color={nexikLink.color} />
             </div>
 
-            {/* Label */}
+            {/* Label with badge */}
             <div
               className={cn(
                 "flex flex-col items-start min-w-0 transition-all duration-300",
                 isExpanded ? "opacity-100" : "opacity-0 w-0 overflow-hidden"
               )}
             >
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-2">
                 <span
-                  className="text-sm font-medium truncate transition-colors"
-                  style={{ color: nexikLink.color }}
+                  className="text-sm font-semibold truncate transition-colors"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${nexikLink.gradientFrom} 0%, ${nexikLink.gradientTo} 100%)`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
                 >
                   {nexikLink.labelRu}
                 </span>
-                <ExternalLink className="w-3 h-3" style={{ color: nexikLink.color, opacity: 0.6 }} />
+                <span 
+                  className="px-1.5 py-0.5 text-[9px] font-medium rounded-md"
+                  style={{ 
+                    background: `${nexikLink.color}15`,
+                    color: nexikLink.color,
+                  }}
+                >
+                  {nexikLink.badge}
+                </span>
               </div>
-              <span className="text-[10px] text-muted-foreground truncate">
+              <span className="text-[10px] text-muted-foreground truncate flex items-center gap-1">
                 {nexikLink.description}
+                <ExternalLink className="w-2.5 h-2.5 opacity-50" />
               </span>
             </div>
           </Link>
