@@ -94,10 +94,28 @@
   }
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+  @media (max-width: 768px) {
+    html {
+      scroll-padding-top: 64px;
+    }
   }
   /* faster taps on iOS */
   button, a, [role="button"] {
     touch-action: manipulation;
+  }
+  
+  /* Selection styles */
+  ::selection {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+  
+  /* Focus visible */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
 }
 

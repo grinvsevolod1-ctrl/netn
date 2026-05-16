@@ -164,30 +164,30 @@ export function ServicesSection() {
   }
 
   return (
-    <section id="services" className="min-h-screen py-16 md:py-24 relative overflow-hidden">
+    <section id="services" className="min-h-screen py-20 md:py-28 lg:py-32 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 -left-20 md:-left-40 w-40 md:w-80 h-40 md:h-80 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-20 md:-right-40 w-40 md:w-80 h-40 md:h-80 bg-accent/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 -left-20 md:-left-40 w-40 md:w-72 lg:w-80 h-40 md:h-72 lg:h-80 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -right-20 md:-right-40 w-40 md:w-72 lg:w-80 h-40 md:h-72 lg:h-80 bg-accent/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 relative">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-10 md:mb-16">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-20 relative">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5 sm:gap-6 md:gap-8 mb-10 sm:mb-12 md:mb-16">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
-              <div className="w-8 md:w-12 h-0.5 bg-primary" />
-              <span className="text-primary font-mono text-xs md:text-sm">{"// 01. Услуги"}</span>
+            <div className="flex items-center gap-2.5 md:gap-3 mb-4 md:mb-5">
+              <div className="w-10 md:w-12 h-0.5 bg-primary rounded-full" />
+              <span className="text-primary font-mono text-xs md:text-sm tracking-wide">{"// 01. Услуги"}</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-balance">
+            <h2 className="text-[1.75rem] sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-balance tracking-tight">
               Полный цикл
               <span className="block text-primary">разработки</span>
             </h2>
-            <p className="text-muted-foreground text-sm md:text-lg leading-relaxed">
+            <p className="text-muted-foreground text-[15px] md:text-lg leading-relaxed max-w-xl">
               От идеи до запуска и поддержки. Работаем с современным стеком технологий и следим за трендами индустрии.
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
           {services.map((service, index) => (
             <ServiceCard
               key={service.id}
@@ -199,14 +199,15 @@ export function ServicesSection() {
           ))}
         </div>
 
-        <div className="mt-10 md:mt-16 text-center">
-          <p className="text-muted-foreground text-sm md:text-base mb-3 md:mb-4">Не нашли нужную услугу?</p>
+        <div className="mt-12 md:mt-20 text-center">
+          <p className="text-muted-foreground text-[15px] md:text-base mb-4 md:mb-5">Не нашли нужную услугу?</p>
           <a
             href="#contact"
             className={cn(
-              "inline-flex items-center gap-2 px-5 py-2.5 md:px-6 md:py-3 rounded-full",
-              "bg-primary text-primary-foreground font-medium text-sm md:text-base",
-              "hover:bg-primary/90 transition-colors duration-300",
+              "inline-flex items-center gap-2.5 px-6 py-3 md:px-8 md:py-4 rounded-full",
+              "bg-primary text-primary-foreground font-semibold text-[15px] md:text-base",
+              "hover:bg-primary/90 transition-all duration-300",
+              "shadow-lg shadow-primary/20 hover:shadow-primary/30",
               "group"
             )}
           >

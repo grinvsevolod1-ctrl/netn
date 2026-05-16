@@ -74,26 +74,26 @@ export function PortfolioSection() {
     <section
       ref={sectionRef}
       id="portfolio"
-      className="py-16 sm:py-20 md:py-32 relative overflow-hidden"
+      className="py-20 sm:py-24 md:py-32 lg:py-36 relative overflow-hidden"
     >
       {/* Subtle bg */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/5 to-background" />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 relative z-10 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-20 relative z-10 max-w-7xl">
         {/* Header */}
         <div className={cn(
-          "text-center mb-12 md:mb-20 transition-all duration-700",
+          "text-center mb-12 md:mb-16 lg:mb-20 transition-all duration-700",
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         )}>
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium mb-5 tracking-wide">
+          <span className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-primary/10 text-primary text-xs font-medium mb-6 tracking-wide">
             <Award className="w-3.5 h-3.5" />
             Опыт и достижения
           </span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 text-balance">
+          <h2 className="text-[1.75rem] sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-5 text-balance tracking-tight">
             Результаты говорят{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">за нас</span>
           </h2>
-          <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-muted-foreground text-[15px] md:text-lg max-w-xl lg:max-w-2xl mx-auto leading-relaxed">
             Мы не можем показать проекты из-за NDA с клиентами, но цифры и достижения 
             расскажут о нашем опыте лучше любых скриншотов.
           </p>
@@ -101,7 +101,7 @@ export function PortfolioSection() {
 
         {/* Stats Grid */}
         <div className={cn(
-          "grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mb-8 sm:mb-12 md:mb-16 transition-all duration-700 delay-200",
+          "grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6 mb-10 sm:mb-12 md:mb-16 transition-all duration-700 delay-200",
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
         )}>
           {stats.map((stat, index) => (

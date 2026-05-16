@@ -303,24 +303,24 @@ export function ProcessSection() {
   }, [isMobile])
 
   return (
-    <section id="process" className="py-16 md:py-24 relative overflow-hidden">
+    <section id="process" className="py-20 md:py-28 lg:py-32 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/3 left-1/4 w-48 md:w-96 h-48 md:h-96 bg-primary/3 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 right-1/4 w-48 md:w-96 h-48 md:h-96 bg-accent/3 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 left-1/4 w-48 md:w-72 lg:w-96 h-48 md:h-72 lg:h-96 bg-primary/3 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/4 w-48 md:w-72 lg:w-96 h-48 md:h-72 lg:h-96 bg-accent/3 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 relative">
-        <div className="flex flex-col lg:flex-row gap-8 md:gap-16 lg:gap-24">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-20 relative">
+        <div className="flex flex-col lg:flex-row gap-10 md:gap-16 lg:gap-24">
           <div className="lg:w-1/3 lg:sticky lg:top-24 lg:self-start">
-            <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
-              <div className="w-8 md:w-12 h-0.5 bg-primary" />
-              <span className="text-primary font-mono text-xs md:text-sm">{"// 02. Процесс"}</span>
+            <div className="flex items-center gap-2.5 md:gap-3 mb-4 md:mb-5">
+              <div className="w-10 md:w-12 h-0.5 bg-primary rounded-full" />
+              <span className="text-primary font-mono text-xs md:text-sm tracking-wide">{"// 02. Процесс"}</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6">
+            <h2 className="text-[1.75rem] sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 tracking-tight">
               Как мы
               <span className="block text-primary">работаем</span>
             </h2>
-            <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-6 md:mb-8">
+            <p className="text-muted-foreground text-[15px] md:text-base leading-relaxed mb-6 md:mb-8 max-w-md">
               Прозрачный процесс от первого звонка до запуска. Вы всегда в курсе статуса проекта.
             </p>
             
@@ -389,19 +389,19 @@ export function ProcessSection() {
           </div>
         </div>
 
-        <div className="mt-10 md:mt-16 p-5 md:p-8 rounded-2xl md:rounded-3xl bg-gradient-to-r from-primary/10 via-card to-accent/10 border border-border/50">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 text-center md:text-left">
+        <div className="mt-12 md:mt-20 p-6 md:p-10 rounded-2xl md:rounded-3xl bg-gradient-to-r from-primary/10 via-card to-accent/10 border border-border/50">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-5 md:gap-8 text-center md:text-left">
             <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-1 md:mb-2">Готовы начать?</h3>
-              <p className="text-sm md:text-base text-muted-foreground">Обсудим ваш проект бесплатно</p>
+              <h3 className="text-xl md:text-2xl font-bold mb-2 tracking-tight">Готовы начать?</h3>
+              <p className="text-[15px] md:text-base text-muted-foreground">Обсудим ваш проект бесплатно</p>
             </div>
             <a
               href="#contact"
               className={cn(
-                "inline-flex items-center gap-2 px-6 py-3 md:px-8 md:py-4 rounded-full",
-                "bg-primary text-primary-foreground font-semibold text-sm md:text-lg",
+                "inline-flex items-center gap-2.5 px-7 py-3.5 md:px-8 md:py-4 rounded-full",
+                "bg-primary text-primary-foreground font-semibold text-[15px] md:text-lg",
                 "hover:bg-primary/90 transition-all duration-300",
-                "group shadow-lg shadow-primary/25 w-full md:w-auto justify-center"
+                "group shadow-lg shadow-primary/25 hover:shadow-primary/35 w-full md:w-auto justify-center"
               )}
             >
               Начать проект

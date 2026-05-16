@@ -214,25 +214,25 @@ export function TeamSection() {
   }
 
   return (
-    <section id="team" className="py-16 md:py-24 overflow-visible">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20">
+    <section id="team" className="py-20 md:py-28 lg:py-32 overflow-visible">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-20">
         {/* Header */}
-        <div className="max-w-3xl mx-auto text-center mb-12 md:mb-20">
-          <span className="text-primary font-mono text-xs md:text-sm mb-3 block tracking-wider">
+        <div className="max-w-3xl mx-auto text-center mb-12 md:mb-16 lg:mb-20">
+          <span className="text-primary font-mono text-xs md:text-sm mb-4 block tracking-wider">
             {"// Команда"}
           </span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-5 text-balance text-foreground">
+          <h2 className="text-[1.75rem] sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-5 text-balance text-foreground tracking-tight">
             <span className="text-primary">{totalPeople}</span> специалистов.{" "}
             <span className="text-primary">6</span> направлений.
           </h2>
-          <p className="text-muted-foreground text-sm md:text-lg leading-relaxed max-w-xl mx-auto">
+          <p className="text-muted-foreground text-[15px] md:text-lg leading-relaxed max-w-lg mx-auto">
             У каждого направления свой лид и своя зона ответственности.
             Нажмите на карточку, чтобы узнать больше.
           </p>
         </div>
 
         {/* Department grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-3 md:gap-5 max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-5 max-w-4xl mx-auto">
           {departments.map((dept) => {
             const Icon = dept.icon
             const isActive = selectedId === dept.id

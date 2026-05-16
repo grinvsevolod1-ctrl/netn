@@ -338,17 +338,20 @@ export function GeneratorWidget({ variant = "default" }: GeneratorWidgetProps) {
         <button
           type="button"
           onClick={() => setIsModalOpen(true)}
-          className="w-full flex items-center gap-3 px-5 py-4 rounded-2xl border border-white/10 bg-white/5 active:bg-white/10 transition-colors group touch-manipulation"
+          className="w-full flex items-center gap-4 px-5 py-5 rounded-2xl border border-white/10 bg-white/[0.03] active:bg-white/10 transition-all group touch-manipulation shadow-lg shadow-black/10"
         >
           <div 
-            className="w-12 h-12 rounded-xl flex items-center justify-center transition-colors"
-            style={{ background: `${theme.accentColor}15` }}
+            className="w-14 h-14 rounded-xl flex items-center justify-center transition-colors"
+            style={{ 
+              background: `linear-gradient(135deg, ${theme.accentColor}20 0%, ${theme.accentColor}10 100%)`,
+              boxShadow: `0 4px 16px ${theme.accentColor}15`
+            }}
           >
-            <IconComponent className="w-6 h-6" style={{ color: theme.accentColor }} />
+            <IconComponent className="w-7 h-7" style={{ color: theme.accentColor }} />
           </div>
           <div className="flex-1 text-left">
-            <div className="font-semibold text-white">AI Генератор сайтов</div>
-            <div className="text-sm text-white/50">100+ типов бизнеса</div>
+            <div className="font-semibold text-white text-[15px]">AI Генератор сайтов</div>
+            <div className="text-sm text-white/50 mt-0.5">100+ типов бизнеса</div>
           </div>
           <ArrowRight className="w-5 h-5 text-white/30 group-active:translate-x-1 transition-transform" />
         </button>
@@ -475,27 +478,27 @@ export function GeneratorWidget({ variant = "default" }: GeneratorWidgetProps) {
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center gap-3 px-5 py-4 rounded-xl font-semibold text-white active:scale-[0.98] transition-transform touch-manipulation"
+                className="w-full flex items-center justify-center gap-3 px-5 py-4 rounded-xl font-semibold text-white active:scale-[0.98] transition-all touch-manipulation hover:brightness-110"
                 style={{ 
-                  background: `linear-gradient(135deg, ${theme.accentColor} 0%, ${theme.accentColor}AA 100%)`,
-                  boxShadow: `0 6px 24px ${theme.accentColor}30`
+                  background: `linear-gradient(135deg, ${theme.accentColor} 0%, ${theme.accentColor}CC 100%)`,
+                  boxShadow: `0 8px 28px ${theme.accentColor}35, 0 2px 8px rgba(0,0,0,0.2)`
                 }}
               >
                 <Wand2 className="w-5 h-5" />
-                <span>Создать сайт</span>
+                <span className="text-[15px]">Создать сайт</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
             </form>
 
             {/* Stats */}
-            <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-center gap-6">
-              <div className="flex items-center gap-2 text-[11px] text-white/40">
+            <div className="mt-5 pt-4 border-t border-white/5 flex items-center justify-center gap-6">
+              <div className="flex items-center gap-2 text-xs text-white/40">
                 <Clock className="w-3.5 h-3.5" />
                 <span>Генерация за 1 минуту</span>
               </div>
               <div 
-                className="text-[11px] font-bold px-2 py-0.5 rounded-full"
-                style={{ color: theme.accentColor, background: `${theme.accentColor}12` }}
+                className="text-xs font-bold px-2.5 py-1 rounded-full"
+                style={{ color: theme.accentColor, background: `${theme.accentColor}15` }}
               >
                 100+ ниш
               </div>

@@ -404,7 +404,7 @@ export default function NexikPage() {
       </header>
 
       {/* Main content */}
-      <main className="relative min-h-screen flex flex-col items-center px-4 sm:px-6 pt-20 sm:pt-24 pb-8 sm:pb-12">
+      <main className="relative min-h-screen flex flex-col items-center px-4 sm:px-6 md:px-8 pt-24 sm:pt-28 pb-12 sm:pb-16">
         {/* Animated title -> chat transition */}
         <AnimatePresence mode="wait">
           {phase === "title" && (
@@ -416,11 +416,11 @@ export default function NexikPage() {
               transition={{ duration: 0.5 }}
               className="text-center flex-1 flex items-center justify-center"
             >
-              <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-none">
+              <h1 className="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tighter leading-[1.1]">
                 <span className="block bg-gradient-to-b from-white to-zinc-400 bg-clip-text text-transparent">
                   Общение
                 </span>
-                <span className="block mt-1 sm:mt-2 bg-gradient-to-r from-cyan-300 to-cyan-500 bg-clip-text text-transparent">
+                <span className="block mt-2 sm:mt-3 bg-gradient-to-r from-cyan-300 to-cyan-500 bg-clip-text text-transparent">
                   без ожидания
                 </span>
               </h1>
@@ -433,7 +433,7 @@ export default function NexikPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="w-full mt-4 sm:mt-8"
+              className="w-full mt-6 sm:mt-10"
             >
               <ChatDemo visible={true} />
             </motion.div>

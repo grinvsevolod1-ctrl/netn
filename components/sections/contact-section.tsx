@@ -253,33 +253,33 @@ export function ContactSection() {
   const canSubmit = formState.name && getContactValue() && formState.message
 
   return (
-    <section id="contact" className="min-h-screen py-16 md:py-24 relative overflow-hidden">
+    <section id="contact" className="min-h-screen py-20 md:py-28 lg:py-32 relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 -left-32 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 -left-32 w-64 md:w-80 h-64 md:h-80 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -right-32 w-80 md:w-96 h-80 md:h-96 bg-accent/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 relative">
-        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 md:mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-4">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-20 relative">
+        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12 md:mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-primary/10 border border-primary/20 mb-5">
             <LaunchIcon className="w-3.5 h-3.5 text-primary" />
-            <span className="text-primary text-xs font-medium">Начните проект</span>
+            <span className="text-primary text-xs font-medium tracking-wide">Начните проект</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-6 text-balance">
+          <h2 className="text-[1.75rem] sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-balance tracking-tight">
             Давайте создадим что-то{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
               невероятное
             </span>
           </h2>
-          <p className="text-muted-foreground text-sm md:text-lg leading-relaxed px-4 md:px-0">
+          <p className="text-muted-foreground text-[15px] md:text-lg leading-relaxed max-w-lg mx-auto">
             Расскажите о вашем проекте, и мы превратим вашу идею в реальность.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-5 md:gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6 md:gap-8 max-w-6xl mx-auto">
           {/* Contact info */}
-          <div className="lg:col-span-2 space-y-3 sm:space-y-4">
+          <div className="lg:col-span-2 space-y-4">
             <div className="space-y-3">
               {contactCards.map((item, index) => {
                 const Icon = item.icon

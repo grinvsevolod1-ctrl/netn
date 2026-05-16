@@ -81,18 +81,18 @@ export function Footer() {
 
   return (
     <footer className="bg-card/50 border-t border-border/50">
-      <div className="container mx-auto px-4 md:px-6 lg:px-20">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-20">
         {/* Main Footer */}
-        <div className="py-12 md:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8">
+        <div className="py-14 md:py-16 lg:py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 lg:gap-10">
           {/* Brand */}
           <div className="lg:col-span-1">
             <Logo />
-            <p className="mt-4 text-sm text-muted-foreground leading-relaxed max-w-xs">
+            <p className="mt-5 text-[15px] text-muted-foreground leading-relaxed max-w-xs">
               Создаём современные цифровые продукты, которые помогают бизнесу расти и развиваться.
             </p>
             
             {/* Contact Info */}
-            <div className="mt-6 space-y-3">
+            <div className="mt-7 space-y-3.5">
               {contactInfo.map((item) => (
                 <a
                   key={item.value}
@@ -108,13 +108,13 @@ export function Footer() {
 
           {/* Company Links */}
           <div>
-            <h4 className="font-semibold text-foreground mb-4">Компания</h4>
-            <ul className="space-y-3">
+            <h4 className="font-semibold text-foreground mb-5 tracking-tight">Компания</h4>
+            <ul className="space-y-3.5">
               {footerLinks.company.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    className="text-[15px] text-muted-foreground hover:text-primary transition-colors"
                   >
                     {link.label}
                   </a>
@@ -125,13 +125,13 @@ export function Footer() {
 
           {/* Legal Links */}
           <div>
-            <h4 className="font-semibold text-foreground mb-4">Документы</h4>
-            <ul className="space-y-3">
+            <h4 className="font-semibold text-foreground mb-5 tracking-tight">Документы</h4>
+            <ul className="space-y-3.5">
               {footerLinks.legal.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    className="text-[15px] text-muted-foreground hover:text-primary transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -142,8 +142,8 @@ export function Footer() {
 
           {/* Social Links */}
           <div>
-            <h4 className="font-semibold text-foreground mb-4">Социальные сети</h4>
-            <ul className="space-y-3">
+            <h4 className="font-semibold text-foreground mb-5 tracking-tight">Социальные сети</h4>
+            <ul className="space-y-3.5">
               {footerLinks.social.map((link) => {
                 const SocialIcon = (link as { icon?: React.FC<{ className?: string }> }).icon
                 return (
@@ -152,7 +152,7 @@ export function Footer() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group"
+                      className="flex items-center gap-2.5 text-[15px] text-muted-foreground hover:text-primary transition-colors group"
                     >
                       {SocialIcon && <SocialIcon className="w-4 h-4" />}
                       <span>{link.label}</span>
@@ -166,11 +166,11 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar - Legal Info */}
-        <div className="py-6 pb-20 md:pb-6 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="py-6 pb-24 md:pb-8 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground text-center md:text-left">
             © {currentYear} ООО "НетНекст". Все права защищены.
           </p>
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+          <div className="flex flex-col md:flex-row items-center gap-2.5 md:gap-4">
             <p className="text-xs text-muted-foreground/60">
               УНП 193962237 | г. Минск, ул. Фабрициуса 9, пом. 1
             </p>
