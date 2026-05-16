@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useCallback, KeyboardEvent } from 'react'
-import { Send, Paperclip, Smile, Mic, MicOff, Sparkles, X } from 'lucide-react'
+import { Send, Paperclip, Smile, Mic, MicOff, Zap, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ChatConfig } from './types'
 
@@ -13,7 +13,7 @@ interface ChatInputProps {
   className?: string
 }
 
-const QUICK_EMOJIS = ['👍', '❤️', '😊', '🎉', '🤔', '👏', '🔥', '✨']
+const QUICK_EMOJIS: string[] = []
 
 export function ChatInput({ config, onSend, onAttach, disabled, className }: ChatInputProps) {
   const [value, setValue] = useState('')
@@ -240,7 +240,7 @@ export function ChatInput({ config, onSend, onAttach, disabled, className }: Cha
 
       {/* AI hint */}
       <div className="flex items-center justify-center gap-2 mt-3">
-        <Sparkles className="w-3 h-3 text-teal-500/50" />
+        <Zap className="w-3 h-3 text-teal-500/50" />
         <p className="text-[10px] text-zinc-500">
           Нажмите <kbd className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 font-mono text-[9px]">Enter</kbd> для отправки, <kbd className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 font-mono text-[9px]">Shift+Enter</kbd> для новой строки
         </p>

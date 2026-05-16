@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Home, ArrowLeft, Search, Sparkles, MessageCircle } from "lucide-react"
+import { Home, ArrowLeft, Search, Zap, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { NetworkIcon } from "@/components/icons"
 
@@ -128,7 +128,7 @@ function Interactive404() {
 // Quick links
 const quickLinks = [
   { href: "/", label: "Главная", icon: Home, description: "Вернуться на главную" },
-  { href: "/#services", label: "Услуги", icon: Sparkles, description: "Наши услуги" },
+  { href: "/#services", label: "Услуги", icon: Zap, description: "Наши услуги" },
   { href: "/#contact", label: "Связаться", icon: MessageCircle, description: "Написать нам" },
 ]
 

@@ -9,7 +9,6 @@ import {
   Users,
   Target,
   ArrowRight,
-  Sparkles,
   BarChart3,
   Zap,
   ArrowUpRight,
@@ -509,7 +508,7 @@ export function AdsWidget({ onContactClick }: AdsWidgetProps) {
               {/* Recommendations */}
               <div className="bg-white/[0.02] rounded-xl p-4 border border-white/[0.06] mb-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <Sparkles className="w-4 h-4" style={{ color: accentColor }} />
+                  <Zap className="w-4 h-4" style={{ color: accentColor }} />
                   <span className="text-sm font-medium text-white">Рекомендации для {currentNiche.name}</span>
                 </div>
                 <ul className="space-y-2">

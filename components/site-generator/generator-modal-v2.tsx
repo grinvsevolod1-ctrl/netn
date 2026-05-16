@@ -6,7 +6,6 @@ import {
   X, 
   Maximize2, 
   Minimize2, 
-  Sparkles,
   Zap,
   ExternalLink,
   RefreshCw,
@@ -479,7 +478,7 @@ export function GeneratorModalV2({
                 className="relative w-9 h-9 md:w-10 md:h-10 rounded-xl flex items-center justify-center"
                 style={{ background: accentColor }}
               >
-                <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-black" />
+                <Zap className="w-4 h-4 md:w-5 md:h-5 text-black" />
               </div>
             </div>
             <div>

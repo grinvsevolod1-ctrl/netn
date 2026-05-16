@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Send, ArrowRight, Check, Loader2, Globe, Copy, Sparkles } from "lucide-react"
+import { Send, ArrowRight, Check, Loader2, Globe, Copy, Zap } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SiriOrb } from "@/components/nexik/siri-orb"
 
@@ -163,7 +163,7 @@ export default function NexikStartPage() {
                   >
                     {msg.role === "assistant" && (
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-teal-500 flex items-center justify-center mr-3 flex-shrink-0">
-                        <Sparkles className="w-4 h-4 text-black" />
+                        <Zap className="w-4 h-4 text-black" />
                       </div>
                     )}
                     <div className={cn(
@@ -184,7 +184,7 @@ export default function NexikStartPage() {
                     className="flex items-center gap-3"
                   >
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-teal-500 flex items-center justify-center">
-                      <Sparkles className="w-4 h-4 text-black" />
+                      <Zap className="w-4 h-4 text-black" />
                     </div>
                     <div className="flex gap-1 px-4 py-3 bg-white/5 border border-white/10 rounded-2xl rounded-bl-sm">
                       <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
