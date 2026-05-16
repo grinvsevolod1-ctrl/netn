@@ -213,10 +213,11 @@ export default function NexikStartPage() {
   }
 
   // Handle business description
-  const handleBusinessSubmit = async () => {
-    if (!businessInput.trim()) return
+  const handleBusinessSubmit = async (inputValue?: string) => {
+    const value = inputValue || businessInput
+    if (!value.trim()) return
     
-    setBusinessDescription(businessInput)
+    setBusinessDescription(value)
     setBusinessInput("")
     
     // Simulate AI quick response (in production - real AI call)

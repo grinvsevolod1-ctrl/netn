@@ -1,13 +1,17 @@
 /**
- * Nexik AI Chat Widget v3.0
+ * Nexik AI Chat Widget v3.1
  * Production-ready embeddable widget with Modal & Mini modes
  * 
- * Usage (Script tag):
+ * Usage (Script tag - simplest):
+ * <script src="https://nexik.io/widget.js" data-id="YOUR_WIDGET_ID"></script>
+ * 
+ * Usage (with options):
  * <script 
- *   src="https://netnext.site/nexik/widget.js"
- *   data-client-id="YOUR_CLIENT_ID"
+ *   src="https://nexik.io/widget.js"
+ *   data-id="YOUR_WIDGET_ID"
  *   data-display-mode="modal"
  *   data-modal-size="lg"
+ *   data-position="bottom-right"
  *   async
  * ></script>
  * 
@@ -20,7 +24,7 @@
 (function(window, document) {
   'use strict';
 
-  const VERSION = '3.0.0';
+  const VERSION = '3.1.0';
   
   // State
   let config = {
@@ -569,10 +573,10 @@
     // Merge config
     Object.assign(config, options);
     
-    // Also check script tag attributes
-    const script = document.currentScript || document.querySelector('script[data-client-id]');
+    // Also check script tag attributes (support both data-id and data-client-id)
+    const script = document.currentScript || document.querySelector('script[data-client-id],script[data-id]');
     if (script) {
-      config.clientId = script.getAttribute('data-client-id') || config.clientId;
+      config.clientId = script.getAttribute('data-id') || script.getAttribute('data-client-id') || config.clientId;
       config.color = script.getAttribute('data-color') || config.color;
       config.position = script.getAttribute('data-position') || config.position;
       config.greeting = script.getAttribute('data-greeting') || config.greeting;
