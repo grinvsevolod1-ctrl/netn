@@ -61,8 +61,14 @@ function ChatDemo({ visible }: { visible: boolean }) {
   const [input, setInput] = useState("")
   const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const isFirstRender = useRef(true)
 
   useEffect(() => {
+    // Don't auto-scroll on first render
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
@@ -100,9 +106,9 @@ function ChatDemo({ visible }: { visible: boolean }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
       className="w-full max-w-lg mx-auto"
     >
       <div 
@@ -126,7 +132,7 @@ function ChatDemo({ visible }: { visible: boolean }) {
         </div>
 
         {/* Messages */}
-        <div className="h-96 overflow-y-auto p-5 space-y-4">
+        <div className="min-h-[180px] max-h-72 overflow-y-auto p-5 space-y-4 flex flex-col justify-start">
           <AnimatePresence mode="popLayout">
             {messages.map((msg) => (
               <motion.div
@@ -231,9 +237,19 @@ export default function NexikPage() {
   const [headerTitle, setHeaderTitle] = useState(false)
 
   useEffect(() => {
+    // Scroll to top on mount
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+    
     const timer = setTimeout(() => {
       setPhase("chat")
       setHeaderTitle(true)
+      // Scroll to top after chat animation completes
+      setTimeout(() => {
+        document.documentElement.scrollTop = 0
+        document.body.scrollTop = 0
+        window.scrollTo(0, 0)
+      }, 700)
     }, 2500)
     return () => clearTimeout(timer)
   }, [])
@@ -338,7 +354,7 @@ export default function NexikPage() {
       </header>
 
       {/* Main content */}
-      <main className="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 pt-24 pb-12">
+      <main className="relative min-h-screen flex flex-col items-center px-4 sm:px-6 pt-24 pb-12">
         {/* Animated title -> chat transition */}
         <AnimatePresence mode="wait">
           {phase === "title" && (
@@ -348,7 +364,7 @@ export default function NexikPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
               transition={{ duration: 0.5 }}
-              className="text-center"
+              className="text-center flex-1 flex items-center justify-center"
             >
               <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-tighter leading-none">
                 <span className="block bg-gradient-to-b from-white to-zinc-400 bg-clip-text text-transparent">
@@ -367,7 +383,7 @@ export default function NexikPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="w-full"
+              className="w-full mt-8"
             >
               <ChatDemo visible={true} />
             </motion.div>
