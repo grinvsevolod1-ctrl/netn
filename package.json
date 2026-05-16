@@ -13,9 +13,7 @@
     "db:init": "psql $DATABASE_URL -f scripts/init-db.sql",
     "db:reset": "psql $DATABASE_URL -c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public;' && pnpm db:init",
     "setup": "chmod +x scripts/setup.sh && ./scripts/setup.sh",
-    "docker:build": "docker build -t netnext-site .",
-    "docker:up": "docker compose up -d",
-    "docker:down": "docker compose down",
+
     "worker": "tsx scripts/email-worker.ts"
   },
   "dependencies": {

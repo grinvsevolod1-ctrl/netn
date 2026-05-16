@@ -1,13 +1,19 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { SignJWT } from 'jose'
+import bcrypt from 'bcryptjs'
+import { rateLimiters } from '@/lib/rate-limit'
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.NEXIK_JWT_SECRET || 'nexik-secret-key-change-in-production'
 )
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    // Rate limit: strict for auth endpoints
+    const rateLimitResponse = await rateLimiters.strict(request)
+    if (rateLimitResponse) return rateLimitResponse
+    
     const { email, password } = await request.json()
 
     if (!email || !password) {
@@ -38,7 +44,6 @@ export async function POST(request: Request) {
 
     try {
       const { query } = await import('@/lib/db')
-      const bcrypt = await import('bcryptjs')
       
       // Check if user already exists
       const existingUsers = await query<{ id: string }>(

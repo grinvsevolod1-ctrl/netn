@@ -1,13 +1,19 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { SignJWT } from 'jose'
+import bcrypt from 'bcryptjs'
+import { rateLimiters } from '@/lib/rate-limit'
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.NEXIK_JWT_SECRET || 'nexik-secret-key-change-in-production'
 )
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    // Rate limit: strict for auth endpoints
+    const rateLimitResponse = await rateLimiters.strict(request)
+    if (rateLimitResponse) return rateLimitResponse
+    
     const { email, password } = await request.json()
 
     if (!email || !password) {
@@ -43,20 +49,17 @@ export async function POST(request: Request) {
       if (members.length > 0) {
         const member = members[0]
         
-        // Verify password (using bcrypt in production)
-        // For now, simple comparison (REPLACE WITH BCRYPT IN PRODUCTION)
-        const bcrypt = await import('bcryptjs').catch(() => null)
+        // Verify password using bcrypt
+        if (!member.password_hash) {
+          return NextResponse.json(
+            { error: 'Неверный email или пароль' },
+            { status: 401 }
+          )
+        }
         
-        if (bcrypt && member.password_hash) {
-          const valid = await bcrypt.compare(password, member.password_hash)
-          if (!valid) {
-            return NextResponse.json(
-              { error: 'Неверный email или пароль' },
-              { status: 401 }
-            )
-          }
-        } else if (member.password_hash !== password) {
-          // Fallback for dev without bcrypt
+        const isValidPassword = await bcrypt.compare(password, member.password_hash)
+        
+        if (!isValidPassword) {
           return NextResponse.json(
             { error: 'Неверный email или пароль' },
             { status: 401 }

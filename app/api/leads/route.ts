@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { rateLimiters } from '@/lib/rate-limit'
 import { createLead } from '@/lib/db/leads'
 import { trackEvent, getGeoFromIP, getDeviceType } from '@/lib/db/analytics'
 import { extractIP, sanitizeInput, isValidEmail, isValidPhone } from '@/lib/security'
@@ -21,6 +22,10 @@ interface CreateLeadBody {
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit for lead submissions
+    const rateLimitResponse = await rateLimiters.standard(request)
+    if (rateLimitResponse) return rateLimitResponse
+    
     const body: CreateLeadBody = await request.json()
     
     // Validate required fields

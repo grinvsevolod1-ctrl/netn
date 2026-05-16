@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 import { 
   Home, 
   Briefcase, 
@@ -12,6 +13,8 @@ import {
   Menu, 
   X,
   Phone,
+  Cpu,
+  ExternalLink,
 } from "lucide-react"
 import { TelegramIcon, WhatsAppIcon, ViberIcon, InstagramIcon, LinkedInIcon } from "@/components/icons"
 
@@ -31,6 +34,16 @@ const navItems: NavItem[] = [
   { id: "team", label: "Team", labelRu: "Команда", icon: Users, color: "#f472b6" },
   { id: "contact", label: "Contact", labelRu: "Контакты", icon: Mail, color: "#60a5fa" },
 ]
+
+// Nexik product link (separate from nav items)
+const nexikLink = {
+  href: "/nexik",
+  label: "Nexik AI",
+  labelRu: "Nexik AI",
+  description: "AI-чат для бизнеса",
+  icon: Cpu,
+  color: "#4fd1c5",
+}
 
 const contactInfo = {
   phone: "+375 (29) 14-14-555",
@@ -435,6 +448,40 @@ export function SidebarNav({ activeSection, onNavigate }: SidebarNavProps) {
                     )
                   })}
                 </div>
+                
+                {/* Nexik AI Product Link */}
+                <div className="mt-4 pt-4 border-t border-border/50">
+                  <Link
+                    href={nexikLink.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-4 p-4 rounded-2xl transition-all relative overflow-hidden group"
+                    style={{
+                      background: `linear-gradient(135deg, ${nexikLink.color}15, ${nexikLink.color}05)`,
+                      border: `1px solid ${nexikLink.color}30`,
+                    }}
+                  >
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center transition-all"
+                      style={{
+                        background: `${nexikLink.color}20`,
+                        boxShadow: `0 0 20px ${nexikLink.color}20`,
+                      }}
+                    >
+                      <Cpu className="w-6 h-6" style={{ color: nexikLink.color }} />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold" style={{ color: nexikLink.color }}>
+                          {nexikLink.labelRu}
+                        </span>
+                        <ExternalLink className="w-3.5 h-3.5 opacity-50" style={{ color: nexikLink.color }} />
+                      </div>
+                      <span className="text-xs text-muted-foreground">
+                        {nexikLink.description}
+                      </span>
+                    </div>
+                  </Link>
+                </div>
               </div>
             </div>
           </>
@@ -542,6 +589,61 @@ export function SidebarNav({ activeSection, onNavigate }: SidebarNavProps) {
               </button>
             )
           })}
+        </div>
+        
+        {/* Nexik AI Product Link */}
+        <div className="mt-4 pt-4 border-t border-border/30">
+          <Link
+            href={nexikLink.href}
+            onMouseEnter={() => setHoveredItem("nexik")}
+            onMouseLeave={() => setHoveredItem(null)}
+            className={cn(
+              "relative flex items-center w-full h-11 rounded-xl transition-all duration-200",
+              "hover:bg-secondary/50",
+              isExpanded ? "px-3 gap-3" : "justify-center"
+            )}
+          >
+            {/* Glow effect */}
+            <div 
+              className="absolute inset-0 rounded-xl opacity-10"
+              style={{ background: nexikLink.color }}
+            />
+            
+            {/* Icon */}
+            <div
+              className={cn(
+                "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200 flex-shrink-0"
+              )}
+              style={{
+                background: `${nexikLink.color}20`,
+                boxShadow: hoveredItem === "nexik" ? `0 0 15px ${nexikLink.color}30` : "none",
+                color: nexikLink.color,
+              }}
+            >
+              <Cpu className="w-[18px] h-[18px]" />
+            </div>
+
+            {/* Label */}
+            <div
+              className={cn(
+                "flex flex-col items-start min-w-0 transition-all duration-300",
+                isExpanded ? "opacity-100" : "opacity-0 w-0 overflow-hidden"
+              )}
+            >
+              <div className="flex items-center gap-1.5">
+                <span
+                  className="text-sm font-medium truncate transition-colors"
+                  style={{ color: nexikLink.color }}
+                >
+                  {nexikLink.labelRu}
+                </span>
+                <ExternalLink className="w-3 h-3" style={{ color: nexikLink.color, opacity: 0.6 }} />
+              </div>
+              <span className="text-[10px] text-muted-foreground truncate">
+                {nexikLink.description}
+              </span>
+            </div>
+          </Link>
         </div>
       </div>
 

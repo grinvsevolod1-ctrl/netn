@@ -4,6 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { rateLimiters } from '@/lib/rate-limit'
 
 export const runtime = 'nodejs'
 export const maxDuration = 30
@@ -116,6 +117,10 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit for AI chat
+    const rateLimitResponse = await rateLimiters.chat(request)
+    if (rateLimitResponse) return rateLimitResponse
+    
     const body: AIRequestBody = await request.json()
     const { message, stream = false } = body
 
