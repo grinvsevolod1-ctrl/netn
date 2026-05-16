@@ -7,7 +7,6 @@ import {
   Check, 
   Globe, 
   Code, 
-  ,
   HelpCircle,
   ExternalLink,
   Play,
@@ -222,7 +221,7 @@ const registrarInstructions: Record<string, {
     steps: [
       "Войдите в Cloudflare Dashboard",
       "Выберите ваш домен",
-      "Перейдите в DNS → Records",
+      "Пер��йдите в DNS → Records",
       "Нажмите Add record",
       "Type: CNAME",
       "Name: chat",

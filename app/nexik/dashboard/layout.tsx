@@ -13,7 +13,6 @@ import {
   Clock,
   HelpCircle,
   Plug,
-  ,
   Key
 } from "lucide-react"
 import { NetNextLogo } from "@/components/netnext-logo"
@@ -24,7 +23,7 @@ const navItems = [
   { href: "/nexik/dashboard/chats", icon: MessageSquare, label: "Диалоги" },
   { href: "/nexik/dashboard/knowledge", icon: BookOpen, label: "База знаний" },
   { href: "/nexik/dashboard/schedule", icon: Clock, label: "Расписание" },
-  { href: "/nexik/dashboard/integration", icon: label: "Интеграция" },
+  { href: "/nexik/dashboard/integration", icon: Plug, label: "Интеграция" },
   { href: "/nexik/dashboard/widget", icon: Code, label: "Виджет" },
   { href: "/nexik/dashboard/api-keys", icon: Key, label: "API ключи" },
   { href: "/nexik/dashboard/settings", icon: Settings, label: "Настройки" },

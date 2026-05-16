@@ -52,7 +52,7 @@ const navigation = [
   { 
     name: "Автоответы", 
     href: "/admin/auto-responses", 
-    icon: ,
+    icon: MessageSquare,
     description: "Правила бота"
   },
   { 

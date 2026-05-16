@@ -6,7 +6,6 @@ import {
   TrendingUp,
   Users,
   MessageSquare,
-  ,
   Monitor,
   Smartphone,
   Tablet,
