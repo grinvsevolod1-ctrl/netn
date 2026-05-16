@@ -14,7 +14,6 @@ import {
   Phone,
 } from "lucide-react"
 import { TelegramIcon, WhatsAppIcon, ViberIcon, InstagramIcon, LinkedInIcon } from "@/components/icons"
-import { NetNextLogo, NetNextLogoCompact } from "@/components/netnext-logo"
 
 interface NavItem {
   id: string
@@ -45,6 +44,57 @@ const contactInfo = {
 interface SidebarNavProps {
   activeSection: string
   onNavigate: (section: string) => void
+}
+
+// Custom Logo Component
+function NetNextLogo({ expanded = false }: { expanded?: boolean }) {
+  return (
+    <div className="flex items-center gap-3">
+      {/* Logo Mark */}
+      <div className="relative w-10 h-10 flex-shrink-0">
+        {/* Background glow */}
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary via-accent to-primary opacity-20 blur-md" />
+        
+        {/* Main logo container */}
+        <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-[#0d1117] to-[#161b22] border border-primary/30 flex items-center justify-center overflow-hidden">
+          {/* Animated gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20" />
+          
+          {/* Letter N with gradient */}
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="relative z-10">
+            <defs>
+              <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#22d3ee" />
+                <stop offset="100%" stopColor="#14b8a6" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M6 18V6h2l8 9V6h2v12h-2l-8-9v9H6z"
+              fill="url(#logoGradient)"
+            />
+          </svg>
+          
+          {/* Corner accent */}
+          <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-primary rounded-tl-lg opacity-60" />
+        </div>
+      </div>
+      
+      {/* Logo Text */}
+      <div
+        className={cn(
+          "flex flex-col overflow-hidden transition-all duration-300",
+          expanded ? "opacity-100 w-auto" : "opacity-0 w-0"
+        )}
+      >
+        <span className="text-sm font-bold text-foreground tracking-tight whitespace-nowrap">
+          NetNext
+        </span>
+        <span className="text-[10px] text-muted-foreground tracking-widest uppercase whitespace-nowrap">
+          Studio
+        </span>
+      </div>
+    </div>
+  )
 }
 
 export function SidebarNav({ activeSection, onNavigate }: SidebarNavProps) {
@@ -116,8 +166,44 @@ export function SidebarNav({ activeSection, onNavigate }: SidebarNavProps) {
           />
           
           <div className="flex items-center justify-between h-12 px-4">
-            {/* Logo - animated orb */}
-            <NetNextLogo size={32} animated={true} showText={true} color={activeColor} />
+            {/* Logo - with glow effect */}
+            <div className="flex items-center gap-2.5">
+              <div 
+                className="relative w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-500"
+                style={{ 
+                  background: `linear-gradient(135deg, ${activeColor}25, ${activeColor}08)`,
+                  boxShadow: `0 0 20px ${activeColor}20, inset 0 1px 0 rgba(255,255,255,0.1)`,
+                  border: `1px solid ${activeColor}30`,
+                }}
+              >
+                {/* Pulse ring */}
+                <div 
+                  className="absolute inset-0 rounded-xl animate-pulse"
+                  style={{ 
+                    boxShadow: `0 0 15px ${activeColor}30`,
+                    opacity: 0.5,
+                  }}
+                />
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" className="relative z-10">
+                  <path
+                    d="M6 18V6h2l8 9V6h2v12h-2l-8-9v9H6z"
+                    fill={activeColor}
+                    className="transition-all duration-500"
+                  />
+                </svg>
+              </div>
+              <div className="flex flex-col">
+                <span 
+                  className="text-sm font-bold tracking-tight transition-colors duration-500 leading-tight"
+                  style={{ color: activeColor }}
+                >
+                  NetNext
+                </span>
+                <span className="text-[8px] text-muted-foreground/60 uppercase tracking-widest">
+                  studio
+                </span>
+              </div>
+            </div>
             
             {/* Current Section - animated pill */}
             <div 
@@ -301,7 +387,7 @@ export function SidebarNav({ activeSection, onNavigate }: SidebarNavProps) {
                 
                 {/* Header */}
                 <div className="flex items-center justify-between mb-5">
-                  <NetNextLogo size={40} animated={true} showText={true} />
+                  <NetNextLogo expanded />
                   <button
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center"
@@ -383,7 +469,7 @@ export function SidebarNav({ activeSection, onNavigate }: SidebarNavProps) {
 
       {/* Logo Section */}
       <div className="flex items-center h-16 px-4 border-b border-border/50">
-        <NetNextLogo size={40} animated={true} showText={isExpanded} />
+        <NetNextLogo expanded={isExpanded} />
       </div>
 
       {/* Navigation */}
