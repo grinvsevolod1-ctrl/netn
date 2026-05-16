@@ -56,22 +56,22 @@ export function ChatHeader({
           {/* Glow effect */}
           <div 
             className={cn(
-              "absolute inset-0 rounded-full blur-lg transition-opacity duration-500",
-              isTyping ? "opacity-60" : "opacity-30"
+              "absolute -inset-2 rounded-full blur-xl transition-opacity duration-500",
+              isTyping ? "opacity-70" : "opacity-40"
             )}
-            style={{ background: 'radial-gradient(circle, rgba(79,209,197,0.4) 0%, transparent 70%)' }}
+            style={{ background: 'radial-gradient(circle, rgba(79,209,197,0.5) 0%, transparent 70%)' }}
           />
           <SiriOrb size={44} isHovered={isTyping} isActive={isTyping} />
           
-          {/* Status indicator */}
+          {/* Status indicator - small dot */}
           <div 
             className={cn(
-              "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full",
-              "border-2 border-background",
+              "absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full",
+              "ring-2 ring-zinc-800",
               "transition-colors duration-300",
               isConnectedToOperator 
-                ? "bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]" 
-                : "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"
+                ? "bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]" 
+                : "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"
             )}
           />
         </div>
