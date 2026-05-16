@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { 
   Brain, 
   Zap, 
@@ -119,6 +120,7 @@ const demoResponses: Record<string, { greeting: string; features: string[] }> = 
 
 // Interactive Demo Chat with business selection
 function DemoChat() {
+  const router = useRouter()
   const [selectedBusiness, setSelectedBusiness] = useState<string | null>(null)
   const [showResponse, setShowResponse] = useState(false)
   const [customInput, setCustomInput] = useState("")
@@ -244,12 +246,14 @@ function DemoChat() {
               <div className="max-w-[90%] rounded-2xl rounded-bl-md px-4 py-3 bg-gradient-to-r from-[#00ffff]/20 to-[#00ff88]/20 border border-[#00ffff]/30 text-white text-sm">
                 <p className="font-medium mb-2">Готов работать на твоём сайте!</p>
                 <div className="flex gap-2">
-                  <Link href="/nexik/start">
-                    <Button size="sm" className="bg-[#00ffff] text-black hover:bg-[#00ffff]/90 gap-1.5">
-                      <Zap className="w-3.5 h-3.5" />
-                      Запустить
-                    </Button>
-                  </Link>
+                  <Button 
+                    size="sm" 
+                    className="bg-[#00ffff] text-black hover:bg-[#00ffff]/90 gap-1.5"
+                    onClick={() => router.push('/nexik/start')}
+                  >
+                    <Zap className="w-3.5 h-3.5" />
+                    Запустить
+                  </Button>
                   <Button size="sm" variant="outline" onClick={resetDemo} className="border-[#2a2a3e] hover:bg-[#1a1a2e]">
                     Попробовать снова
                   </Button>
@@ -419,18 +423,18 @@ export default function NexikLandingPage() {
               <Link href="/#services" className="hidden md:block text-sm text-zinc-500 hover:text-white transition-colors">
                 Заказать сайт
               </Link>
-              <Link href="/nexik/login">
-                <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-white gap-2">
+              <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-white gap-2" asChild>
+                <Link href="/nexik/login">
                   <LogIn className="w-4 h-4" />
                   Войти
-                </Button>
-              </Link>
-              <Link href="/nexik/start">
-                <Button className="bg-[#00ffff] text-black hover:bg-[#00ffff]/90 gap-2">
+                </Link>
+              </Button>
+              <Button className="bg-[#00ffff] text-black hover:bg-[#00ffff]/90 gap-2" asChild>
+                <Link href="/nexik/start">
                   Начать
                   <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
@@ -461,12 +465,12 @@ export default function NexikLandingPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Link href="/nexik/start">
-                  <Button size="lg" className="bg-[#00ffff] text-black hover:bg-[#00ffff]/90 text-base px-8 h-14 w-full sm:w-auto gap-2 group">
+                <Button size="lg" className="bg-[#00ffff] text-black hover:bg-[#00ffff]/90 text-base px-8 h-14 w-full sm:w-auto gap-2 group" asChild>
+                  <Link href="/nexik/start">
                     Запустить за 2 минуты
                     <Zap className="w-5 h-5 transition-transform group-hover:scale-110" />
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
                 <Button 
                   variant="outline" 
                   size="lg" 
