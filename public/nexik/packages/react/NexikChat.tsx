@@ -51,7 +51,7 @@ interface Message {
 // Siri-like Orb component with canvas animation
 function SiriOrb({ size, color, state = "idle" }: { size: number; color: string; state?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | undefined>(undefined)
   const timeRef = useRef(Math.random() * 100)
 
   const hexToRgb = (hex: string) => {
