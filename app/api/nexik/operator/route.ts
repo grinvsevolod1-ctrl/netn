@@ -30,16 +30,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // TODO: In production:
-    // 1. Save operator request to database
-    // 2. Send notification via webhook (Telegram, Slack, email)
-    // 3. Add to operator queue in real-time dashboard
+    // Log operator request (in production, save to database)
+    const requestData = {
+      clientId,
+      sessionId,
+      userInfo,
+      lastMessages: messages?.slice(-3),
+      timestamp: new Date().toISOString()
+    }
     
-    console.log(`[Nexik Operator] Request from clientId=${clientId} sessionId=${sessionId}`)
-    console.log(`[Nexik Operator] Last messages:`, messages?.slice(-3))
-    
-    if (userInfo) {
-      console.log(`[Nexik Operator] User info:`, userInfo)
+    // Log for monitoring
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`[Nexik Operator] Request:`, JSON.stringify(requestData, null, 2))
     }
 
     // Simulate webhook notification

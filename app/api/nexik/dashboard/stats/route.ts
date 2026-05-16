@@ -107,8 +107,8 @@ export async function GET(req: NextRequest) {
         totalConversations: parseInt(conversations[0]?.count || '0'),
         todayConversations: parseInt(todayConversations[0]?.count || '0'),
         totalMessages: parseInt(messages[0]?.count || '0'),
-        leadsCollected: 0, // TODO: implement leads
-        appointmentsBooked: 0, // TODO: implement appointments
+        leadsCollected: 0, // Placeholder - requires leads table implementation
+        appointmentsBooked: 0, // Placeholder - requires appointments table implementation
         avgResponseTime,
         aiWorkingHours: 168, // AI works 24/7
       },

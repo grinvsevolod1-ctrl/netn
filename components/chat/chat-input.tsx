@@ -67,8 +67,35 @@ export function ChatInput({ config, onSend, onAttach, disabled, className }: Cha
   }
 
   const toggleRecording = () => {
-    setIsRecording(!isRecording)
-    // TODO: Implement voice recording
+    if (isRecording) {
+      setIsRecording(false)
+      return
+    }
+
+    // Check for browser support
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      console.warn('[v0] Speech recognition not supported')
+      return
+    }
+
+    setIsRecording(true)
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SpeechRecognitionAPI = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition
+    const recognition = new SpeechRecognitionAPI()
+    recognition.lang = 'ru-RU'
+    recognition.continuous = false
+    recognition.interimResults = false
+
+    recognition.onresult = (event: { results: { [x: number]: { [x: number]: { transcript: string } } } }) => {
+      const transcript = event.results[0][0].transcript
+      onChange(value + (value ? ' ' : '') + transcript)
+      setIsRecording(false)
+    }
+
+    recognition.onerror = () => setIsRecording(false)
+    recognition.onend = () => setIsRecording(false)
+    recognition.start()
   }
 
   const hasContent = value.trim().length > 0

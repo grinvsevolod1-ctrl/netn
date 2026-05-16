@@ -1,9 +1,11 @@
 "use client"
 
-import { useState, useEffect, useCallback, useMemo, useRef, memo } from "react"
+import { useState, useEffect, useCallback, useMemo, useRef, memo, lazy, Suspense } from "react"
 import { ArrowRight, Wand2, Clock, Users, Search, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { GeneratorModalV2 } from "./generator-modal-v2"
+
+// Lazy load the heavy modal component
+const GeneratorModalV2 = lazy(() => import("./generator-modal-v2").then(m => ({ default: m.GeneratorModalV2 })))
 import {
   BUSINESS_THEMES,
   detectBusinessTheme,
@@ -356,11 +358,15 @@ export function GeneratorWidget({ variant = "default" }: GeneratorWidgetProps) {
           <ArrowRight className="w-5 h-5 text-white/30 group-active:translate-x-1 transition-transform" />
         </button>
 
-        <GeneratorModalV2
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          initialBusiness={input}
-        />
+        {isModalOpen && (
+          <Suspense fallback={null}>
+            <GeneratorModalV2
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              initialBusiness={input}
+            />
+          </Suspense>
+        )}
       </>
     )
   }
@@ -507,11 +513,15 @@ export function GeneratorWidget({ variant = "default" }: GeneratorWidgetProps) {
         </div>
       </div>
 
-<GeneratorModalV2
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          initialBusiness={input}
-        />
+      {isModalOpen && (
+        <Suspense fallback={null}>
+          <GeneratorModalV2
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            initialBusiness={input}
+          />
+        </Suspense>
+      )}
     </>
   )
 }

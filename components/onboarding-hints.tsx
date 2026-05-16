@@ -69,11 +69,15 @@ export function OnboardingHints() {
   const autoTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const cooldownRef = useRef(false)
 
-  // Check localStorage on mount
+  // Check localStorage on mount and cleanup timers on unmount
   useEffect(() => {
     try {
       if (localStorage.getItem(STORAGE_KEY)) setIsDone(true)
     } catch (_) { /* noop */ }
+    
+    return () => {
+      clearTimeout(autoTimerRef.current)
+    }
   }, [])
 
   // Schedule auto-dismiss whenever a hint becomes visible
@@ -89,11 +93,14 @@ export function OnboardingHints() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVisible, activeHint?.id])
 
+  const cooldownTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  
   const hide = useCallback(() => {
     setIsVisible(false)
     // Brief cooldown so we don't immediately trigger the next one
     cooldownRef.current = true
-    setTimeout(() => {
+    clearTimeout(cooldownTimerRef.current)
+    cooldownTimerRef.current = setTimeout(() => {
       cooldownRef.current = false
       setActiveHint(null)
     }, 800)
@@ -102,7 +109,8 @@ export function OnboardingHints() {
   const dismissAll = useCallback(() => {
     setIsVisible(false)
     cooldownRef.current = true
-    setTimeout(() => {
+    clearTimeout(cooldownTimerRef.current)
+    cooldownTimerRef.current = setTimeout(() => {
       cooldownRef.current = false
       setActiveHint(null)
     }, 800)
