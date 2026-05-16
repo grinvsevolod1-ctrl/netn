@@ -246,13 +246,11 @@ function DemoChat() {
               <div className="max-w-[90%] rounded-2xl rounded-bl-md px-4 py-3 bg-gradient-to-r from-[#00ffff]/20 to-[#00ff88]/20 border border-[#00ffff]/30 text-white text-sm">
                 <p className="font-medium mb-2">Готов работать на твоём сайте!</p>
                 <div className="flex gap-2">
-                  <Button 
-                    size="sm" 
-                    className="bg-[#00ffff] text-black hover:bg-[#00ffff]/90 gap-1.5"
-                    onClick={() => router.push('/nexik/start')}
-                  >
-                    <Zap className="w-3.5 h-3.5" />
-                    Запустить
+                  <Button size="sm" className="bg-[#00ffff] text-black hover:bg-[#00ffff]/90 gap-1.5" asChild>
+                    <Link href="/nexik/start">
+                      <Zap className="w-3.5 h-3.5" />
+                      Запустить
+                    </Link>
                   </Button>
                   <Button size="sm" variant="outline" onClick={resetDemo} className="border-[#2a2a3e] hover:bg-[#1a1a2e]">
                     Попробовать снова
@@ -825,12 +823,12 @@ export default function NexikLandingPage() {
             <p className="text-xl text-zinc-400 mb-10">
               Запусти Nexik за 2 минуты. Бесплатно. Без программистов.
             </p>
-            <Link href="/nexik/start">
-              <Button size="lg" className="bg-[#00ffff] text-black hover:bg-[#00ffff]/90 text-lg px-12 h-16 gap-3 group">
+            <Button size="lg" className="bg-[#00ffff] text-black hover:bg-[#00ffff]/90 text-lg px-12 h-16 gap-3 group" asChild>
+              <Link href="/nexik/start">
                 Запустить Nexik
                 <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
