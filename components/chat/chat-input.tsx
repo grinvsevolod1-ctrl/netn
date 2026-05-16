@@ -89,7 +89,7 @@ export function ChatInput({ config, onSend, onAttach, disabled, className }: Cha
 
     recognition.onresult = (event: { results: { [x: number]: { [x: number]: { transcript: string } } } }) => {
       const transcript = event.results[0][0].transcript
-      onChange(value + (value ? ' ' : '') + transcript)
+      setValue(prev => prev + (prev ? ' ' : '') + transcript)
       setIsRecording(false)
     }
 
